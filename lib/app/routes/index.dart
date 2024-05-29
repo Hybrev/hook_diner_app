@@ -1,0 +1,30 @@
+import 'package:flutter/material.dart';
+import 'package:hook_diner/app/modules/customers/customer_view.dart';
+import 'package:hook_diner/app/modules/home/home_view.dart';
+import 'package:hook_diner/app/modules/login/login_view.dart';
+import 'package:hook_diner/app/modules/menu/menu_view.dart';
+import 'package:hook_diner/app/modules/sales/sales_view.dart';
+import 'package:hook_diner/app/routes/route_names.dart';
+
+Route<dynamic> generateRoute(RouteSettings settings) {
+  switch (settings.name) {
+    case loginRoute:
+      return MaterialPageRoute(builder: (_) => const LoginView());
+    case homeRoute:
+      return MaterialPageRoute(builder: (_) => const HomeView());
+    case inventoryRoute:
+      return MaterialPageRoute(builder: (_) => const HomeView());
+    case customerRoute:
+      return MaterialPageRoute(builder: (_) => const CustomerView());
+    case menuRoute:
+      return MaterialPageRoute(builder: (_) => const MenuView());
+    case salesRoute:
+      return MaterialPageRoute(builder: (_) => const SalesView());
+    default:
+      return MaterialPageRoute(
+          builder: (_) => Scaffold(
+                body: Center(
+                    child: Text('No route defined for ${settings.name}')),
+              ));
+  }
+}
