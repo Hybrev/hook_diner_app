@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:hook_diner/app/modules/login/login_view.dart';
+import 'package:hook_diner/app/routes/index.dart';
 import 'package:hook_diner/app/shared/theme.dart';
 import 'package:hook_diner/core/locator.dart';
 import 'package:stacked_services/stacked_services.dart';
@@ -19,6 +20,7 @@ class HookDinerApp extends StatelessWidget {
     return MaterialApp(
       title: 'Flutter Demo',
       navigatorKey: StackedService.navigatorKey,
+      onGenerateRoute: generateRoute,
       theme: ThemeData(
         colorScheme: defaultScheme,
       ),

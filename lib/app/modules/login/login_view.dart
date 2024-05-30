@@ -1,6 +1,5 @@
 // views/home_view.dart
 import 'package:flutter/material.dart';
-import 'package:hook_diner/app/modules/customers/customer_viewmodel.dart';
 import 'package:hook_diner/app/modules/login/login_viewmodel.dart';
 import 'package:hook_diner/core/locator.dart';
 import 'package:stacked/stacked.dart';

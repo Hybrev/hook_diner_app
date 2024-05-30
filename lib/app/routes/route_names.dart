@@ -1,4 +1,4 @@
-const String loginRoute = '/';
+const String loginRoute = '/login';
 const String homeRoute = '/home';
 const String customerRoute = '/home/customers';
 const String inventoryRoute = '/home/inventory';

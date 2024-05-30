@@ -11,7 +11,7 @@ Route<dynamic> generateRoute(RouteSettings settings) {
     case loginRoute:
       return MaterialPageRoute(builder: (_) => const LoginView());
     case homeRoute:
-      return MaterialPageRoute(builder: (_) => const HomeView());
+      return _getPageRoute(routeName: homeRoute, viewToShow: const HomeView());
     case inventoryRoute:
       return MaterialPageRoute(builder: (_) => const HomeView());
     case customerRoute:
@@ -27,4 +27,13 @@ Route<dynamic> generateRoute(RouteSettings settings) {
                     child: Text('No route defined for ${settings.name}')),
               ));
   }
+}
+
+PageRoute _getPageRoute(
+    {required String routeName, required Widget viewToShow}) {
+  return MaterialPageRoute(
+      settings: RouteSettings(
+        name: routeName,
+      ),
+      builder: (_) => viewToShow);
 }
