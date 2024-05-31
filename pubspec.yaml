@@ -39,6 +39,8 @@ dependencies:
   get_it: 
   stacked_services:
   animations:
+  flutter_hooks:
+  stacked_hooks:
 
 dev_dependencies:
   build_runner: 

@@ -2,6 +2,7 @@
 import 'package:flutter/material.dart';
 
 import 'package:hook_diner/app/modules/menu/menu_viewmodel.dart';
+import 'package:hook_diner/app/shared/widgets/base_appbar.dart';
 import 'package:hook_diner/core/locator.dart';
 import 'package:stacked/stacked.dart';
 
@@ -17,6 +18,7 @@ class MenuView extends StatelessWidget {
       fireOnViewModelReadyOnce: true,
       disposeViewModel: false,
       builder: (context, model, child) => Scaffold(
+        appBar: const BaseAppBar(title: 'MENU'),
         body: Center(
           child: Text(
             model.title,

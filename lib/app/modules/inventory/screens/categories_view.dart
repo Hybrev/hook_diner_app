@@ -1,0 +1,28 @@
+import 'package:flutter/material.dart';
+import 'package:hook_diner/app/modules/inventory/inventory_viewmodel.dart';
+import 'package:hook_diner/app/modules/inventory/widgets/category_card.dart';
+import 'package:stacked/stacked.dart';
+
+class CategoriesView extends ViewModelWidget<InventoryViewModel> {
+  const CategoriesView({super.key});
+
+  @override
+  Widget build(BuildContext context, InventoryViewModel viewModel) {
+    return Center(
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 8.0),
+        child: ConstrainedBox(
+          constraints: const BoxConstraints(maxWidth: 840),
+          child: GridView.builder(
+            itemCount: viewModel.categories.length,
+            gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
+              mainAxisSpacing: 8,
+              maxCrossAxisExtent: 340,
+            ),
+            itemBuilder: (context, index) => CategoryCard(index),
+          ),
+        ),
+      ),
+    );
+  }
+}

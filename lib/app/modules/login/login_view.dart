@@ -24,7 +24,7 @@ class LoginView extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 const Flexible(
-                  flex: 2,
+                  flex: 1,
                   child: AspectRatio(
                     aspectRatio: 16 / 9,
                     child: Image(

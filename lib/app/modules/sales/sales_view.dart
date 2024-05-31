@@ -1,6 +1,7 @@
 // views/home_view.dart
 import 'package:flutter/material.dart';
 import 'package:hook_diner/app/modules/sales/sales_viewmodel.dart';
+import 'package:hook_diner/app/shared/widgets/base_appbar.dart';
 import 'package:hook_diner/core/locator.dart';
 import 'package:stacked/stacked.dart';
 
@@ -17,6 +18,7 @@ class SalesView extends StatelessWidget {
       disposeViewModel: false,
       viewModelBuilder: () => locator<SalesViewModel>(),
       builder: (context, model, child) => Scaffold(
+        appBar: const BaseAppBar(title: "SALES"),
         body: Center(
           child: Text(
             model.title,

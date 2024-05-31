@@ -18,6 +18,7 @@ class HookDinerApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      scrollBehavior: const ScrollBehavior().copyWith(scrollbars: false),
       title: 'Flutter Demo',
       navigatorKey: StackedService.navigatorKey,
       onGenerateRoute: generateRoute,
