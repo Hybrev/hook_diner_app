@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_speed_dial/flutter_speed_dial.dart';
 import 'package:hook_diner/app/modules/inventory/inventory_viewmodel.dart';
+import 'package:hook_diner/app/modules/inventory/screens/add_item.dart';
 import 'package:hook_diner/app/modules/inventory/screens/categories_view.dart';
 import 'package:hook_diner/app/shared/widgets/base_appbar.dart';
 import 'package:hook_diner/core/locator.dart';
@@ -22,10 +24,35 @@ class InventoryView extends StatelessWidget {
           title: "CATEGORIES",
         ),
         body: const CategoriesView(),
-        floatingActionButton: FloatingActionButton(
-          splashColor: appTheme.colorScheme.tertiary,
-          child: const Icon(Icons.add),
-          onPressed: () {},
+        floatingActionButton: SpeedDial(
+          icon: Icons.add_rounded,
+          activeIcon: Icons.close_rounded,
+          backgroundColor: appTheme.colorScheme.onBackground,
+          overlayColor: appTheme.colorScheme.secondary,
+          spacing: 8,
+          spaceBetweenChildren: 8,
+          children: [
+            SpeedDialChild(
+              label: "Item",
+              backgroundColor: appTheme.colorScheme.onTertiary,
+              child: Icon(
+                Icons.note_add_rounded,
+                color: appTheme.colorScheme.tertiary,
+              ),
+              onTap: () => model.showActionModal(
+                context,
+                dialogContent: const AddItem(),
+              ),
+            ),
+            SpeedDialChild(
+              label: "Category",
+              backgroundColor: appTheme.colorScheme.onTertiary,
+              child: Icon(
+                Icons.category_rounded,
+                color: appTheme.colorScheme.tertiary,
+              ),
+            ),
+          ],
         ),
       ),
       viewModelBuilder: () => locator<InventoryViewModel>(),

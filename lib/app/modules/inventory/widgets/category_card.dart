@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:hook_diner/app/modules/inventory/inventory_viewmodel.dart';
+import 'package:hook_diner/app/modules/inventory/screens/item_list_modal_view.dart';
 import 'package:stacked/stacked.dart';
 
 class CategoryCard extends ViewModelWidget<InventoryViewModel> {
   const CategoryCard(this.index, {super.key});
 
   final int index;
-
   @override
   Widget build(BuildContext context, InventoryViewModel viewModel) {
     final appTheme = Theme.of(context);
@@ -21,22 +21,17 @@ class CategoryCard extends ViewModelWidget<InventoryViewModel> {
         child: Padding(
           padding: const EdgeInsets.all(8.0),
           child: Column(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
-              Expanded(
-                child: ClipRRect(
-                  borderRadius: BorderRadius.circular(8.0),
-                  child: Image(
-                    image: AssetImage(
-                      'lib/app/assets/img/categories/${viewModel.categories[index].imageUrl}',
-                    ),
-                    fit: BoxFit.cover,
-                  ),
-                ),
+              Icon(
+                viewModel.categories[index].icon!,
+                size: MediaQuery.of(context).size.width * 0.25,
+                color: appTheme.colorScheme.primary,
               ),
               Text(
                 viewModel.categories[index].title!.toUpperCase(),
                 style: appTheme.textTheme.titleMedium,
+                textAlign: TextAlign.center,
               ),
             ],
           ),

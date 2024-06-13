@@ -6,11 +6,13 @@ class BaseAppBar extends StatelessWidget implements PreferredSizeWidget {
     required this.title,
     this.actions = const [],
     this.centerTitle = false,
+    this.automaticallyImplyLeading = false,
   });
 
   final String title;
   final List<Widget> actions;
   final bool centerTitle;
+  final bool automaticallyImplyLeading;
 
   @override
   Size get preferredSize => Size.fromHeight(AppBar().preferredSize.height);
@@ -20,7 +22,7 @@ class BaseAppBar extends StatelessWidget implements PreferredSizeWidget {
     final appTheme = Theme.of(context);
 
     return AppBar(
-      automaticallyImplyLeading: false,
+      automaticallyImplyLeading: automaticallyImplyLeading,
       title: Text(title),
       centerTitle: centerTitle,
       elevation: 2,

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:hook_diner/app/modules/inventory/widgets/item_list_modal.dart';
+import 'package:hook_diner/app/modules/inventory/screens/item_list_modal_view.dart';
 import 'package:hook_diner/core/data/categories.dart';
 import 'package:hook_diner/core/locator.dart';
 import 'package:hook_diner/core/models/category.dart';
@@ -10,7 +10,7 @@ class InventoryViewModel extends BaseViewModel {
   final String _title = 'Inventory';
   String get title => _title;
 
-  NavigationService _navigator = locator<NavigationService>();
+  final NavigationService _navigator = locator<NavigationService>();
 
   final List<Category> _categories = categoryList;
   List<Category> get categories => _categories;
@@ -26,12 +26,34 @@ class InventoryViewModel extends BaseViewModel {
     _navigator.back();
   }
 
-  void showCategoryItems(BuildContext ctx) {
+  void showActionModal(BuildContext ctx, {required Widget dialogContent}) {
+    showDialog(
+        context: ctx,
+        builder: (context) {
+          return Dialog(
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(16.0),
+            ),
+            child: ClipRRect(
+              borderRadius:
+                  BorderRadius.circular(16.0), // Match shape's borderRadius
+              child: ConstrainedBox(
+                constraints: const BoxConstraints(maxWidth: 600),
+                child: dialogContent,
+              ),
+            ),
+          );
+        });
+  }
+
+  void showCategoryItems(
+    BuildContext ctx,
+  ) {
     showDialog(
         context: ctx,
         builder: (context) {
           final dialogContent =
-              ItemListModal(viewModel: InventoryViewModel(), '');
+              ItemListModalView(viewModel: InventoryViewModel(), '');
           final showFullScreenDialog = MediaQuery.sizeOf(context).width < 600;
 
           if (showFullScreenDialog) {
@@ -41,9 +63,16 @@ class InventoryViewModel extends BaseViewModel {
           }
 
           return Dialog(
-            child: ConstrainedBox(
-              constraints: const BoxConstraints(maxWidth: 600),
-              child: dialogContent,
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(16.0), // Adjust as desired
+            ),
+            child: ClipRRect(
+              borderRadius:
+                  BorderRadius.circular(16.0), // Match shape's borderRadius
+              child: ConstrainedBox(
+                constraints: const BoxConstraints(maxWidth: 600),
+                child: dialogContent,
+              ),
             ),
           );
         });

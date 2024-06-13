@@ -43,20 +43,19 @@ class HomeView extends StatelessWidget {
           onTap: model.setIndex,
           items: const [
             BottomNavigationBarItem(
-              label: 'Order Menu',
-              icon: Icon(Icons.menu_book_rounded),
+              label: 'Sales',
+              icon: Icon(Icons.receipt_long_rounded),
+              activeIcon: Icon(Icons.receipt_long),
             ),
             BottomNavigationBarItem(
               label: 'Inventory',
-              icon: Icon(Icons.inventory_2_rounded),
-            ),
-            BottomNavigationBarItem(
-              label: 'Sales',
-              icon: Icon(Icons.receipt_long_rounded),
+              icon: Icon(Icons.inventory_2_outlined),
+              activeIcon: Icon(Icons.inventory_2_rounded),
             ),
             BottomNavigationBarItem(
               label: 'Customers',
-              icon: Icon(Icons.people_alt_rounded),
+              icon: Icon(Icons.people_alt_outlined),
+              activeIcon: Icon(Icons.people_alt_rounded),
             ),
           ],
         ),
@@ -69,12 +68,10 @@ class HomeView extends StatelessWidget {
 Widget getViewForIndex(int index) {
   switch (index) {
     case 0:
-      return const MenuView();
+      return const SalesView();
     case 1:
       return const InventoryView();
     case 2:
-      return const SalesView();
-    case 3:
       return const CustomerView();
     default:
       return const MenuView();
