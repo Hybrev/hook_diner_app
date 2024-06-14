@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:hook_diner/app/modules/customers/customer_view.dart';
+import 'package:hook_diner/app/modules/inventory/inventory_viewmodel.dart';
 import 'package:hook_diner/app/modules/inventory/widgets/item_text_field.dart';
 
-class AddItem extends CustomerView {
-  const AddItem({super.key});
+class AddItemModal extends StatelessWidget {
+  const AddItemModal({super.key, required this.viewModel});
 
+  final InventoryViewModel viewModel;
   @override
   Widget build(BuildContext context) {
     final appTheme = Theme.of(context);
@@ -28,8 +29,12 @@ class AddItem extends CustomerView {
               fieldLabel: 'Cost Price', inputType: TextInputType.number),
           const ItemTextField(
               fieldLabel: 'Selling Price', inputType: TextInputType.number),
-          const ItemTextField(
-              fieldLabel: 'Expiration Date', inputType: TextInputType.datetime),
+          ItemTextField(
+            fieldLabel: 'Expiration Date',
+            inputType: TextInputType.datetime,
+            selectedDate: viewModel.expirationDate,
+            onPressed: () => viewModel.presentDatePicker(context),
+          ),
         ],
       ),
     );

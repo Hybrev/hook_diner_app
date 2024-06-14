@@ -16,7 +16,32 @@ class CategoryCard extends ViewModelWidget<InventoryViewModel> {
       elevation: 4,
       child: InkWell(
         splashColor: appTheme.colorScheme.secondary,
-        onTap: () => viewModel.showCategoryItems(context),
+        onTap: () => showDialog(
+          context: context,
+          builder: (context) {
+            final dialogContent = ItemListModalView(viewModel: viewModel, '');
+            final showFullScreenDialog = MediaQuery.sizeOf(context).width < 600;
+
+            if (showFullScreenDialog) {
+              return Dialog.fullscreen(
+                child: dialogContent,
+              );
+            }
+
+            return Dialog(
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(16.0),
+              ),
+              child: ClipRRect(
+                borderRadius: BorderRadius.circular(16.0),
+                child: ConstrainedBox(
+                  constraints: const BoxConstraints(maxWidth: 600),
+                  child: dialogContent,
+                ),
+              ),
+            );
+          },
+        ),
         borderRadius: BorderRadius.circular(12),
         child: Padding(
           padding: const EdgeInsets.all(8.0),

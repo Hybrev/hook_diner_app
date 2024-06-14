@@ -1,14 +1,18 @@
 import 'package:flutter/material.dart';
-import 'package:hook_diner/app/modules/inventory/screens/add_item.dart';
 
-class ItemTextField extends AddItem {
-  const ItemTextField(
-      {super.key,
-      required this.fieldLabel,
-      this.inputType = TextInputType.text});
+class ItemTextField extends StatelessWidget {
+  const ItemTextField({
+    super.key,
+    required this.fieldLabel,
+    this.inputType = TextInputType.text,
+    this.selectedDate,
+    this.onPressed,
+  });
 
   final TextInputType inputType;
   final String fieldLabel;
+  final DateTime? selectedDate;
+  final Function()? onPressed;
 
   @override
   Widget build(BuildContext context) {
@@ -34,11 +38,20 @@ class ItemTextField extends AddItem {
                   maxLines: 1,
                   style: appTheme.textTheme.labelMedium,
                 )
-              : ElevatedButton(
-                  onPressed: () {},
-                  child: const Text('Select Date...'),
+              : Row(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    Text(
+                      '${selectedDate?.day}/${selectedDate?.month}/${selectedDate?.year}',
+                    ),
+                    IconButton(
+                      onPressed: onPressed,
+                      icon: const Icon(Icons.calendar_month),
+                    ),
+                  ],
                 ),
-        )
+        ),
       ],
     );
   }

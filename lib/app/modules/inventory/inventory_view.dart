@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_speed_dial/flutter_speed_dial.dart';
 import 'package:hook_diner/app/modules/inventory/inventory_viewmodel.dart';
-import 'package:hook_diner/app/modules/inventory/screens/add_item.dart';
+import 'package:hook_diner/app/modules/inventory/screens/add_item_modal.dart';
 import 'package:hook_diner/app/modules/inventory/screens/categories_view.dart';
 import 'package:hook_diner/app/shared/widgets/base_appbar.dart';
 import 'package:hook_diner/core/locator.dart';
@@ -15,7 +15,7 @@ class InventoryView extends StatelessWidget {
     final appTheme = Theme.of(context);
     // final windowSize = MediaQuery.sizeOf(context);
 
-    return ViewModelBuilder<InventoryViewModel>.reactive(
+    return ViewModelBuilder<InventoryViewModel>.nonReactive(
       onViewModelReady: (viewModel) => viewModel.initialize(),
       fireOnViewModelReadyOnce: true,
       disposeViewModel: false,
@@ -41,7 +41,7 @@ class InventoryView extends StatelessWidget {
               ),
               onTap: () => model.showActionModal(
                 context,
-                dialogContent: const AddItem(),
+                dialogContent: AddItemModal(viewModel: model),
               ),
             ),
             SpeedDialChild(
