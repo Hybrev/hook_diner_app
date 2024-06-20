@@ -4,10 +4,15 @@ import 'package:hook_diner/app/routes/index.dart';
 import 'package:hook_diner/app/shared/theme.dart';
 import 'package:hook_diner/core/locator.dart';
 import 'package:stacked_services/stacked_services.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'firebase_options.dart';
 
-void main() {
+void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   setupLocator();
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
   runApp(const HookDinerApp());
 }
 

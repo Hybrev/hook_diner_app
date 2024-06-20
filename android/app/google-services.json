@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "893525215708",
+    "project_id": "hook-diner",
+    "storage_bucket": "hook-diner.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:893525215708:android:70c6e3aaf4c7e9fb372719",
+        "android_client_info": {
+          "package_name": "com.example.hook_diner"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAGOcKjPV2ov1iX1FuayS-7QFea5uikYNU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
