@@ -17,25 +17,6 @@ class LoginViewModel extends BaseViewModel {
   TextEditingController get usernameController => _usernameController;
   TextEditingController get passwordController => _passwordController;
 
-  void signUp({required String username, required String password}) async {
-    setBusy(true);
-
-    final result = await _auth.signUp(username: username, password: password);
-    setBusy(false);
-    if (result != null) {
-      await _dialog.showDialog(
-        title: 'Success',
-        description: 'User Registered successfully',
-      );
-    }
-
-    await _dialog.showDialog(
-      title: 'Sign Up Failed',
-      description: 'Please try again later.',
-    );
-    return;
-  }
-
   void logIn({required String username, required String password}) async {
     setBusy(true);
 
