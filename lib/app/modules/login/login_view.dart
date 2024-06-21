@@ -22,48 +22,49 @@ class LoginView extends StatelessWidget {
           minimum: const EdgeInsets.all(16),
           child: Center(
             child: SingleChildScrollView(
-                child: mediaData.width > 600
-                    ? Row(
-                        children: [
-                          ConstrainedBox(
-                            constraints: BoxConstraints(
-                              maxHeight: mediaData.height * 0.6,
-                            ),
-                            child: const AspectRatio(
-                              aspectRatio: 16 / 9,
-                              child: Image(
-                                image:
-                                    AssetImage('lib/app/assets/img/banner.jpg'),
-                                fit: BoxFit.cover,
-                              ),
-                            ),
+              child: mediaData.width > 600
+                  ? Row(
+                      children: [
+                        ConstrainedBox(
+                          constraints: BoxConstraints(
+                            maxHeight: mediaData.height * 0.6,
                           ),
-                          const Expanded(
-                            child: LoginSection(),
-                          ),
-                        ],
-                      )
-                    : Column(
-                        children: [
-                          ConstrainedBox(
-                            constraints: BoxConstraints(
-                              maxHeight: mediaData.height * 0.6,
-                            ),
-                            child: const AspectRatio(
-                              aspectRatio: 16 / 9,
-                              child: Image(
-                                image:
-                                    AssetImage('lib/app/assets/img/banner.jpg'),
-                                fit: BoxFit.cover,
-                              ),
+                          child: const AspectRatio(
+                            aspectRatio: 16 / 9,
+                            child: Image(
+                              image:
+                                  AssetImage('lib/app/assets/img/banner.jpg'),
+                              fit: BoxFit.cover,
                             ),
                           ),
-                          SizedBox(
-                            height: appTheme.textTheme.titleLarge?.fontSize,
+                        ),
+                        const Expanded(
+                          child: LoginSection(),
+                        ),
+                      ],
+                    )
+                  : Column(
+                      children: [
+                        ConstrainedBox(
+                          constraints: BoxConstraints(
+                            maxHeight: mediaData.height * 0.6,
                           ),
-                          const LoginSection(),
-                        ],
-                      )),
+                          child: const AspectRatio(
+                            aspectRatio: 16 / 9,
+                            child: Image(
+                              image:
+                                  AssetImage('lib/app/assets/img/banner.jpg'),
+                              fit: BoxFit.cover,
+                            ),
+                          ),
+                        ),
+                        SizedBox(
+                          height: appTheme.textTheme.titleLarge?.fontSize,
+                        ),
+                        const LoginSection(),
+                      ],
+                    ),
+            ),
           ),
         ),
       ),

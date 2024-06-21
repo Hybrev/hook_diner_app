@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:hook_diner/app/modules/login/login_viewmodel.dart';
 import 'package:hook_diner/app/modules/login/widgets/input_field.dart';
+import 'package:hook_diner/app/shared/widgets/base_button.dart';
 import 'package:stacked/stacked.dart';
 
 class LoginSection extends ViewModelWidget<LoginViewModel> {
@@ -34,28 +35,13 @@ class LoginSection extends ViewModelWidget<LoginViewModel> {
         SizedBox(
           height: appTheme.textTheme.titleLarge?.fontSize,
         ),
-        ElevatedButton(
-          style: ElevatedButton.styleFrom(
-            backgroundColor: appTheme.colorScheme.primary,
-            padding: EdgeInsets.symmetric(
-              horizontal: mediaData.width * 0.15,
-              vertical: 12,
-            ),
-            foregroundColor: appTheme.colorScheme.onPrimary,
-            shadowColor: appTheme.colorScheme.secondary,
-            textStyle: appTheme.textTheme.titleLarge
-                ?.copyWith(fontWeight: FontWeight.bold),
-            elevation: 4,
-          ),
+        BaseButton(
           onPressed: () => viewModel.logIn(
             username: viewModel.usernameController.text.trim(),
             password: viewModel.passwordController.text.trim(),
           ),
-          child: viewModel.isBusy
-              ? const CircularProgressIndicator(
-                  color: Colors.white,
-                )
-              : const Text("LOGIN"),
+          loading: viewModel.isBusy,
+          label: 'Login',
         ),
       ],
     );

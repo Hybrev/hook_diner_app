@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:hook_diner/app/modules/inventory/inventory_viewmodel.dart';
-import 'package:hook_diner/app/modules/inventory/screens/item_list_modal_view.dart';
+import 'package:hook_diner/app/modules/inventory/widgets/item/itemlist_modal_view.dart';
 import 'package:stacked/stacked.dart';
 
 class CategoryCard extends ViewModelWidget<InventoryViewModel> {

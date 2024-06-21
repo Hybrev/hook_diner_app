@@ -1,5 +1,5 @@
 class User {
-  final int? id;
+  final String? id;
   final String? username;
   final String? password;
   final String? role;
@@ -7,7 +7,7 @@ class User {
   const User({this.id, this.username, this.password, this.role});
 
   factory User.fromJson(Map<String, dynamic> json) => User(
-        id: json['id'] as int?,
+        id: json['id'] as String?,
         username: json['username'] as String?,
         password: json['password'] as String?,
         role: json['role'] as String?,

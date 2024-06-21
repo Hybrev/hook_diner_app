@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_speed_dial/flutter_speed_dial.dart';
 import 'package:hook_diner/app/modules/inventory/inventory_viewmodel.dart';
-import 'package:hook_diner/app/modules/inventory/screens/add_item_modal.dart';
-import 'package:hook_diner/app/modules/inventory/screens/categories_view.dart';
+import 'package:hook_diner/app/modules/inventory/widgets/category/categories_grid.dart';
+import 'package:hook_diner/app/modules/inventory/widgets/item/add/add_item_view.dart';
 import 'package:hook_diner/app/shared/widgets/base_appbar.dart';
 import 'package:hook_diner/core/locator.dart';
 import 'package:stacked/stacked.dart';
@@ -16,14 +16,13 @@ class InventoryView extends StatelessWidget {
     // final windowSize = MediaQuery.sizeOf(context);
 
     return ViewModelBuilder<InventoryViewModel>.nonReactive(
-      onViewModelReady: (viewModel) => viewModel.initialize(),
       fireOnViewModelReadyOnce: true,
       disposeViewModel: false,
       builder: (context, model, child) => Scaffold(
         appBar: const BaseAppBar(
           title: "CATEGORIES",
         ),
-        body: const CategoriesView(),
+        body: const CategoriesGrid(),
         floatingActionButton: SpeedDial(
           icon: Icons.add_rounded,
           activeIcon: Icons.close_rounded,
@@ -41,7 +40,7 @@ class InventoryView extends StatelessWidget {
               ),
               onTap: () => model.showActionModal(
                 context,
-                dialogContent: AddItemModal(viewModel: model),
+                dialogContent: AddItemView(viewModel: model),
               ),
             ),
             SpeedDialChild(

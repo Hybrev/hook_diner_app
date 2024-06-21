@@ -4,6 +4,7 @@ class ItemTextField extends StatelessWidget {
   const ItemTextField({
     super.key,
     required this.fieldLabel,
+    required this.controller,
     this.inputType = TextInputType.text,
     this.selectedDate,
     this.onPressed,
@@ -11,6 +12,7 @@ class ItemTextField extends StatelessWidget {
 
   final TextInputType inputType;
   final String fieldLabel;
+  final TextEditingController? controller;
   final DateTime? selectedDate;
   final Function()? onPressed;
 
@@ -32,6 +34,7 @@ class ItemTextField extends StatelessWidget {
               ? TextField(
                   textAlign: TextAlign.center,
                   textInputAction: TextInputAction.next,
+                  controller: controller,
                   decoration: InputDecoration(
                       hintText: "Enter ${fieldLabel.toLowerCase()}..."),
                   keyboardType: inputType,

@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:hook_diner/app/modules/inventory/inventory_viewmodel.dart';
-import 'package:hook_diner/app/modules/inventory/widgets/category_card.dart';
+import 'package:hook_diner/app/modules/inventory/widgets/category/category_card.dart';
 import 'package:stacked/stacked.dart';
 
-class CategoriesView extends ViewModelWidget<InventoryViewModel> {
-  const CategoriesView({super.key});
+class CategoriesGrid extends ViewModelWidget<InventoryViewModel> {
+  const CategoriesGrid({super.key});
 
   @override
   Widget build(BuildContext context, InventoryViewModel viewModel) {

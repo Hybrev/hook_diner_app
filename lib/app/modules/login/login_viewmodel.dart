@@ -26,22 +26,27 @@ class LoginViewModel extends BaseViewModel {
       setBusy(false);
       toMainMenu();
     } on FirebaseAuthException catch (e) {
-      String message;
+      String title = '', message = '';
       switch (e.code) {
+        case 'network-request-failed':
+          title = 'Network Error';
+          message = 'No internet connection. Please try again.';
+          break;
         case 'invalid-email':
+          title = 'Invalid Credentials';
           message = 'Username not found. Please try again.';
           break;
         case 'invalid-credential':
+          title = 'Invalid Credentials';
           message = 'Incorrect password. Please try again.';
           break;
         case 'channel-error':
+          title = 'Authentication Error';
           message = 'Please enter a valid username and password.';
           break;
-        default:
-          message = 'Login failed with code: ${e.code}';
       }
       await _dialog.showDialog(
-        title: 'Login Failure',
+        title: title,
         description: message,
       );
     } finally {
