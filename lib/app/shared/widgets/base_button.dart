@@ -8,7 +8,7 @@ class BaseButton extends StatelessWidget {
     this.loading = false,
   });
 
-  final Function onPressed;
+  final Function() onPressed;
   final bool loading;
   final String label;
 
@@ -29,7 +29,7 @@ class BaseButton extends StatelessWidget {
             ?.copyWith(fontWeight: FontWeight.bold),
         elevation: 4,
       ),
-      onPressed: () => onPressed,
+      onPressed: onPressed,
       child: loading
           ? const CircularProgressIndicator(
               color: Colors.white,

@@ -51,7 +51,7 @@ class AddItemView extends StatelessWidget {
               Divider(color: appTheme.colorScheme.primary),
               BaseButton(
                 label: 'ADD',
-                onPressed: viewModel.addItem,
+                onPressed: () => viewModel.addItem(),
               ),
             ],
           ),
