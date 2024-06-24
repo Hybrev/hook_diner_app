@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:hook_diner/app/modules/inventory/inventory_viewmodel.dart';
 import 'package:hook_diner/app/modules/inventory/widgets/item/add/add_item_view.dart';
-import 'package:hook_diner/app/modules/inventory/widgets/item/item_card.dart';
+import 'package:hook_diner/app/shared/widgets/data_list.dart';
+import 'package:hook_diner/app/shared/widgets/data_tile.dart';
 import 'package:hook_diner/app/shared/widgets/base_appbar.dart';
 
 class ItemListModalView extends StatelessWidget {
@@ -13,7 +14,7 @@ class ItemListModalView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // final appTheme = Theme.of(context);
+    final appTheme = Theme.of(context);
 
     return Scaffold(
       appBar: BaseAppBar(
@@ -22,9 +23,7 @@ class ItemListModalView extends StatelessWidget {
           IconButton(
             onPressed: () => viewModel.showActionModal(
               context,
-              dialogContent: AddItemView(
-                viewModel: viewModel,
-              ),
+              dialogContent: const AddItemView(),
             ),
             icon: const Icon(Icons.add_rounded),
           ),
@@ -35,9 +34,15 @@ class ItemListModalView extends StatelessWidget {
       body: SafeArea(
         minimum: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
         child: Center(
-          child: ListView.builder(
-            itemCount: 10,
-            itemBuilder: (context, index) => ItemCard(index),
+          child: DataList(
+            title: 'Item Name',
+            subtitle: 'Item Description',
+            onEditTap: () {
+              print('edit tapped');
+            },
+            onDeleteTap: () {
+              print('delete tapped');
+            },
           ),
         ),
       ),

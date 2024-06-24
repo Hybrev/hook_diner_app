@@ -26,7 +26,7 @@ class InventoryView extends StatelessWidget {
         floatingActionButton: SpeedDial(
           icon: Icons.add_rounded,
           activeIcon: Icons.close_rounded,
-          backgroundColor: appTheme.colorScheme.onBackground,
+          backgroundColor: appTheme.colorScheme.primary,
           overlayColor: appTheme.colorScheme.secondary,
           spacing: 8,
           spaceBetweenChildren: 8,
@@ -40,7 +40,7 @@ class InventoryView extends StatelessWidget {
               ),
               onTap: () => model.showActionModal(
                 context,
-                dialogContent: AddItemView(viewModel: model),
+                dialogContent: const AddItemView(),
               ),
             ),
             SpeedDialChild(

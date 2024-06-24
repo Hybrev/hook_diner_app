@@ -5,6 +5,7 @@ import 'package:hook_diner/app/modules/home/home_viewmodel.dart';
 import 'package:hook_diner/app/modules/inventory/inventory_view.dart';
 import 'package:hook_diner/app/modules/menu/menu_view.dart';
 import 'package:hook_diner/app/modules/sales/sales_view.dart';
+import 'package:hook_diner/app/modules/users/users_view.dart';
 import 'package:stacked/stacked.dart';
 
 class HomeView extends StatelessWidget {
@@ -35,7 +36,7 @@ class HomeView extends StatelessWidget {
         ),
         bottomNavigationBar: BottomNavigationBar(
           type: BottomNavigationBarType.shifting,
-          selectedItemColor: appTheme.colorScheme.primary,
+          selectedItemColor: appTheme.colorScheme.onBackground,
           unselectedItemColor: Colors.grey,
           selectedIconTheme: const IconThemeData(size: 28),
           showUnselectedLabels: true,
@@ -57,6 +58,11 @@ class HomeView extends StatelessWidget {
               icon: Icon(Icons.people_alt_outlined),
               activeIcon: Icon(Icons.people_alt_rounded),
             ),
+            BottomNavigationBarItem(
+              label: 'Users',
+              icon: Icon(Icons.supervised_user_circle_outlined),
+              activeIcon: Icon(Icons.supervised_user_circle_rounded),
+            ),
           ],
         ),
       ),
@@ -73,6 +79,8 @@ Widget getViewForIndex(int index) {
       return const InventoryView();
     case 2:
       return const CustomerView();
+    case 3:
+      return const UsersView();
     default:
       return const MenuView();
   }

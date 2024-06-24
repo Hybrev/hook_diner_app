@@ -13,7 +13,7 @@ class DatabaseService {
 
   /* CRUD */
   // User CRUD
-  Future createUser(User user) async {
+  Future addUser(User user) async {
     try {
       await _usersCollection.doc(user.id).set(user.toJson());
     } catch (e) {

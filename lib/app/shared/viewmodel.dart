@@ -1,7 +1,8 @@
+import 'package:flutter/material.dart';
 import 'package:hook_diner/core/locator.dart';
 import 'package:hook_diner/core/services/auth_service.dart';
 import 'package:hook_diner/core/services/date_service.dart';
-import 'package:hook_diner/core/services/db_service.dart';
+import 'package:hook_diner/core/services/database_service.dart';
 import 'package:stacked/stacked.dart';
 import 'package:stacked_services/stacked_services.dart';
 
@@ -19,4 +20,23 @@ class SharedViewModel extends BaseViewModel {
   DateService get date => _date;
   DialogService get dialog => _dialog;
   DatabaseService get database => _database;
+
+  void showActionModal(BuildContext ctx, {required Widget dialogContent}) {
+    showDialog(
+        context: ctx,
+        builder: (_) {
+          return Dialog(
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(16.0),
+            ),
+            child: ClipRRect(
+              borderRadius: BorderRadius.circular(16.0),
+              child: ConstrainedBox(
+                constraints: const BoxConstraints(maxWidth: 600),
+                child: dialogContent,
+              ),
+            ),
+          );
+        });
+  }
 }
