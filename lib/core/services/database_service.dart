@@ -21,6 +21,22 @@ class DatabaseService {
     }
   }
 
+  Future getUsers() async {
+    try {
+      final response = await _usersCollection.get();
+      if (response.docs.isNotEmpty) {
+        return response.docs
+            .map((snapshot) =>
+                User.fromJson(snapshot.data() as Map<String, dynamic>))
+            .where((element) => element.username != null)
+            .toList();
+      }
+      print('response: $response');
+    } catch (e) {
+      return e.toString();
+    }
+  }
+
   Future getUser(String uid) async {
     try {
       final user = await _usersCollection.doc(uid).get();

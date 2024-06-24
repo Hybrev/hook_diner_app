@@ -10,8 +10,17 @@ class UsersViewModel extends SharedViewModel {
   TextEditingController passwordController = TextEditingController();
   TextEditingController roleController = TextEditingController();
 
+  late List<User> _users;
+  List<User> get users => _users;
+
   void initialize() async {
-    print('viewModel initialized');
+    setBusy(true);
+    final fetchedUsers = await database.getUsers();
+    _users = fetchedUsers;
+    print('users: ${_users[1].password}');
+
+    notifyListeners();
+    setBusy(false);
   }
 
   void addUser() async {

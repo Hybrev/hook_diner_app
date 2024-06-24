@@ -5,6 +5,7 @@ class MoreActionsButton extends DataTile {
   const MoreActionsButton(
     super.index, {
     super.key,
+    required super.data,
     super.title = '',
     super.subtitle = '',
     required super.onEditTap,

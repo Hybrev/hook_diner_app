@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:hook_diner/app/modules/inventory/inventory_viewmodel.dart';
 import 'package:hook_diner/app/modules/inventory/widgets/item/add/add_item_view.dart';
-import 'package:hook_diner/app/shared/widgets/data_list.dart';
-import 'package:hook_diner/app/shared/widgets/data_tile.dart';
 import 'package:hook_diner/app/shared/widgets/base_appbar.dart';
+import 'package:hook_diner/app/shared/widgets/data_tile.dart';
 
 class ItemListModalView extends StatelessWidget {
   const ItemListModalView(this.filterParams,
@@ -34,15 +33,22 @@ class ItemListModalView extends StatelessWidget {
       body: SafeArea(
         minimum: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
         child: Center(
-          child: DataList(
-            title: 'Item Name',
-            subtitle: 'Item Description',
-            onEditTap: () {
-              print('edit tapped');
-            },
-            onDeleteTap: () {
-              print('delete tapped');
-            },
+          child: ListView.separated(
+            itemCount: viewModel.items.length,
+            shrinkWrap: true,
+            separatorBuilder: (context, index) => Divider(
+              height: 8,
+              color: appTheme.colorScheme.secondary,
+            ),
+            itemBuilder: (context, index) => DataTile(
+              index,
+              data: viewModel.items,
+              title: viewModel.items[index].name!,
+              subtitle:
+                  '${viewModel.items[index].price!.toString()} - ${viewModel.items[index].quantity!.toString()}',
+              onEditTap: () {},
+              onDeleteTap: () {},
+            ),
           ),
         ),
       ),

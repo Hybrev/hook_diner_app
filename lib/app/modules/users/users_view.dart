@@ -1,9 +1,8 @@
-// views/home_view.dart
 import 'package:flutter/material.dart';
 import 'package:hook_diner/app/modules/users/users_viewmodel.dart';
 import 'package:hook_diner/app/modules/users/widgets/add/add_user_view.dart';
-import 'package:hook_diner/app/shared/widgets/data_list.dart';
 import 'package:hook_diner/app/shared/widgets/base_appbar.dart';
+import 'package:hook_diner/app/shared/widgets/data_tile.dart';
 import 'package:hook_diner/core/locator.dart';
 import 'package:stacked/stacked.dart';
 
@@ -16,7 +15,6 @@ class UsersView extends StatelessWidget {
 
     return ViewModelBuilder<UsersViewModel>.reactive(
       onViewModelReady: (viewModel) => viewModel.initialize(),
-      fireOnViewModelReadyOnce: true,
       disposeViewModel: false,
       viewModelBuilder: () => locator<UsersViewModel>(),
       builder: (context, model, child) => Scaffold(
@@ -25,15 +23,21 @@ class UsersView extends StatelessWidget {
           minimum: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
           child: ConstrainedBox(
             constraints: const BoxConstraints(maxWidth: 840),
-            child: DataList(
-              title: 'User Name',
-              subtitle: 'User Role',
-              onEditTap: () {
-                print('edit tapped');
-              },
-              onDeleteTap: () {
-                print('delete tapped');
-              },
+            child: ListView.separated(
+              itemCount: model.users.length,
+              shrinkWrap: true,
+              separatorBuilder: (context, index) => Divider(
+                height: 8,
+                color: appTheme.colorScheme.secondary,
+              ),
+              itemBuilder: (context, index) => DataTile(
+                index,
+                data: model.users,
+                title: model.users[index].username!,
+                subtitle: model.users[index].password!,
+                onEditTap: () {},
+                onDeleteTap: () {},
+              ),
             ),
           ),
         ),
