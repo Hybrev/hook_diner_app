@@ -21,6 +21,8 @@ class AuthService {
       password: password,
     );
 
+    print('received user: ${user.toString()}');
+
     await _databaseService.addUser(user_model.User(
       id: user.user!.uid,
       username: username,
@@ -29,6 +31,10 @@ class AuthService {
     ));
 
     return user.additionalUserInfo?.isNewUser;
+  }
+
+  Future logOut() async {
+    await _auth.signOut();
   }
 
   Future<User?> logIn({

@@ -1,21 +1,24 @@
 import 'package:flutter/material.dart';
-import 'package:hook_diner/app/modules/users/widgets/add/user_row.dart';
-import 'package:hook_diner/app/modules/users/widgets/add/add_user_viewmodel.dart';
+import 'package:hook_diner/app/modules/users/widgets/add_edit/user_row.dart';
+import 'package:hook_diner/app/modules/users/widgets/add_edit/add_edit_user_viewmodel.dart';
+import 'package:hook_diner/core/models/user.dart';
+
 import 'package:stacked/stacked.dart';
 
-class AddUserView extends StatelessWidget {
-  const AddUserView({
-    super.key,
-  });
+class AddEditUserView extends StatelessWidget {
+  const AddEditUserView(
+      {super.key, this.editingUser = const User(), required this.onSave});
 
+  final User editingUser;
+  final Function() onSave;
   @override
   Widget build(BuildContext context) {
     final appTheme = Theme.of(context);
-    final mediaData = MediaQuery.sizeOf(context);
 
-    return ViewModelBuilder<AddUserViewModel>.reactive(
-      viewModelBuilder: () => AddUserViewModel(),
-      disposeViewModel: false,
+    return ViewModelBuilder<AddEditUserViewModel>.reactive(
+      viewModelBuilder: () => AddEditUserViewModel(),
+      onViewModelReady: (viewModel) => viewModel.setUpModal(editingUser),
+      // disposeViewModel: false,
       builder: (context, viewModel, child) => SingleChildScrollView(
         child: SafeArea(
           minimum: const EdgeInsets.all(16),
@@ -23,7 +26,7 @@ class AddUserView extends StatelessWidget {
             mainAxisSize: MainAxisSize.min,
             children: [
               Text(
-                'ADD USER',
+                editingUser == null ? 'ADD USER' : 'EDIT USER',
                 style: appTheme.textTheme.displaySmall
                     ?.copyWith(fontWeight: FontWeight.bold),
               ),
@@ -64,27 +67,35 @@ class AddUserView extends StatelessWidget {
                     ),
                     onPressed: () => viewModel.closeModal(),
                   ),
-                  ElevatedButton.icon(
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: appTheme.colorScheme.primary,
-                      padding: const EdgeInsets.symmetric(
-                        horizontal: 24,
-                        vertical: 8,
-                      ),
-                    ),
-                    icon: Icon(
-                      Icons.add_rounded,
-                      color: appTheme.colorScheme.onPrimary,
-                    ),
-                    label: Text(
-                      'Add ',
-                      style: appTheme.textTheme.labelLarge?.copyWith(
-                        color: appTheme.colorScheme.onPrimary,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                    onPressed: () => viewModel.addUser(),
-                  ),
+                  viewModel.isBusy
+                      ? CircularProgressIndicator(
+                          color: appTheme.colorScheme.primary,
+                        )
+                      : ElevatedButton.icon(
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: appTheme.colorScheme.primary,
+                            padding: const EdgeInsets.symmetric(
+                              horizontal: 24,
+                              vertical: 8,
+                            ),
+                          ),
+                          icon: viewModel.isBusy
+                              ? CircularProgressIndicator(
+                                  color: appTheme.colorScheme.onPrimary,
+                                )
+                              : Icon(
+                                  Icons.add_rounded,
+                                  color: appTheme.colorScheme.onPrimary,
+                                ),
+                          label: Text(
+                            'Save',
+                            style: appTheme.textTheme.labelLarge?.copyWith(
+                              color: appTheme.colorScheme.onPrimary,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                          onPressed: onSave,
+                        ),
                 ],
               ),
             ],

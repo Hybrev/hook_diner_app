@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:hook_diner/app/modules/users/users_viewmodel.dart';
-import 'package:hook_diner/app/modules/users/widgets/add/add_user_view.dart';
+import 'package:hook_diner/app/modules/users/widgets/add_edit/add_edit_user_view.dart';
 import 'package:hook_diner/app/shared/widgets/base_appbar.dart';
 import 'package:hook_diner/app/shared/widgets/data_tile.dart';
 import 'package:hook_diner/core/locator.dart';
@@ -23,28 +23,44 @@ class UsersView extends StatelessWidget {
           minimum: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
           child: ConstrainedBox(
             constraints: const BoxConstraints(maxWidth: 840),
-            child: ListView.separated(
-              itemCount: model.users.length,
-              shrinkWrap: true,
-              separatorBuilder: (context, index) => Divider(
-                height: 8,
-                color: appTheme.colorScheme.secondary,
-              ),
-              itemBuilder: (context, index) => DataTile(
-                index,
-                data: model.users,
-                title: model.users[index].username!,
-                subtitle: model.users[index].password!,
-                onEditTap: () {},
-                onDeleteTap: () {},
-              ),
-            ),
+            child: model.users != null
+                ? ListView.separated(
+                    itemCount: model.users!.length,
+                    shrinkWrap: true,
+                    separatorBuilder: (context, index) => Divider(
+                      height: 8,
+                      color: appTheme.colorScheme.secondary,
+                    ),
+                    itemBuilder: (context, index) => DataTile(
+                      index,
+                      data: model.users!,
+                      title: model.users![index].username!,
+                      subtitle: model.users![index].password!,
+                      onEditTap: () => model.showActionModal(
+                        context,
+                        dialogContent: AddEditUserView(
+                          editingUser: model.users![index],
+                          onSave: () => model.updateUser(model.users![index]),
+                        ),
+                      ),
+                      onDeleteTap: () =>
+                          model.deleteUser(model.users?[index].id ?? ""),
+                    ),
+                  )
+                : Center(
+                    child: CircularProgressIndicator(
+                      valueColor:
+                          AlwaysStoppedAnimation(appTheme.colorScheme.primary),
+                    ),
+                  ),
           ),
         ),
         floatingActionButton: FloatingActionButton.extended(
           onPressed: () => model.showActionModal(
             context,
-            dialogContent: const AddUserView(),
+            dialogContent: AddEditUserView(
+              onSave: () => model.addUser(),
+            ),
           ),
           backgroundColor: appTheme.colorScheme.primary,
           label: Text(

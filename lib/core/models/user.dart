@@ -6,7 +6,7 @@ class User {
 
   const User({this.id, this.username, this.password, this.role});
 
-  factory User.fromJson(Map<String, dynamic> json) => User(
+  factory User.fromJson(Map<String, dynamic> json, String id) => User(
         id: json['id'] as String?,
         username: json['username'] as String?,
         password: json['password'] as String?,

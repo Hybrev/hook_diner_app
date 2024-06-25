@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:hook_diner/core/models/category.dart';
 import 'package:hook_diner/core/models/item.dart';
@@ -11,6 +13,10 @@ class DatabaseService {
   final CollectionReference _categoriesCollection =
       FirebaseFirestore.instance.collection('categories');
 
+  final StreamController<List<User>> _usersController =
+      StreamController<List<User>>.broadcast();
+  Stream<List<User>> get users => _usersController.stream;
+
   /* CRUD */
   // User CRUD
   Future addUser(User user) async {
@@ -21,13 +27,31 @@ class DatabaseService {
     }
   }
 
+  // STREAM GET
+  Stream listenToUsers() {
+    _usersCollection.snapshots().listen((response) {
+      if (response.docs.isNotEmpty) {
+        final users = response.docs
+            .map((snapshot) => User.fromJson(
+                snapshot.data() as Map<String, dynamic>, snapshot.id))
+            .where((element) => element.username != null)
+            .toList();
+
+        _usersController.add(users);
+      }
+    });
+
+    return _usersController.stream;
+  }
+
+  // MANUAL GET
   Future getUsers() async {
     try {
       final response = await _usersCollection.get();
       if (response.docs.isNotEmpty) {
         return response.docs
-            .map((snapshot) =>
-                User.fromJson(snapshot.data() as Map<String, dynamic>))
+            .map((snapshot) => User.fromJson(
+                snapshot.data() as Map<String, dynamic>, snapshot.id))
             .where((element) => element.username != null)
             .toList();
       }
@@ -40,7 +64,25 @@ class DatabaseService {
   Future getUser(String uid) async {
     try {
       final user = await _usersCollection.doc(uid).get();
-      return User.fromJson(user.data() as Map<String, dynamic>);
+      return User.fromJson(user.data() as Map<String, dynamic>, uid);
+    } catch (e) {
+      return e.toString();
+    }
+  }
+
+  Future updateUser(User user) async {
+    print('received user: ${user.toJson().toString()}');
+    try {
+      _usersCollection.doc(user.id).update(user.toJson());
+      return true;
+    } catch (e) {
+      return e.toString();
+    }
+  }
+
+  Future deleteUser(String id) async {
+    try {
+      await _usersCollection.doc(id).delete();
     } catch (e) {
       return e.toString();
     }
