@@ -11,8 +11,6 @@ const accentFgColor = Color(0xFFfffcfa);
 
 const defaultScheme = ColorScheme(
   brightness: Brightness.light,
-  background: backgroundColor,
-  onBackground: textColor,
   primary: primaryColor,
   onPrimary: primaryFgColor,
   secondary: secondaryColor,

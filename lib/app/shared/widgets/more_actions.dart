@@ -19,7 +19,7 @@ class MoreActionsButton extends DataTile {
     return PopupMenuButton<MenuItemButton>(
       position: PopupMenuPosition.under,
       icon: const Icon(Icons.more_vert),
-      iconColor: appTheme.colorScheme.onBackground,
+      iconColor: appTheme.colorScheme.onSurface,
       itemBuilder: (context) => [
         PopupMenuItem(
           onTap: onEditTap,

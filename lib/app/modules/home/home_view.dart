@@ -36,7 +36,7 @@ class HomeView extends StatelessWidget {
         ),
         bottomNavigationBar: BottomNavigationBar(
           type: BottomNavigationBarType.shifting,
-          selectedItemColor: appTheme.colorScheme.onBackground,
+          selectedItemColor: appTheme.colorScheme.onSurface,
           unselectedItemColor: Colors.grey,
           selectedIconTheme: const IconThemeData(size: 28),
           showUnselectedLabels: true,

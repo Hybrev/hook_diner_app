@@ -26,8 +26,8 @@ class BaseAppBar extends StatelessWidget implements PreferredSizeWidget {
       title: Text(title),
       centerTitle: centerTitle,
       elevation: 2,
-      surfaceTintColor: appTheme.colorScheme.background,
-      shadowColor: appTheme.colorScheme.onBackground.withOpacity(0.25),
+      surfaceTintColor: appTheme.colorScheme.surface,
+      shadowColor: appTheme.colorScheme.onSurface.withOpacity(0.25),
       titleTextStyle: appTheme.textTheme.displaySmall?.copyWith(
         fontWeight: FontWeight.w500,
       ),
