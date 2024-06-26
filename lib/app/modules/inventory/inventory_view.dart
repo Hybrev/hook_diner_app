@@ -28,6 +28,7 @@ class InventoryView extends StatelessWidget {
           activeIcon: Icons.close_rounded,
           backgroundColor: appTheme.colorScheme.primary,
           overlayColor: appTheme.colorScheme.secondary,
+          elevation: 2,
           spacing: 8,
           spaceBetweenChildren: 8,
           children: [

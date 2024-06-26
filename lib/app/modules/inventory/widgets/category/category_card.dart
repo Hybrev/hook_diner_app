@@ -13,7 +13,7 @@ class CategoryCard extends ViewModelWidget<InventoryViewModel> {
 
     return Card(
       margin: const EdgeInsets.all(8),
-      elevation: 4,
+      elevation: 2,
       child: InkWell(
         splashColor: appTheme.colorScheme.secondary,
         onTap: () => showDialog(
@@ -49,13 +49,16 @@ class CategoryCard extends ViewModelWidget<InventoryViewModel> {
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
               Icon(
-                IconData(int.parse('0x${viewModel.categories[index].icon!}'),
+                IconData(
+                    int.parse(
+                        '0x${viewModel.categories?[index].icon ?? 'f0164'}'),
                     fontFamily: 'MaterialIcons'),
                 size: MediaQuery.of(context).size.width * 0.25,
                 color: appTheme.colorScheme.primary,
               ),
               Text(
-                viewModel.categories[index].title!.toUpperCase(),
+                viewModel.categories?[index].title?.toUpperCase() ??
+                    "Category ${index + 1}",
                 style: appTheme.textTheme.titleMedium,
                 textAlign: TextAlign.center,
               ),

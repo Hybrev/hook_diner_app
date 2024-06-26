@@ -10,6 +10,7 @@ class CancelButton extends StatelessWidget {
     final appTheme = Theme.of(context);
     return ElevatedButton.icon(
       style: ElevatedButton.styleFrom(
+        foregroundColor: appTheme.colorScheme.onError,
         backgroundColor: appTheme.colorScheme.error,
         padding: const EdgeInsets.symmetric(
           horizontal: 16,

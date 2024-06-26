@@ -21,8 +21,7 @@ class AddItemViewModel extends InventoryViewModel {
   void initialize() {
     _nameController?.text = '';
     _priceController?.text = '';
-    _expirationDateController?.text =
-        '${DateTime.now().month}/${DateTime.now().day}/${DateTime.now().year}';
+    _expirationDateController?.text = '';
     _quantityController?.text = '';
     notifyListeners();
 

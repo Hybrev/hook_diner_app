@@ -26,6 +26,10 @@ class ItemListModalView extends StatelessWidget {
             ),
             icon: const Icon(Icons.add_rounded),
           ),
+          // IconButton(
+          //   onPressed: () {},
+          //   icon: const Icon(Icons.more_vert_rounded),
+          // ),
         ],
         automaticallyImplyLeading: true,
         centerTitle: true,
@@ -34,7 +38,7 @@ class ItemListModalView extends StatelessWidget {
         minimum: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
         child: Center(
           child: ListView.separated(
-            itemCount: viewModel.items.length,
+            itemCount: viewModel.items?.length ?? 10,
             shrinkWrap: true,
             separatorBuilder: (context, index) => Divider(
               height: 8,
@@ -42,10 +46,10 @@ class ItemListModalView extends StatelessWidget {
             ),
             itemBuilder: (context, index) => DataTile(
               index,
-              data: viewModel.items,
-              title: viewModel.items[index].name!,
+              data: viewModel.items ?? [],
+              title: viewModel.items?[index].name ?? 'Item ${index + 1}',
               subtitle:
-                  '${viewModel.items[index].price!.toString()} - ${viewModel.items[index].quantity!.toString()}',
+                  '${viewModel.items?[index].price?.toString()} - ${viewModel.items?[index].quantity?.toString()}',
               onEditTap: () {},
               onDeleteTap: () {},
             ),

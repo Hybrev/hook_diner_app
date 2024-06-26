@@ -18,6 +18,7 @@ class BaseButton extends StatelessWidget {
     return ElevatedButton.icon(
       style: ElevatedButton.styleFrom(
         backgroundColor: appTheme.colorScheme.primary,
+        foregroundColor: appTheme.colorScheme.onPrimary,
         padding: const EdgeInsets.symmetric(
           horizontal: 24,
           vertical: 8,
@@ -32,7 +33,7 @@ class BaseButton extends StatelessWidget {
               color: appTheme.colorScheme.onPrimary,
             ),
       label: Text(
-        'Save',
+        label,
         style: appTheme.textTheme.labelLarge?.copyWith(
           color: appTheme.colorScheme.onPrimary,
           fontWeight: FontWeight.bold,

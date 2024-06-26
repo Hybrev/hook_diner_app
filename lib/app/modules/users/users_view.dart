@@ -77,6 +77,7 @@ class UsersView extends StatelessWidget {
             dialogContent: const AddEditUserView(editingUser: null),
           ),
           backgroundColor: appTheme.colorScheme.primary,
+          elevation: 2,
           shape: const CircleBorder(),
           child: const Icon(Icons.add_rounded),
         ),

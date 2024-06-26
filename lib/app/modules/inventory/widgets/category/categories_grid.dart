@@ -14,7 +14,7 @@ class CategoriesGrid extends ViewModelWidget<InventoryViewModel> {
         child: ConstrainedBox(
           constraints: const BoxConstraints(maxWidth: 840),
           child: GridView.builder(
-            itemCount: viewModel.categories.length,
+            itemCount: viewModel.categories?.length,
             gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
               mainAxisSpacing: 8,
               maxCrossAxisExtent: 340,

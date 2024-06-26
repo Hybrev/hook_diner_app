@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:hook_diner/app/modules/users/widgets/add_edit/user_row.dart';
 import 'package:hook_diner/app/modules/users/widgets/add_edit/add_edit_user_viewmodel.dart';
+import 'package:hook_diner/app/shared/widgets/base_button.dart';
 import 'package:hook_diner/app/shared/widgets/cancel_button.dart';
 import 'package:hook_diner/core/models/user.dart';
 
@@ -52,29 +53,8 @@ class AddEditUserView extends StatelessWidget {
                       ? CircularProgressIndicator(
                           color: appTheme.colorScheme.primary,
                         )
-                      : ElevatedButton.icon(
-                          style: ElevatedButton.styleFrom(
-                            backgroundColor: appTheme.colorScheme.primary,
-                            padding: const EdgeInsets.symmetric(
-                              horizontal: 24,
-                              vertical: 8,
-                            ),
-                          ),
-                          icon: viewModel.isBusy
-                              ? CircularProgressIndicator(
-                                  color: appTheme.colorScheme.onPrimary,
-                                )
-                              : Icon(
-                                  Icons.add_rounded,
-                                  color: appTheme.colorScheme.onPrimary,
-                                ),
-                          label: Text(
-                            'SAVE',
-                            style: appTheme.textTheme.labelLarge?.copyWith(
-                              color: appTheme.colorScheme.onPrimary,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
+                      : BaseButton(
+                          label: 'SAVE',
                           onPressed: editingUser == null
                               ? () => viewModel.addUser()
                               : () => viewModel.updateUser(editingUser!),

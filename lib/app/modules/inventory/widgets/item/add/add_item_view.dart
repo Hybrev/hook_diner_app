@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:hook_diner/app/modules/inventory/widgets/item/add/add_item_viewmodel.dart';
 import 'package:hook_diner/app/modules/inventory/widgets/item/item_text_field.dart';
 import 'package:hook_diner/app/shared/widgets/base_button.dart';
+import 'package:hook_diner/app/shared/widgets/cancel_button.dart';
 import 'package:hook_diner/core/locator.dart';
 import 'package:stacked/stacked.dart';
 
@@ -47,9 +48,15 @@ class AddItemView extends StatelessWidget {
                 controller: null,
               ),
               Divider(color: appTheme.colorScheme.primary),
-              BaseButton(
-                label: 'ADD',
-                onPressed: () => viewModel.addItem(),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  const CancelButton(),
+                  BaseButton(
+                    label: 'ADD',
+                    onPressed: () => viewModel.addItem(),
+                  ),
+                ],
               ),
             ],
           ),
