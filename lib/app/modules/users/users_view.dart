@@ -21,56 +21,64 @@ class UsersView extends StatelessWidget {
         appBar: const BaseAppBar(title: "USERS"),
         body: SafeArea(
           minimum: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-          child: ConstrainedBox(
-            constraints: const BoxConstraints(maxWidth: 840),
-            child: model.users != null
-                ? ListView.separated(
-                    itemCount: model.users!.length,
-                    shrinkWrap: true,
-                    separatorBuilder: (context, index) => Divider(
-                      height: 8,
-                      color: appTheme.colorScheme.secondary,
-                    ),
-                    itemBuilder: (context, index) => DataTile(
-                      index,
-                      data: model.users!,
-                      title: model.users![index].username!,
-                      subtitle: model.users![index].password!,
-                      onEditTap: () => model.showActionModal(
-                        context,
-                        dialogContent: AddEditUserView(
-                          editingUser: model.users![index],
-                          onSave: () => model.updateUser(model.users![index]),
+          child: Column(
+            children: [
+              Expanded(
+                child: ConstrainedBox(
+                  constraints: const BoxConstraints(maxWidth: 840),
+                  child: model.users != null
+                      ? ListView.separated(
+                          itemCount: model.users!.length,
+                          shrinkWrap: true,
+                          separatorBuilder: (context, index) => Divider(
+                            height: 8,
+                            color: appTheme.colorScheme.secondary,
+                          ),
+                          itemBuilder: (context, index) => DataTile(
+                            index,
+                            data: model.users!,
+                            leading: model.users![index].role![0].toUpperCase(),
+                            title: model.users![index].username!,
+                            subtitle: model.users![index].password!,
+                            onEditTap: () => model.showActionModal(
+                              context,
+                              dialogContent: AddEditUserView(
+                                editingUser: model.users![index],
+                              ),
+                            ),
+                            onDeleteTap: () =>
+                                model.deleteUser(model.users![index]),
+                          ),
+                        )
+                      : Center(
+                          child: CircularProgressIndicator(
+                            valueColor: AlwaysStoppedAnimation(
+                                appTheme.colorScheme.primary),
+                          ),
                         ),
-                      ),
-                      onDeleteTap: () =>
-                          model.deleteUser(model.users?[index].id ?? ""),
-                    ),
-                  )
-                : Center(
-                    child: CircularProgressIndicator(
-                      valueColor:
-                          AlwaysStoppedAnimation(appTheme.colorScheme.primary),
-                    ),
+                ),
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  Text(
+                    'A = admin P = purchaser, C = cashier',
+                    style: appTheme.textTheme.titleSmall,
+                    textAlign: TextAlign.left,
                   ),
+                ],
+              ),
+            ],
           ),
         ),
-        floatingActionButton: FloatingActionButton.extended(
+        floatingActionButton: FloatingActionButton(
           onPressed: () => model.showActionModal(
             context,
-            dialogContent: AddEditUserView(
-              onSave: () => model.addUser(),
-            ),
+            dialogContent: const AddEditUserView(editingUser: null),
           ),
           backgroundColor: appTheme.colorScheme.primary,
-          label: Text(
-            'ADD USER',
-            style: appTheme.textTheme.labelLarge?.copyWith(
-              fontWeight: FontWeight.bold,
-              color: appTheme.colorScheme.onPrimary,
-            ),
-          ),
-          icon: const Icon(Icons.add_rounded),
+          shape: const CircleBorder(),
+          child: const Icon(Icons.add_rounded),
         ),
       ),
     );

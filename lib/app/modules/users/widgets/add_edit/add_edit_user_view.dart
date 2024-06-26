@@ -6,19 +6,16 @@ import 'package:hook_diner/core/models/user.dart';
 import 'package:stacked/stacked.dart';
 
 class AddEditUserView extends StatelessWidget {
-  const AddEditUserView(
-      {super.key, this.editingUser = const User(), required this.onSave});
+  const AddEditUserView({super.key, required this.editingUser});
 
-  final User editingUser;
-  final Function() onSave;
+  final User? editingUser;
   @override
   Widget build(BuildContext context) {
     final appTheme = Theme.of(context);
 
     return ViewModelBuilder<AddEditUserViewModel>.reactive(
-      viewModelBuilder: () => AddEditUserViewModel(),
       onViewModelReady: (viewModel) => viewModel.setUpModal(editingUser),
-      // disposeViewModel: false,
+      disposeViewModel: false,
       builder: (context, viewModel, child) => SingleChildScrollView(
         child: SafeArea(
           minimum: const EdgeInsets.all(16),
@@ -94,7 +91,9 @@ class AddEditUserView extends StatelessWidget {
                               fontWeight: FontWeight.bold,
                             ),
                           ),
-                          onPressed: onSave,
+                          onPressed: editingUser == null
+                              ? () => viewModel.addUser()
+                              : () => viewModel.updateUser(editingUser!),
                         ),
                 ],
               ),
@@ -102,6 +101,7 @@ class AddEditUserView extends StatelessWidget {
           ),
         ),
       ),
+      viewModelBuilder: () => AddEditUserViewModel(),
     );
   }
 }

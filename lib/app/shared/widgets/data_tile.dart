@@ -6,6 +6,7 @@ class DataTile extends StatelessWidget {
     this.index, {
     super.key,
     required this.data,
+    this.leading = "",
     required this.title,
     required this.subtitle,
     this.onEditTap,
@@ -13,19 +14,20 @@ class DataTile extends StatelessWidget {
   });
 
   final List<dynamic> data;
+  final int index;
 
+  final String leading;
   final String title;
   final String subtitle;
 
   final Function()? onEditTap;
   final Function()? onDeleteTap;
-  final int index;
 
   @override
   Widget build(BuildContext context) {
     return ListTile(
       leading: Text(
-        "${index + 1}",
+        leading != "" ? leading : "${index + 1}",
         style: Theme.of(context).textTheme.headlineMedium?.copyWith(
               fontWeight: FontWeight.bold,
             ),

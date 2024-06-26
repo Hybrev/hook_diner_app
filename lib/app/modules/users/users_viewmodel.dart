@@ -40,61 +40,8 @@ class UsersViewModel extends SharedViewModel {
     // notifyListeners();
   }
 
-  void addUser() async {
-    setBusy(true);
-
-    User user = User(
-      username: usernameController.text,
-      password: passwordController.text,
-      role: roleController.text,
-    );
-
-    try {
-      final response = await auth.createUser(
-        username: user.username!,
-        password: user.password!,
-        role: user.role!,
-      );
-      if (response) {
-        await dialog.showDialog(
-          title: 'User Added',
-          description: 'User added successfully',
-        );
-        navigator.back();
-      }
-    } catch (e) {
-      print('error: $e');
-      await dialog.showDialog(
-        title: 'Error',
-        description: 'Failed to add user',
-      );
-    }
-    setBusy(false);
-  }
-
-  Future updateUser(User user) async {
+  Future deleteUser(User user) async {
     print('received user: ${user.toJson().toString()}');
-    setBusy(true);
-    try {
-      final response = await database.updateUser(user);
-
-      if (response) {
-        await dialog.showDialog(
-          title: 'User Updated!',
-          description: 'User updated successfully',
-        );
-        navigator.back();
-      }
-    } catch (e) {
-      await dialog.showDialog(
-        title: 'Error',
-        description: 'Failed to updated user',
-      );
-    }
-    setBusy(false);
-  }
-
-  Future deleteUser(String id) async {
     final dialogResponse = await dialog.showConfirmationDialog(
       description: 'Are you sure you want to delete this user?',
       confirmationTitle: 'Yes',
@@ -105,7 +52,7 @@ class UsersViewModel extends SharedViewModel {
       setBusy(true);
 
       try {
-        final response = await database.deleteUser(id);
+        final response = await database.deleteUser(user.id!);
         print('response: $response');
         setBusy(false);
 
@@ -114,6 +61,7 @@ class UsersViewModel extends SharedViewModel {
           description: 'User deleted successfully',
         );
       } catch (e) {
+        print('error: $e');
         setBusy(false);
 
         await dialog.showDialog(

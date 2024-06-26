@@ -49,7 +49,8 @@ class CategoryCard extends ViewModelWidget<InventoryViewModel> {
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
               Icon(
-                viewModel.categories[index].icon!,
+                IconData(int.parse('0x${viewModel.categories[index].icon!}'),
+                    fontFamily: 'MaterialIcons'),
                 size: MediaQuery.of(context).size.width * 0.25,
                 color: appTheme.colorScheme.primary,
               ),

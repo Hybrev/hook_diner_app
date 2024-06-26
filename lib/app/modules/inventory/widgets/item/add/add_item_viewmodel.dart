@@ -19,13 +19,14 @@ class AddItemViewModel extends InventoryViewModel {
   DateTime? _expirationDate;
   DateTime? get expirationDate => _expirationDate;
 
-  final Item _item = Item();
-
   void initialize() {
     _nameController?.text = '';
     _priceController?.text = '';
     _expirationDateController?.text = '';
     _quantityController?.text = '';
+    notifyListeners();
+
+    database.listenToItems();
   }
 
   void addItem() {

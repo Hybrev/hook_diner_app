@@ -17,15 +17,13 @@ class Item {
     this.category,
   });
 
-  factory Item.fromJson(Map<String, dynamic> json) => Item(
+  factory Item.fromJson(Map<String, dynamic> json, String id) => Item(
         id: json['id'] as String?,
         name: json['name'] as String?,
         quantity: json['quantity'] as int?,
         price: json['price'] as double?,
         expirationDate: json['expiration_date'] as String?,
-        category: json['category'] != null
-            ? Category.fromJson(json['category'])
-            : null,
+        category: Category.fromJson(json['category']),
       );
 
   Map<String, dynamic> toJson() => {
