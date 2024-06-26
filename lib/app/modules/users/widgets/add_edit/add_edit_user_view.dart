@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:hook_diner/app/modules/users/widgets/add_edit/user_row.dart';
 import 'package:hook_diner/app/modules/users/widgets/add_edit/add_edit_user_viewmodel.dart';
+import 'package:hook_diner/app/shared/widgets/cancel_button.dart';
 import 'package:hook_diner/core/models/user.dart';
 
 import 'package:stacked/stacked.dart';
@@ -39,31 +40,14 @@ class AddEditUserView extends StatelessWidget {
                 controller: viewModel.roleController,
                 onChanged: (role) => viewModel.updateRole(role),
               ),
-              const SizedBox(height: 40),
+              SizedBox(
+                height: 40,
+                child: Divider(color: appTheme.colorScheme.primary),
+              ),
               Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: [
-                  ElevatedButton.icon(
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: appTheme.colorScheme.error,
-                      padding: const EdgeInsets.symmetric(
-                        horizontal: 24,
-                        vertical: 8,
-                      ),
-                    ),
-                    icon: Icon(
-                      Icons.close_rounded,
-                      color: appTheme.colorScheme.onError,
-                    ),
-                    label: Text(
-                      'Cancel',
-                      style: appTheme.textTheme.labelLarge?.copyWith(
-                        color: appTheme.colorScheme.onError,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                    onPressed: () => viewModel.closeModal(),
-                  ),
+                  const CancelButton(),
                   viewModel.isBusy
                       ? CircularProgressIndicator(
                           color: appTheme.colorScheme.primary,
@@ -85,7 +69,7 @@ class AddEditUserView extends StatelessWidget {
                                   color: appTheme.colorScheme.onPrimary,
                                 ),
                           label: Text(
-                            'Save',
+                            'SAVE',
                             style: appTheme.textTheme.labelLarge?.copyWith(
                               color: appTheme.colorScheme.onPrimary,
                               fontWeight: FontWeight.bold,

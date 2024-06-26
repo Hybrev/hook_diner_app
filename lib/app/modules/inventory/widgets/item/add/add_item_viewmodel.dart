@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:hook_diner/app/modules/inventory/inventory_viewmodel.dart';
-import 'package:hook_diner/core/models/item.dart';
 
 class AddItemViewModel extends InventoryViewModel {
   TextEditingController? _nameController;
@@ -22,7 +21,8 @@ class AddItemViewModel extends InventoryViewModel {
   void initialize() {
     _nameController?.text = '';
     _priceController?.text = '';
-    _expirationDateController?.text = '';
+    _expirationDateController?.text =
+        '${DateTime.now().month}/${DateTime.now().day}/${DateTime.now().year}';
     _quantityController?.text = '';
     notifyListeners();
 

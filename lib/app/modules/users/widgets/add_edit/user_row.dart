@@ -24,15 +24,20 @@ class UserRow extends StatelessWidget {
         )),
         Expanded(
             child: label != 'Role'
-                ? TextField(controller: controller)
+                ? TextField(
+                    controller: controller,
+                  )
                 : DropdownButton(
                     isExpanded: true,
                     value: controller.text,
+                    focusColor: Theme.of(context).colorScheme.tertiary,
+                    underline: const Divider(height: 0),
                     items: const [
                       DropdownMenuItem<String>(
                         value: '',
                         enabled: false,
-                        child: Text('Select One'),
+                        child: Text('Select One',
+                            style: TextStyle(color: Colors.grey)),
                       ),
                       DropdownMenuItem<String>(
                         value: 'cashier',
