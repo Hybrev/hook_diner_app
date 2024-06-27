@@ -15,7 +15,7 @@ class BaseButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final appTheme = Theme.of(context);
-    return ElevatedButton.icon(
+    return ElevatedButton(
       style: ElevatedButton.styleFrom(
         backgroundColor: appTheme.colorScheme.primary,
         foregroundColor: appTheme.colorScheme.onPrimary,
@@ -24,22 +24,29 @@ class BaseButton extends StatelessWidget {
           vertical: 8,
         ),
       ),
-      icon: loading
-          ? CircularProgressIndicator(
-              color: appTheme.colorScheme.onPrimary,
+      onPressed: onPressed,
+      child: !loading
+          ? Row(
+              mainAxisSize: MainAxisSize.min,
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              children: [
+                Icon(
+                  Icons.add_rounded,
+                  color: appTheme.colorScheme.onPrimary,
+                ),
+                const SizedBox(width: 8),
+                Text(
+                  label,
+                  style: appTheme.textTheme.labelLarge?.copyWith(
+                    color: appTheme.colorScheme.onPrimary,
+                    fontWeight: FontWeight.bold,
+                  ),
+                )
+              ],
             )
-          : Icon(
-              Icons.add_rounded,
+          : CircularProgressIndicator(
               color: appTheme.colorScheme.onPrimary,
             ),
-      label: Text(
-        label,
-        style: appTheme.textTheme.labelLarge?.copyWith(
-          color: appTheme.colorScheme.onPrimary,
-          fontWeight: FontWeight.bold,
-        ),
-      ),
-      onPressed: onPressed,
     );
   }
 }

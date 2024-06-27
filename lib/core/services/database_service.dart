@@ -9,19 +9,11 @@ class DatabaseService {
   final CollectionReference _usersCollection =
       FirebaseFirestore.instance.collection('users');
 
-  final CollectionReference _itemsCollection =
-      FirebaseFirestore.instance.collection('items');
-  CollectionReference get items => _itemsCollection;
-
   final CollectionReference _categoriesCollection =
       FirebaseFirestore.instance.collection('categories');
-  CollectionReference get categories => _categoriesCollection;
 
   final StreamController<List<User>> _usersController =
       StreamController<List<User>>.broadcast();
-
-  final StreamController<List<Item>> _itemsController =
-      StreamController<List<Item>>.broadcast();
 
   final StreamController<List<Category>> _categoriesController =
       StreamController<List<Category>>.broadcast();
@@ -44,24 +36,57 @@ class DatabaseService {
     return _usersController.stream;
   }
 
-  // ITEM
-  Stream listenToItems() {
-    _itemsCollection.snapshots().listen((response) {
+// CATEGORIES
+  // STREAM
+  Stream listenToCategories() {
+    _categoriesCollection.snapshots().listen((response) {
       if (response.docs.isNotEmpty) {
-        final items = response.docs
-            .map((snapshot) => Item.fromJson(
-                snapshot.data() as Map<String, dynamic>, snapshot.id))
-            .where((element) =>
-                element.name != null &&
-                element.category?.id == _categoriesCollection.id)
+        final categories = response.docs
+            .map((snapshot) {
+              return Category.fromJson(
+                  snapshot.data() as Map<String, dynamic>, snapshot.id);
+            })
+            .where((element) => element.title != null)
             .toList();
 
-        _itemsCollection.add(items);
+        _categoriesController.add(categories);
       }
     });
-
-    return _itemsController.stream;
+    return _categoriesController.stream;
   }
+
+  // GET ALL in CATEGORY
+  Future getItemsInCategory(String id) async {
+    try {
+      final response =
+          await _categoriesCollection.doc(id).collection('items').get();
+      if (response.docs.isNotEmpty) {
+        return response.docs
+            .map((snapshot) => Item.fromJson(snapshot.data(), snapshot.id))
+            .where((element) => element.name != null)
+            .toList();
+      }
+    } catch (e) {
+      return e.toString();
+    }
+  }
+
+  /* ITEM */
+  // Stream listenToItems() {
+  //   _itemsCollection.snapshots().listen((response) {
+  //     if (response.docs.isNotEmpty) {
+  //       final items = response.docs
+  //           .map((snapshot) => Item.fromJson(
+  //               snapshot.data() as Map<String, dynamic>, snapshot.id))
+  //           .where((element) => element.name != null)
+  //           .toList();
+
+  //       _itemsCollection.add(items);
+  //     }
+  //   });
+
+  //   return _itemsController.stream;
+  // }
 
 /* GENERAL CRUD */
   // ADD
@@ -98,6 +123,8 @@ class DatabaseService {
   Future addUser(User user) async {
     try {
       await _usersCollection.doc(user.id).set(user.toJson());
+
+      return true;
     } catch (e) {
       return e.toString();
     }
@@ -114,7 +141,6 @@ class DatabaseService {
             .where((element) => element.username != null)
             .toList();
       }
-      print('response: $response');
     } catch (e) {
       return e.toString();
     }
@@ -146,20 +172,19 @@ class DatabaseService {
     }
   }
 
-  // Item CRUD
-  Future addItem(Item item) async {
-    try {
-      await _itemsCollection.doc(item.id).set(item.toJson());
-    } catch (e) {
-      return e.toString();
-    }
-  }
-
-  // Caategory CRUD
+  // Category CRUD
   Future addCategory(Category category) async {
     try {
-      await _itemsCollection.doc('${category.id}').set(category.toJson());
-      return;
+      // create document for new data
+      final docRef = _categoriesCollection.doc();
+      await docRef.set(category.toJson());
+
+      // get newly created  document id & set to category id
+      final docId = docRef.id;
+      category.id = docId;
+
+      docRef.update(category.toJson());
+      return true;
     } catch (e) {
       return e.toString();
     }
@@ -168,7 +193,6 @@ class DatabaseService {
   Future getCategories() async {
     try {
       final response = await _categoriesCollection.get();
-      print('response: $response');
       return response;
     } catch (e) {
       return e.toString();

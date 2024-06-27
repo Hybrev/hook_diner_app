@@ -39,7 +39,7 @@ class ItemTextField extends StatelessWidget {
                       hintText: "Enter ${fieldLabel.toLowerCase()}..."),
                   keyboardType: inputType,
                   maxLines: 1,
-                  style: appTheme.textTheme.labelMedium,
+                  style: appTheme.textTheme.labelLarge,
                 )
               : Row(
                   mainAxisAlignment: MainAxisAlignment.end,

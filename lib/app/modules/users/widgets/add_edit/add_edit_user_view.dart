@@ -49,16 +49,13 @@ class AddEditUserView extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: [
                   const CancelButton(),
-                  viewModel.isBusy
-                      ? CircularProgressIndicator(
-                          color: appTheme.colorScheme.primary,
-                        )
-                      : BaseButton(
-                          label: 'SAVE',
-                          onPressed: editingUser == null
-                              ? () => viewModel.addUser()
-                              : () => viewModel.updateUser(editingUser!),
-                        ),
+                  BaseButton(
+                    label: 'SAVE',
+                    loading: viewModel.isBusy,
+                    onPressed: editingUser == null
+                        ? () => viewModel.addUser()
+                        : () => viewModel.updateUser(editingUser!),
+                  ),
                 ],
               ),
             ],

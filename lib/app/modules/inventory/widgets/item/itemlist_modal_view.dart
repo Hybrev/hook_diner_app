@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:hook_diner/app/modules/inventory/inventory_viewmodel.dart';
-import 'package:hook_diner/app/modules/inventory/widgets/item/add/add_item_view.dart';
+import 'package:hook_diner/app/modules/inventory/widgets/item/add_edit/add_edit_item_view.dart';
 import 'package:hook_diner/app/shared/widgets/base_appbar.dart';
 import 'package:hook_diner/app/shared/widgets/data_tile.dart';
 
@@ -22,7 +22,7 @@ class ItemListModalView extends StatelessWidget {
           IconButton(
             onPressed: () => viewModel.showActionModal(
               context,
-              dialogContent: const AddItemView(),
+              dialogContent: const AddEditItemView(),
             ),
             icon: const Icon(Icons.add_rounded),
           ),

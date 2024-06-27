@@ -12,6 +12,25 @@ class InventoryViewModel extends SharedViewModel {
   List<Item>? _items;
   List<Item>? get items => _items;
 
+  void initialize() {
+    getCategories();
+  }
+
+  void getCategories() {
+    setBusy(true);
+    database.listenToCategories().listen((categories) {
+      List<Category> updatedCategories = categories;
+      if (updatedCategories.isNotEmpty) {
+        _categories = updatedCategories;
+        _categories?.sort((a, b) => a.title!.compareTo(b.title!));
+        notifyListeners();
+      }
+      setBusy(false);
+    });
+  }
+
+  void getItems() async {}
+
   void goBack() {
     navigator.back();
   }

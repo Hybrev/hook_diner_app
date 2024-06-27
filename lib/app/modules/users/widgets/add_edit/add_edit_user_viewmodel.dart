@@ -3,21 +3,14 @@ import 'package:hook_diner/core/models/user.dart';
 
 class AddEditUserViewModel extends UsersViewModel {
   void setUpModal(User? user) async {
-    print('user: ${user?.toJson().toString()}');
-
     usernameController.text = user?.username ?? '';
     passwordController.text = user?.password ?? '';
     roleController.text = user?.role ?? '';
     notifyListeners();
-
-    print('username: ${usernameController.text}');
-    print('password: ${passwordController.text}');
-    print('role: ${roleController.text}');
   }
 
   void updateRole(String role) {
     roleController.text = role;
-    print('role: ${roleController.text}');
     notifyListeners();
   }
 
@@ -43,7 +36,6 @@ class AddEditUserViewModel extends UsersViewModel {
       );
       navigator.back();
     } catch (e) {
-      print('error: $e');
       await dialog.showDialog(
         title: 'Error',
         description: 'Failed to add user',

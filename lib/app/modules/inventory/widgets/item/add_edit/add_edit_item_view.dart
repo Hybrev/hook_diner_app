@@ -1,18 +1,18 @@
 import 'package:flutter/material.dart';
-import 'package:hook_diner/app/modules/inventory/widgets/item/add/add_item_viewmodel.dart';
+import 'package:hook_diner/app/modules/inventory/widgets/item/add_edit/add_edit_item_viewmodel.dart';
 import 'package:hook_diner/app/modules/inventory/widgets/item/item_text_field.dart';
 import 'package:hook_diner/app/shared/widgets/base_button.dart';
 import 'package:hook_diner/app/shared/widgets/cancel_button.dart';
 import 'package:hook_diner/core/locator.dart';
 import 'package:stacked/stacked.dart';
 
-class AddItemView extends StatelessWidget {
-  const AddItemView({super.key});
+class AddEditItemView extends StatelessWidget {
+  const AddEditItemView({super.key});
 
   @override
   Widget build(BuildContext context) {
     final appTheme = Theme.of(context);
-    return ViewModelBuilder<AddItemViewModel>.reactive(
+    return ViewModelBuilder<AddEditItemViewModel>.reactive(
       disposeViewModel: false,
       builder: (context, viewModel, child) => SingleChildScrollView(
         child: SafeArea(
@@ -62,7 +62,7 @@ class AddItemView extends StatelessWidget {
           ),
         ),
       ),
-      viewModelBuilder: () => locator<AddItemViewModel>(),
+      viewModelBuilder: () => locator<AddEditItemViewModel>(),
     );
   }
 }

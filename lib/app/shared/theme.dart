@@ -19,6 +19,8 @@ const defaultScheme = ColorScheme(
   onTertiary: accentFgColor,
   surface: backgroundColor,
   onSurface: textColor,
+  background: backgroundColor,
+  onBackground: textColor,
   error: Brightness.light == Brightness.light
       ? Color(0xffB3261E)
       : Color(0xffF2B8B5),

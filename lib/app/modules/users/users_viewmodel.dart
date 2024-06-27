@@ -13,7 +13,7 @@ class UsersViewModel extends SharedViewModel {
   List<User>? _users;
   List<User>? get users => _users;
 
-  void initialize() async {
+  void initialize() {
     setBusy(true);
     database.listenToUsers().listen((usersData) {
       List<User> updatedUsers = usersData;
@@ -41,7 +41,6 @@ class UsersViewModel extends SharedViewModel {
   }
 
   Future deleteUser(User user) async {
-    print('received user: ${user.toJson().toString()}');
     final dialogResponse = await dialog.showConfirmationDialog(
       description: 'Are you sure you want to delete this user?',
       confirmationTitle: 'Yes',
@@ -53,7 +52,6 @@ class UsersViewModel extends SharedViewModel {
 
       try {
         final response = await database.deleteUser(user.id!);
-        print('response: $response');
         setBusy(false);
 
         await dialog.showDialog(
@@ -61,7 +59,6 @@ class UsersViewModel extends SharedViewModel {
           description: 'User deleted successfully',
         );
       } catch (e) {
-        print('error: $e');
         setBusy(false);
 
         await dialog.showDialog(

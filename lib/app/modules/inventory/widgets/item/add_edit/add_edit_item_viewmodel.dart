@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:hook_diner/app/modules/inventory/inventory_viewmodel.dart';
 
-class AddItemViewModel extends InventoryViewModel {
+class AddEditItemViewModel extends InventoryViewModel {
   TextEditingController? _nameController;
   TextEditingController? get nameController => _nameController;
 
@@ -25,7 +25,7 @@ class AddItemViewModel extends InventoryViewModel {
     _quantityController?.text = '';
     notifyListeners();
 
-    database.listenToItems();
+    database.listenToCategories();
   }
 
   void addItem() {

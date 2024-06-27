@@ -1,37 +1,24 @@
-import 'package:hook_diner/core/models/category.dart';
-
 class Item {
-  final String? id;
-  final String? name;
-  final int? quantity;
-  final double? price;
-  final String? expirationDate;
-  final Category? category;
+  String? name;
+  String? quantity;
+  String? price;
+  String? expirationDate;
 
-  const Item({
-    this.id,
-    this.name,
-    this.quantity,
-    this.price,
-    this.expirationDate,
-    this.category,
-  });
+  Item({this.name, this.quantity, this.price, this.expirationDate});
 
-  factory Item.fromJson(Map<String, dynamic> json, String id) => Item(
-        id: json['id'] as String?,
-        name: json['name'] as String?,
-        quantity: json['quantity'] as int?,
-        price: json['price'] as double?,
-        expirationDate: json['expiration_date'] as String?,
-        category: Category.fromJson(json['category']),
-      );
+  Item.fromJson(Map<String, dynamic> json, String id) {
+    name = json['name'];
+    quantity = json['quantity'];
+    price = json['price'];
+    expirationDate = json['expiration_date'];
+  }
 
-  Map<String, dynamic> toJson() => {
-        'id': id,
-        'name': name,
-        'quantity': quantity,
-        'price': price,
-        'expiration_date': expirationDate,
-        'category': category?.toJson(),
-      };
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['name'] = name;
+    data['quantity'] = quantity;
+    data['price'] = price;
+    data['expiration_date'] = expirationDate;
+    return data;
+  }
 }

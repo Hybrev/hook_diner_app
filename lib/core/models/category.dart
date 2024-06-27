@@ -1,19 +1,23 @@
 class Category {
-  final String? id;
-  final String? title;
-  final String? icon;
+  String? id;
+  String? title;
+  // List<Item>? items;
 
-  const Category({this.icon, this.id, this.title});
+  Category({
+    this.id,
+    this.title,
+    /* this.items */
+  });
 
-  factory Category.fromJson(Map<String, dynamic> json) => Category(
+  factory Category.fromJson(Map<String, dynamic> json, String id) => Category(
         id: json['id'] as String?,
         title: json['title'] as String?,
-        icon: json['icon'] as String?,
+        // items: json['items'] as List<Item>?,
       );
 
   Map<String, dynamic> toJson() => {
         'id': id,
         'title': title,
-        "icon": icon,
+        // 'items': items?.map((v) => v.toJson()).toList(),
       };
 }
