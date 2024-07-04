@@ -11,6 +11,32 @@ class AddEditCategoryViewModel extends InventoryViewModel {
     notifyListeners();
   }
 
+  void updateCategory(Category category) async {
+    category = Category(
+      id: category.id,
+      title: _categoryController.text,
+    );
+
+    setBusy(true);
+    try {
+      final response = await database.updateCategory(category);
+      notifyListeners();
+      if (response) {
+        await dialog.showDialog(
+          title: 'Category Updated!',
+          description: 'Category updated successfully',
+        );
+        navigator.back();
+      }
+    } catch (e) {
+      await dialog.showDialog(
+        title: 'Error',
+        description: 'Failed to updated category',
+      );
+    }
+    setBusy(false);
+  }
+
   void addCategory() async {
     final Category category = Category(
       title: _categoryController.text,
@@ -39,6 +65,37 @@ class AddEditCategoryViewModel extends InventoryViewModel {
         description: 'Failed to add category',
       );
       navigator.back();
+    }
+  }
+
+  Future deleteUser(Category category) async {
+    final dialogResponse = await dialog.showConfirmationDialog(
+      description: 'Are you sure you want to delete this category?',
+      confirmationTitle: 'Yes',
+      cancelTitle: 'No',
+    );
+
+    if (dialogResponse!.confirmed) {
+      setBusy(true);
+
+      try {
+        await database.deleteCategory(category.id!);
+        setBusy(false);
+
+        await dialog.showDialog(
+          title: 'Category Deleted',
+          description: 'Category deleted successfully',
+        );
+      } catch (e) {
+        setBusy(false);
+
+        await dialog.showDialog(
+          title: 'Error',
+          description: 'Failed to delete user',
+        );
+      } finally {
+        navigator.back();
+      }
     }
   }
 }

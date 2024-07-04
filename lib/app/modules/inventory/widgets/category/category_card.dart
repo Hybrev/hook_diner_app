@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:hook_diner/app/modules/inventory/inventory_viewmodel.dart';
+import 'package:hook_diner/app/modules/inventory/widgets/category/add_edit/add_edit_category_view.dart';
 import 'package:hook_diner/app/modules/inventory/widgets/item/itemlist_modal_view.dart';
+import 'package:hook_diner/app/shared/widgets/more_actions.dart';
 import 'package:stacked/stacked.dart';
 
 class CategoryCard extends ViewModelWidget<InventoryViewModel> {
@@ -48,10 +50,28 @@ class CategoryCard extends ViewModelWidget<InventoryViewModel> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
-              Icon(
-                Icons.settings_rounded,
-                size: MediaQuery.of(context).size.width * 0.25,
-                color: appTheme.colorScheme.primary,
+              Align(
+                alignment: Alignment.centerRight,
+                child: MoreActionsButton(
+                  index,
+                  onEditTap: () => viewModel.showActionModal(
+                    context,
+                    dialogContent: AddEditCategoryView(
+                      editingCategory: viewModel.categories?[index],
+                    ),
+                  ),
+                  onDeleteTap: () =>
+                      viewModel.deleteCategory(viewModel.categories![index]),
+                  data: viewModel.categories!,
+                ),
+              ),
+              Align(
+                alignment: Alignment.topCenter,
+                child: Icon(
+                  Icons.category_outlined,
+                  size: 160,
+                  color: appTheme.colorScheme.primary,
+                ),
               ),
               Text(
                 viewModel.categories?[index].title?.toUpperCase() ??

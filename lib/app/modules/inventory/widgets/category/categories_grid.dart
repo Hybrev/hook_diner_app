@@ -19,7 +19,9 @@ class CategoriesGrid extends ViewModelWidget<InventoryViewModel> {
               mainAxisSpacing: 8,
               maxCrossAxisExtent: 340,
             ),
-            itemBuilder: (context, index) => CategoryCard(index),
+            itemBuilder: (context, index) => viewModel.isBusy
+                ? const Center(child: CircularProgressIndicator())
+                : CategoryCard(index),
           ),
         ),
       ),

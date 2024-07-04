@@ -13,7 +13,9 @@ class InventoryViewModel extends SharedViewModel {
   List<Item>? get items => _items;
 
   void initialize() {
+    setBusy(true);
     getCategories();
+    setBusy(false);
   }
 
   void getCategories() {
@@ -30,6 +32,35 @@ class InventoryViewModel extends SharedViewModel {
   }
 
   void getItems() async {}
+
+  Future deleteCategory(Category category) async {
+    final dialogResponse = await dialog.showConfirmationDialog(
+      description: 'Are you sure you want to delete this user?',
+      confirmationTitle: 'Yes',
+      cancelTitle: 'No',
+    );
+
+    if (dialogResponse!.confirmed) {
+      setBusy(true);
+
+      try {
+        await database.deleteCategory(category.id!);
+        setBusy(false);
+
+        await dialog.showDialog(
+          title: 'Category Deleted',
+          description: 'Category deleted successfully',
+        );
+      } catch (e) {
+        setBusy(false);
+
+        await dialog.showDialog(
+          title: 'Error',
+          description: 'Failed to delete category',
+        );
+      }
+    }
+  }
 
   void goBack() {
     navigator.back();

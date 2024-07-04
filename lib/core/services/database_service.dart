@@ -190,10 +190,27 @@ class DatabaseService {
     }
   }
 
+  Future updateCategory(Category category) async {
+    try {
+      await _categoriesCollection.doc(category.id).update(category.toJson());
+      return true;
+    } catch (e) {
+      return e.toString();
+    }
+  }
+
   Future getCategories() async {
     try {
       final response = await _categoriesCollection.get();
       return response;
+    } catch (e) {
+      return e.toString();
+    }
+  }
+
+  Future deleteCategory(String id) async {
+    try {
+      await _categoriesCollection.doc(id).delete();
     } catch (e) {
       return e.toString();
     }

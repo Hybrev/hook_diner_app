@@ -23,11 +23,14 @@ class MoreActionsButton extends DataTile {
       itemBuilder: (context) => [
         PopupMenuItem(
           onTap: onEditTap,
-          child: const Row(
+          child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Text('Edit'),
-              Icon(Icons.edit_rounded),
+              const Text('Edit'),
+              Icon(
+                Icons.edit_rounded,
+                color: appTheme.colorScheme.onBackground,
+              ),
             ],
           ),
         ),

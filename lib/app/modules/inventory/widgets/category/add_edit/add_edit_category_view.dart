@@ -26,7 +26,7 @@ class AddEditCategoryView extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               Text(
-                'ADD CATEGORY',
+                editingCategory == null ? 'ADD CATEGORY' : 'EDIT CATEGORY',
                 style: appTheme.textTheme.headlineLarge
                     ?.copyWith(fontWeight: FontWeight.bold),
               ),
@@ -42,8 +42,10 @@ class AddEditCategoryView extends StatelessWidget {
                 children: [
                   const CancelButton(),
                   BaseButton(
-                    label: 'ADD',
-                    onPressed: () => viewModel.addCategory(),
+                    label: 'SAVE',
+                    onPressed: editingCategory == null
+                        ? () => viewModel.addCategory()
+                        : () => viewModel.updateCategory(editingCategory!),
                   ),
                 ],
               ),
