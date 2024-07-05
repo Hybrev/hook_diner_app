@@ -1,7 +1,7 @@
 class Item {
   String? name;
-  String? quantity;
-  String? price;
+  int? quantity;
+  double? price;
   String? expirationDate;
 
   Item({this.name, this.quantity, this.price, this.expirationDate});

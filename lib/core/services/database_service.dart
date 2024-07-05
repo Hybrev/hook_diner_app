@@ -56,17 +56,22 @@ class DatabaseService {
   }
 
   // GET ALL in CATEGORY
-  Future getItemsInCategory(String id) async {
+  Future getItemsInCategory(String? id) async {
+    print('received id: $id');
     try {
       final response =
           await _categoriesCollection.doc(id).collection('items').get();
+
       if (response.docs.isNotEmpty) {
-        return response.docs
+        final items = response.docs
             .map((snapshot) => Item.fromJson(snapshot.data(), snapshot.id))
             .where((element) => element.name != null)
             .toList();
+        print('items: $items');
+        return items;
       }
     } catch (e) {
+      print('error: $e');
       return e.toString();
     }
   }

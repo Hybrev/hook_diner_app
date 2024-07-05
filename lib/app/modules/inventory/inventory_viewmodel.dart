@@ -13,9 +13,7 @@ class InventoryViewModel extends SharedViewModel {
   List<Item>? get items => _items;
 
   void initialize() {
-    setBusy(true);
     getCategories();
-    setBusy(false);
   }
 
   void getCategories() {
@@ -31,7 +29,24 @@ class InventoryViewModel extends SharedViewModel {
     });
   }
 
-  void getItems() async {}
+  void getItems(String? id) async {
+    setBusy(true);
+    _items = await database.getItemsInCategory(id);
+    print('first item: $_items');
+
+    if (_items is! List<Item>) {
+      navigator.back();
+      await dialog.showDialog(
+        title: 'Error',
+        description: 'Failed to fetch items',
+      );
+      setBusy(false);
+      return;
+    }
+
+    notifyListeners();
+    setBusy(false);
+  }
 
   Future deleteCategory(Category category) async {
     final dialogResponse = await dialog.showConfirmationDialog(

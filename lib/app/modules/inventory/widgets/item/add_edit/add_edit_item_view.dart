@@ -14,6 +14,7 @@ class AddEditItemView extends StatelessWidget {
     final appTheme = Theme.of(context);
     return ViewModelBuilder<AddEditItemViewModel>.reactive(
       disposeViewModel: false,
+      onViewModelReady: (viewModel) => viewModel.setUpActionModal(),
       builder: (context, viewModel, child) => SingleChildScrollView(
         child: SafeArea(
           minimum: const EdgeInsets.all(16),

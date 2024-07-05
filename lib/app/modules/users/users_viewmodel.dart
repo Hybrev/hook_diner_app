@@ -51,7 +51,7 @@ class UsersViewModel extends SharedViewModel {
       setBusy(true);
 
       try {
-        final response = await database.deleteUser(user.id!);
+        await database.deleteUser(user.id!);
         setBusy(false);
 
         await dialog.showDialog(

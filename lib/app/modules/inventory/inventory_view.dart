@@ -19,6 +19,7 @@ class InventoryView extends StatelessWidget {
     return ViewModelBuilder<InventoryViewModel>.nonReactive(
       disposeViewModel: false,
       onViewModelReady: (model) => model.initialize(),
+      fireOnViewModelReadyOnce: true,
       builder: (context, model, child) => Scaffold(
         appBar: const BaseAppBar(
           title: "CATEGORIES",

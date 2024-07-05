@@ -18,7 +18,7 @@ class AddEditItemViewModel extends InventoryViewModel {
   DateTime? _expirationDate;
   DateTime? get expirationDate => _expirationDate;
 
-  void initialize() {
+  void setUpActionModal() {
     _nameController?.text = '';
     _priceController?.text = '';
     _expirationDateController?.text = '';
