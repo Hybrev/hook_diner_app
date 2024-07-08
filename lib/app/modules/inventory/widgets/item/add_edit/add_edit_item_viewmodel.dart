@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:hook_diner/app/modules/inventory/inventory_viewmodel.dart';
+import 'package:hook_diner/core/models/item.dart';
 
 class AddEditItemViewModel extends InventoryViewModel {
   TextEditingController? _nameController;
@@ -15,24 +16,34 @@ class AddEditItemViewModel extends InventoryViewModel {
   TextEditingController? _quantityController;
   TextEditingController? get quantityController => _quantityController;
 
+  final TextEditingController _categoryController = TextEditingController();
+  TextEditingController get categoryController => _categoryController;
+
   DateTime? _expirationDate;
   DateTime? get expirationDate => _expirationDate;
 
-  void setUpActionModal() {
-    _nameController?.text = '';
-    _priceController?.text = '';
-    _expirationDateController?.text = '';
-    _quantityController?.text = '';
-    notifyListeners();
+  void setUpActionModal(Item? item) async {
+    fetchCategories();
+    _nameController?.text = item?.name ?? '';
+    _priceController?.text = item?.price.toString() ?? '9.75';
+    _expirationDateController?.text = item?.expirationDate ??
+        '${DateTime.now().day}/${DateTime.now().month}/${DateTime.now().year}';
 
-    database.listenToCategories();
+    _quantityController?.text = item?.quantity.toString() ?? '0';
+    _categoryController.text = availableCategories!.first.id.toString();
   }
 
   void addItem() {
     setBusy(true);
-
     debugPrint('button pressed');
     setBusy(false);
+  }
+
+  void updateCategory(String categoryValue) {
+    _categoryController.text = categoryValue;
+
+    print('category: $categoryValue');
+    notifyListeners();
   }
 
   void presentDatePicker(BuildContext context) async {

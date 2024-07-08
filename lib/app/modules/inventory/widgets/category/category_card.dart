@@ -15,82 +15,75 @@ class CategoryCard extends ViewModelWidget<InventoryViewModel> {
   Widget build(BuildContext context, InventoryViewModel viewModel) {
     final appTheme = Theme.of(context);
 
-    return Card(
-      margin: const EdgeInsets.all(8),
-      elevation: 2,
-      child: InkWell(
-        splashColor: appTheme.colorScheme.secondary,
-        // shows list of items
-        onTap: () => showDialog(
-          context: context,
-          builder: (context) {
-            final dialogContent = ItemListModalView(
-              category: viewModel.categories![index],
-              items: viewModel.items,
-              // if add item button is pressed
-              onPressAddItem: () => viewModel.showActionModal(
-                context,
-                dialogContent: const AddEditItemView(),
-              ),
-            );
-            final showFullScreenDialog = MediaQuery.sizeOf(context).width < 600;
-
-            if (showFullScreenDialog) {
-              return Dialog.fullscreen(
-                child: dialogContent,
-              );
-            }
-
-            return Dialog(
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(16.0),
-              ),
-              child: ClipRRect(
-                borderRadius: BorderRadius.circular(16.0),
-                child: ConstrainedBox(
-                  constraints: const BoxConstraints(maxWidth: 600),
-                  child: dialogContent,
-                ),
-              ),
-            );
-          },
+    return GridTile(
+      header: Align(
+        alignment: Alignment.topRight,
+        child: MoreActionsButton(
+          index,
+          onEditTap: () => viewModel.showActionModal(
+            context,
+            dialogContent: AddEditCategoryView(
+              editingCategory: viewModel.categories?[index],
+            ),
+          ),
+          onDeleteTap: () =>
+              viewModel.deleteCategory(viewModel.categories![index]),
+          data: viewModel.categories!,
         ),
-        borderRadius: BorderRadius.circular(12),
-        child: Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: [
-              Align(
-                alignment: Alignment.centerRight,
-                child: MoreActionsButton(
-                  index,
-                  onEditTap: () => viewModel.showActionModal(
-                    context,
-                    dialogContent: AddEditCategoryView(
-                      editingCategory: viewModel.categories?[index],
-                    ),
+      ),
+      footer: Padding(
+        padding: const EdgeInsets.symmetric(vertical: 8.0),
+        child: Text(
+          viewModel.categories?[index].title?.toUpperCase() ??
+              "Category ${index + 1}",
+          style: appTheme.textTheme.titleMedium,
+          textAlign: TextAlign.center,
+        ),
+      ),
+      child: Card(
+        child: InkWell(
+          borderRadius: BorderRadius.circular(12),
+          splashColor: appTheme.colorScheme.secondary,
+          // shows list of items
+          onTap: () => showDialog(
+            context: context,
+            builder: (context) {
+              final dialogContent = ItemListModalView(
+                category: viewModel.categories![index],
+                items: viewModel.items,
+                // if add item button is pressed
+                onPressAddItem: () => viewModel.showActionModal(
+                  context,
+                  dialogContent: const AddEditItemView(),
+                ),
+              );
+              final showFullScreenDialog =
+                  MediaQuery.sizeOf(context).width < 600;
+
+              if (showFullScreenDialog) {
+                return Dialog.fullscreen(
+                  child: dialogContent,
+                );
+              }
+
+              return Dialog(
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(16.0),
+                ),
+                child: ClipRRect(
+                  borderRadius: BorderRadius.circular(16.0),
+                  child: ConstrainedBox(
+                    constraints: const BoxConstraints(maxWidth: 600),
+                    child: dialogContent,
                   ),
-                  onDeleteTap: () =>
-                      viewModel.deleteCategory(viewModel.categories![index]),
-                  data: viewModel.categories!,
                 ),
-              ),
-              Align(
-                alignment: Alignment.topCenter,
-                child: Icon(
-                  Icons.category_outlined,
-                  size: 160,
-                  color: appTheme.colorScheme.primary,
-                ),
-              ),
-              Text(
-                viewModel.categories?[index].title?.toUpperCase() ??
-                    "Category ${index + 1}",
-                style: appTheme.textTheme.titleMedium,
-                textAlign: TextAlign.center,
-              ),
-            ],
+              );
+            },
+          ),
+          child: Icon(
+            Icons.category_outlined,
+            size: MediaQuery.sizeOf(context).width * 0.25,
+            color: appTheme.colorScheme.primary,
           ),
         ),
       ),

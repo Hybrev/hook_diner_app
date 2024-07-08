@@ -40,7 +40,7 @@ class ItemListModalView extends StatelessWidget {
           automaticallyImplyLeading: true,
           centerTitle: true,
         ),
-        body: !viewModel.isBusy
+        body: !viewModel.isBusy && viewModel.items != null
             ? SafeArea(
                 minimum:
                     const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
@@ -52,9 +52,9 @@ class ItemListModalView extends StatelessWidget {
                   itemBuilder: (context, index) => DataTile(
                     index,
                     data: viewModel.items ?? [],
-                    title: viewModel.items?[index].name ?? 'Item ${index + 1}',
-                    subtitle: '₱ ${viewModel.items?[index].price?.toString()}'
-                        '\n${viewModel.items?[index].quantity?.toString()} pcs',
+                    title: viewModel.items![index].name!,
+                    subtitle: '₱ ${viewModel.items![index].price.toString()}'
+                        '\n${viewModel.items![index].quantity.toString()} pcs',
                     onEditTap: () {},
                     onDeleteTap: () {},
                   ),

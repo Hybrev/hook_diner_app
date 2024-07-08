@@ -12,6 +12,9 @@ class DatabaseService {
   final CollectionReference _categoriesCollection =
       FirebaseFirestore.instance.collection('categories');
 
+  final CollectionReference _itemsCollection =
+      FirebaseFirestore.instance.collection('items');
+
   final StreamController<List<User>> _usersController =
       StreamController<List<User>>.broadcast();
 
@@ -55,19 +58,24 @@ class DatabaseService {
     return _categoriesController.stream;
   }
 
-  // GET ALL in CATEGORY
+  // GET ITEMS in CATEGORY
   Future getItemsInCategory(String? id) async {
-    print('received id: $id');
     try {
-      final response =
-          await _categoriesCollection.doc(id).collection('items').get();
+      // Category document reference for given id
+      final categoryDoc = await _categoriesCollection.doc(id).get();
 
+      // uses document above in filtering items found in category
+      final response = await _itemsCollection
+          .where('category', isEqualTo: categoryDoc.reference)
+          .get();
+
+      // filter out items without name
       if (response.docs.isNotEmpty) {
         final items = response.docs
-            .map((snapshot) => Item.fromJson(snapshot.data(), snapshot.id))
+            .map((snapshot) => Item.fromJson(
+                snapshot.data() as Map<String, dynamic>, snapshot.id))
             .where((element) => element.name != null)
             .toList();
-        print('items: $items');
         return items;
       }
     } catch (e) {
@@ -207,8 +215,17 @@ class DatabaseService {
   Future getCategories() async {
     try {
       final response = await _categoriesCollection.get();
-      return response;
+
+      // filter out categories without title
+      if (response.docs.isNotEmpty) {
+        return response.docs
+            .map((snapshot) => Category.fromJson(
+                snapshot.data() as Map<String, dynamic>, snapshot.id))
+            .where((element) => element.title != null)
+            .toList();
+      }
     } catch (e) {
+      print('error: $e');
       return e.toString();
     }
   }
