@@ -12,14 +12,11 @@ class InventoryViewModel extends SharedViewModel {
   List<Item>? _items;
   List<Item>? get items => _items;
 
-  List<Category>? _availableCategories;
-  List<Category>? get availableCategories => _availableCategories;
-
   void initialize() {
-    getCategories();
+    streamCategories();
   }
 
-  void getCategories() {
+  void streamCategories() {
     setBusy(true);
     database.listenToCategories().listen((categories) {
       List<Category> updatedCategories = categories;
@@ -32,43 +29,14 @@ class InventoryViewModel extends SharedViewModel {
     });
   }
 
-  void fetchCategories() async {
-    setBusy(true);
-    try {
-      _availableCategories = await database.getCategories();
-      notifyListeners();
-
-      if (_availableCategories is! List<Category>) {
-        await dialog.showDialog(
-          title: 'Error',
-          description: 'Failed to fetch categories',
-        );
-        setBusy(false);
-
-        return;
-      }
-      setBusy(false);
-    } catch (e) {
-      setBusy(false);
-    }
-  }
-
   void getItems(String? id) async {
     setBusy(true);
 
     _items = await database.getItemsInCategory(id);
-    print('first item: $_items');
 
-    String description = '';
-
-    if (_items is List<Item> && _items!.isEmpty) {
-      description = 'No items found in this category';
-    } else if (_items is! List<Item>) {
-      description = 'Failed to fetch items';
-    }
-
-    if (description.isNotEmpty) {
-      await dialog.showDialog(title: 'Error', description: description);
+    if (_items is! List<Item>) {
+      await dialog.showDialog(
+          title: 'Error', description: 'Failed to fetch items');
       setBusy(false);
       navigator.back();
       return;

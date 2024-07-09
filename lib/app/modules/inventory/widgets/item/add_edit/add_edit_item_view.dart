@@ -49,7 +49,6 @@ class AddEditItemView extends StatelessWidget {
                 inputType: TextInputType.datetime,
                 selectedDate: viewModel.expirationDate,
                 onPressed: () => viewModel.presentDatePicker(context),
-                controller: null,
               ),
               ItemTextField(
                 fieldLabel: 'Category',
@@ -65,6 +64,7 @@ class AddEditItemView extends StatelessWidget {
                   BaseButton(
                     label: 'ADD',
                     onPressed: () => viewModel.addItem(),
+                    loading: viewModel.isBusy,
                   ),
                 ],
               ),

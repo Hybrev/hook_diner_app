@@ -1,48 +1,94 @@
 import 'package:flutter/material.dart';
 import 'package:hook_diner/app/modules/inventory/inventory_viewmodel.dart';
+import 'package:hook_diner/core/models/category.dart';
 import 'package:hook_diner/core/models/item.dart';
 
 class AddEditItemViewModel extends InventoryViewModel {
-  TextEditingController? _nameController;
-  TextEditingController? get nameController => _nameController;
+  final TextEditingController nameController = TextEditingController();
+  final TextEditingController priceController = TextEditingController();
 
-  TextEditingController? _priceController;
-  TextEditingController? get priceController => _priceController;
-
-  TextEditingController? _expirationDateController;
-  TextEditingController? get expirationDateController =>
-      _expirationDateController;
-
-  TextEditingController? _quantityController;
-  TextEditingController? get quantityController => _quantityController;
-
-  final TextEditingController _categoryController = TextEditingController();
-  TextEditingController get categoryController => _categoryController;
+  final TextEditingController quantityController = TextEditingController();
+  final TextEditingController categoryController = TextEditingController();
 
   DateTime? _expirationDate;
   DateTime? get expirationDate => _expirationDate;
 
-  void setUpActionModal(Item? item) async {
-    fetchCategories();
-    _nameController?.text = item?.name ?? '';
-    _priceController?.text = item?.price.toString() ?? '9.75';
-    _expirationDateController?.text = item?.expirationDate ??
-        '${DateTime.now().day}/${DateTime.now().month}/${DateTime.now().year}';
+  List<Category>? _availableCategories;
+  List<Category>? get availableCategories => _availableCategories;
 
-    _quantityController?.text = item?.quantity.toString() ?? '0';
-    _categoryController.text = availableCategories!.first.id.toString();
+  void setUpActionModal(Item? item) async {
+    nameController.text = item?.name ?? '';
+    priceController.text = item?.price.toString() ?? '';
+    quantityController.text = item?.quantity.toString() ?? '';
+
+    _expirationDate = DateTime.utc(
+      DateTime.now().year,
+      DateTime.now().month,
+      DateTime.now().day,
+    );
+
+    _availableCategories = await fetchCategories();
+    categoryController.text = item?.category?.id.toString() ??
+        _availableCategories!.first.id.toString();
+
+    notifyListeners();
   }
 
-  void addItem() {
+  Future<List<Category>?> fetchCategories() async {
+    setBusy(true);
+    try {
+      final fetchedData = await database.getCategories();
+      notifyListeners();
+
+      if (fetchedData is! List<Category>) {
+        await dialog.showDialog(
+          title: 'Error',
+          description: 'Failed to fetch categories',
+        );
+        setBusy(false);
+
+        return null;
+      }
+      setBusy(false);
+      return fetchedData;
+    } catch (e) {
+      setBusy(false);
+    }
+    return null;
+  }
+
+  void addItem() async {
     setBusy(true);
     debugPrint('button pressed');
+
+    final Item newItem = Item(
+      name: nameController.text,
+      quantity: int.parse(quantityController.text),
+      price: double.parse(priceController.text),
+      expirationDate:
+          '${_expirationDate?.month}/${_expirationDate?.day}/${_expirationDate?.year}',
+    );
+    try {
+      final response = await database.addItem(
+        newItem,
+        categoryId: categoryController.text,
+      );
+      print('response: $response');
+      if (response == true) {
+        await dialog.showDialog(
+          title: 'Success',
+          description: 'Item added successfully',
+        );
+        navigator.back();
+      }
+    } catch (e) {
+      print('error: $e');
+    }
     setBusy(false);
   }
 
   void updateCategory(String categoryValue) {
-    _categoryController.text = categoryValue;
-
-    print('category: $categoryValue');
+    categoryController.text = categoryValue;
     notifyListeners();
   }
 
@@ -55,6 +101,13 @@ class AddEditItemViewModel extends InventoryViewModel {
       firstDate: now,
       lastDate: lastDate,
     );
+
+    _expirationDate ??= DateTime.utc(
+      DateTime.now().year,
+      DateTime.now().month,
+      DateTime.now().day,
+    );
+
     notifyListeners();
   }
 }

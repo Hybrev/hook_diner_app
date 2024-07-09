@@ -5,7 +5,7 @@ class ItemTextField extends StatelessWidget {
   const ItemTextField({
     super.key,
     required this.fieldLabel,
-    required this.controller,
+    this.controller,
     this.inputType = TextInputType.text,
     this.selectedDate,
     this.onPressed,

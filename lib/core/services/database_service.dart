@@ -21,6 +21,9 @@ class DatabaseService {
   final StreamController<List<Category>> _categoriesController =
       StreamController<List<Category>>.broadcast();
 
+  final StreamController<List<Item>> _itemsController =
+      StreamController<List<Item>>.broadcast();
+
 // STREAMS
   // USER
   Stream listenToUsers() {
@@ -58,7 +61,8 @@ class DatabaseService {
     return _categoriesController.stream;
   }
 
-  // GET ITEMS in CATEGORY
+/* ITEM */
+  // GET in CATEGORY
   Future getItemsInCategory(String? id) async {
     try {
       // Category document reference for given id
@@ -84,29 +88,14 @@ class DatabaseService {
     }
   }
 
-  /* ITEM */
-  // Stream listenToItems() {
-  //   _itemsCollection.snapshots().listen((response) {
-  //     if (response.docs.isNotEmpty) {
-  //       final items = response.docs
-  //           .map((snapshot) => Item.fromJson(
-  //               snapshot.data() as Map<String, dynamic>, snapshot.id))
-  //           .where((element) => element.name != null)
-  //           .toList();
-
-  //       _itemsCollection.add(items);
-  //     }
-  //   });
-
-  //   return _itemsController.stream;
-  // }
-
-/* GENERAL CRUD */
   // ADD
-  Future addData(Map<String, dynamic> data, String id,
-      CollectionReference<Object?> collection) async {
+  Future addItem(Item item, {required String categoryId}) async {
     try {
-      await collection.doc(id).set(data);
+      DocumentReference categoryRef = _categoriesCollection.doc(categoryId);
+      item.category = categoryRef;
+
+      await _itemsCollection.doc().set(item.toJson());
+      return true;
     } catch (e) {
       return e.toString();
     }
