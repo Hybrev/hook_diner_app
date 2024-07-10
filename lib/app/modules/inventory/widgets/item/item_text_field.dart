@@ -36,7 +36,7 @@ class ItemTextField extends StatelessWidget {
         ),
         Expanded(
           child: !fieldLabel.toLowerCase().contains('date')
-              ? !fieldLabel.toLowerCase().contains('category')
+              ? !fieldLabel.toLowerCase().contains('item category')
                   ? TextField(
                       textAlign: TextAlign.center,
                       textInputAction: TextInputAction.next,

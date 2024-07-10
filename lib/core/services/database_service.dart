@@ -21,10 +21,7 @@ class DatabaseService {
   final StreamController<List<Category>> _categoriesController =
       StreamController<List<Category>>.broadcast();
 
-  final StreamController<List<Item>> _itemsController =
-      StreamController<List<Item>>.broadcast();
-
-// STREAMS
+/* STREAM FUNCTIONS */
   // USER
   Stream listenToUsers() {
     _usersCollection.snapshots().listen((response) {
@@ -42,8 +39,7 @@ class DatabaseService {
     return _usersController.stream;
   }
 
-// CATEGORIES
-  // STREAM
+  // CATEGORY
   Stream listenToCategories() {
     _categoriesCollection.snapshots().listen((response) {
       if (response.docs.isNotEmpty) {
@@ -91,10 +87,18 @@ class DatabaseService {
   // ADD
   Future addItem(Item item, {required String categoryId}) async {
     try {
+      // finds reference based on categoryId
       DocumentReference categoryRef = _categoriesCollection.doc(categoryId);
       item.category = categoryRef;
 
-      await _itemsCollection.doc().set(item.toJson());
+      // write the item data and get its reference & id
+      final itemRef = _itemsCollection.doc();
+      await itemRef.set(item.toJson());
+
+      final docId = itemRef.id;
+      item.id = docId;
+
+      itemRef.update(item.toJson());
       return true;
     } catch (e) {
       return e.toString();
@@ -102,10 +106,11 @@ class DatabaseService {
   }
 
   // UPDATE
-  Future updateData(CollectionReference<Object?> collection, String id,
-      Map<String, dynamic> data) async {
+  Future updateItem(Item item, {required String categoryId}) async {
+    DocumentReference categoryRef = _categoriesCollection.doc(categoryId);
+    item.category = categoryRef;
     try {
-      await collection.doc(id).update(data);
+      await _itemsCollection.doc(item.id).update(item.toJson());
       return true;
     } catch (e) {
       return e.toString();
@@ -113,26 +118,16 @@ class DatabaseService {
   }
 
   // DELETE
-  Future deleteData(CollectionReference<Object?> collection, String id) async {
+  Future deleteItem(String id) async {
     try {
-      await collection.doc(id).delete();
+      await _itemsCollection.doc(id).delete();
     } catch (e) {
       return e.toString();
     }
   }
 
-// USER
-  Future addUser(User user) async {
-    try {
-      await _usersCollection.doc(user.id).set(user.toJson());
-
-      return true;
-    } catch (e) {
-      return e.toString();
-    }
-  }
-
-  // GET
+/*  USER */
+  // GET ALL
   Future getUsers() async {
     try {
       final response = await _usersCollection.get();
@@ -148,6 +143,7 @@ class DatabaseService {
     }
   }
 
+  // GET ONE
   Future getUser(String uid) async {
     try {
       final user = await _usersCollection.doc(uid).get();
@@ -157,6 +153,18 @@ class DatabaseService {
     }
   }
 
+  // ADD
+  Future addUser(User user) async {
+    try {
+      await _usersCollection.doc(user.id).set(user.toJson());
+
+      return true;
+    } catch (e) {
+      return e.toString();
+    }
+  }
+
+  // UPDATE
   Future updateUser(User user) async {
     try {
       await _usersCollection.doc(user.id).update(user.toJson());
@@ -166,6 +174,7 @@ class DatabaseService {
     }
   }
 
+  // DELETE
   Future deleteUser(String id) async {
     try {
       await _usersCollection.doc(id).delete();
@@ -174,33 +183,8 @@ class DatabaseService {
     }
   }
 
-  // Category CRUD
-  Future addCategory(Category category) async {
-    try {
-      // create document for new data
-      final docRef = _categoriesCollection.doc();
-      await docRef.set(category.toJson());
-
-      // get newly created  document id & set to category id
-      final docId = docRef.id;
-      category.id = docId;
-
-      docRef.update(category.toJson());
-      return true;
-    } catch (e) {
-      return e.toString();
-    }
-  }
-
-  Future updateCategory(Category category) async {
-    try {
-      await _categoriesCollection.doc(category.id).update(category.toJson());
-      return true;
-    } catch (e) {
-      return e.toString();
-    }
-  }
-
+/* CATEGORY */
+  // GET ALL
   Future getCategories() async {
     try {
       final response = await _categoriesCollection.get();
@@ -219,6 +203,35 @@ class DatabaseService {
     }
   }
 
+  // ADD
+  Future addCategory(Category category) async {
+    try {
+      // create document for new data
+      final docRef = _categoriesCollection.doc();
+      await docRef.set(category.toJson());
+
+      // get newly created  document id & set to category id
+      final docId = docRef.id;
+      category.id = docId;
+
+      docRef.update(category.toJson());
+      return true;
+    } catch (e) {
+      return e.toString();
+    }
+  }
+
+  // UPDATE
+  Future updateCategory(Category category) async {
+    try {
+      await _categoriesCollection.doc(category.id).update(category.toJson());
+      return true;
+    } catch (e) {
+      return e.toString();
+    }
+  }
+
+// DELETE
   Future deleteCategory(String id) async {
     try {
       await _categoriesCollection.doc(id).delete();

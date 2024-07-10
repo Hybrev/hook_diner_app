@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:hook_diner/app/modules/inventory/inventory_viewmodel.dart';
+import 'package:hook_diner/app/modules/inventory/widgets/item/add_edit/add_edit_item_view.dart';
+import 'package:hook_diner/app/modules/inventory/widgets/item/add_edit/add_edit_item_viewmodel.dart';
 import 'package:hook_diner/app/shared/widgets/base_appbar.dart';
 import 'package:hook_diner/app/shared/widgets/data_tile.dart';
 import 'package:hook_diner/core/locator.dart';
@@ -26,10 +28,10 @@ class ItemListModalView extends StatelessWidget {
   Widget build(BuildContext context) {
     final appTheme = Theme.of(context);
 
-    return ViewModelBuilder<InventoryViewModel>.reactive(
+    return ViewModelBuilder<AddEditItemViewModel>.reactive(
       disposeViewModel: false,
       onViewModelReady: (viewModel) => viewModel.getItems(category.id),
-      viewModelBuilder: () => locator<InventoryViewModel>(),
+      viewModelBuilder: () => locator<AddEditItemViewModel>(),
       builder: (context, viewModel, child) => Scaffold(
         appBar: BaseAppBar(
           title: 'ITEMS',
@@ -44,20 +46,50 @@ class ItemListModalView extends StatelessWidget {
             ? SafeArea(
                 minimum:
                     const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-                child: ListView.separated(
-                  itemCount: viewModel.items?.length ?? 10,
-                  shrinkWrap: true,
-                  separatorBuilder: (context, index) =>
-                      Divider(height: 8, color: appTheme.colorScheme.secondary),
-                  itemBuilder: (context, index) => DataTile(
-                    index,
-                    data: viewModel.items ?? [],
-                    title: viewModel.items![index].name!,
-                    subtitle: '₱ ${viewModel.items![index].price.toString()}'
-                        '\n${viewModel.items![index].quantity.toString()} pcs',
-                    onEditTap: () {},
-                    onDeleteTap: () {},
-                  ),
+                child: Column(
+                  children: [
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                      children: [
+                        Text(
+                          'Item Info',
+                          style: appTheme.textTheme.titleLarge
+                              ?.copyWith(fontWeight: FontWeight.bold),
+                        ),
+                        Text(
+                          'Expiration Date',
+                          style: appTheme.textTheme.titleLarge
+                              ?.copyWith(fontWeight: FontWeight.bold),
+                        ),
+                      ],
+                    ),
+                    Divider(height: 8, color: appTheme.colorScheme.secondary),
+                    ListView.separated(
+                      itemCount: viewModel.items?.length ?? 10,
+                      shrinkWrap: true,
+                      separatorBuilder: (context, index) => Divider(
+                          height: 8, color: appTheme.colorScheme.secondary),
+                      itemBuilder: (context, index) => DataTile(
+                        index,
+                        data: viewModel.items ?? [],
+                        title: viewModel.items![index].name!,
+                        subtitle:
+                            '₱ ${viewModel.items![index].price.toString()}'
+                            '\n${viewModel.items![index].quantity.toString()} pcs',
+                        trailingText: viewModel.items![index].expirationDate
+                                ?.toString() ??
+                            '',
+                        onEditTap: () => viewModel.showActionModal(
+                          context,
+                          dialogContent: AddEditItemView(
+                            editingItem: viewModel.items![index],
+                          ),
+                        ),
+                        onDeleteTap: () =>
+                            viewModel.deleteItem(viewModel.items![index]),
+                      ),
+                    ),
+                  ],
                 ),
               )
             : const Center(child: CircularProgressIndicator()),

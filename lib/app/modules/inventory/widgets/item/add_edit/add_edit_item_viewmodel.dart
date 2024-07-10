@@ -18,8 +18,8 @@ class AddEditItemViewModel extends InventoryViewModel {
 
   void setUpActionModal(Item? item) async {
     nameController.text = item?.name ?? '';
-    priceController.text = item?.price.toString() ?? '';
-    quantityController.text = item?.quantity.toString() ?? '';
+    priceController.text = item?.price.toString() ?? '1.00';
+    quantityController.text = item?.quantity.toString() ?? '1';
 
     _expirationDate = DateTime.utc(
       DateTime.now().year,
@@ -46,10 +46,11 @@ class AddEditItemViewModel extends InventoryViewModel {
           description: 'Failed to fetch categories',
         );
         setBusy(false);
-
         return null;
       }
       setBusy(false);
+      fetchedData.sort((a, b) => a.title!.compareTo(b.title!));
+      notifyListeners();
       return fetchedData;
     } catch (e) {
       setBusy(false);
@@ -73,21 +74,57 @@ class AddEditItemViewModel extends InventoryViewModel {
         newItem,
         categoryId: categoryController.text,
       );
-      print('response: $response');
       if (response == true) {
         await dialog.showDialog(
           title: 'Success',
           description: 'Item added successfully',
         );
-        navigator.back();
       }
+      goBack();
     } catch (e) {
       print('error: $e');
+    } finally {
+      goBack();
+      setBusy(false);
     }
-    setBusy(false);
   }
 
-  void updateCategory(String categoryValue) {
+  void updateItem(Item item) async {
+    item = Item(
+      id: item.id,
+      name: nameController.text,
+      quantity: int.parse(quantityController.text),
+      price: double.parse(priceController.text),
+      expirationDate:
+          '${_expirationDate?.month}/${_expirationDate?.day}/${_expirationDate?.year}',
+    );
+
+    setBusy(true);
+    try {
+      final response =
+          await database.updateItem(item, categoryId: categoryController.text);
+      print('response: $response');
+      notifyListeners();
+      if (response) {
+        await dialog.showDialog(
+          title: 'item Updated!',
+          description: 'item updated successfully',
+        );
+      }
+      goBack();
+    } catch (e) {
+      print('error: $e');
+      await dialog.showDialog(
+        title: 'Error',
+        description: 'Failed to update item',
+      );
+    } finally {
+      goBack();
+      setBusy(false);
+    }
+  }
+
+  void updateCategoryValue(String categoryValue) {
     categoryController.text = categoryValue;
     notifyListeners();
   }

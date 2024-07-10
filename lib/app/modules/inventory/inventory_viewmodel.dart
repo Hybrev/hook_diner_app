@@ -47,7 +47,7 @@ class InventoryViewModel extends SharedViewModel {
 
   Future deleteCategory(Category category) async {
     final dialogResponse = await dialog.showConfirmationDialog(
-      description: 'Are you sure you want to delete this user?',
+      description: 'Are you sure you want to delete this category?',
       confirmationTitle: 'Yes',
       cancelTitle: 'No',
     );
@@ -70,8 +70,42 @@ class InventoryViewModel extends SharedViewModel {
           title: 'Error',
           description: 'Failed to delete category',
         );
+      } finally {
+        goBack();
       }
     }
+  }
+
+  void deleteItem(Item item) async {
+    final dialogResponse = await dialog.showConfirmationDialog(
+      description: 'Are you sure you want to delete this item?',
+      confirmationTitle: 'Yes',
+      cancelTitle: 'No',
+    );
+
+    if (dialogResponse!.confirmed) {
+      setBusy(true);
+
+      try {
+        await database.deleteItem(item.id!);
+        setBusy(false);
+
+        await dialog.showDialog(
+          title: 'Item Deleted',
+          description: 'Item deleted successfully',
+        );
+      } catch (e) {
+        setBusy(false);
+
+        await dialog.showDialog(
+          title: 'Error',
+          description: 'Failed to delete item',
+        );
+      } finally {
+        goBack();
+      }
+    }
+    setBusy(false);
   }
 
   void goBack() {

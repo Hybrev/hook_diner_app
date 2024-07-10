@@ -24,6 +24,7 @@ class SharedViewModel extends BaseViewModel {
   void showActionModal(BuildContext ctx, {required Widget dialogContent}) {
     showDialog(
         context: ctx,
+        barrierDismissible: false,
         builder: (_) {
           return Dialog(
             shape: RoundedRectangleBorder(

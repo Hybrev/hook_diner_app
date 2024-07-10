@@ -43,6 +43,7 @@ class AddEditCategoryView extends StatelessWidget {
                   const CancelButton(),
                   BaseButton(
                     label: 'SAVE',
+                    loading: viewModel.isBusy,
                     onPressed: editingCategory == null
                         ? () => viewModel.addCategory()
                         : () => viewModel.updateCategory(editingCategory!),

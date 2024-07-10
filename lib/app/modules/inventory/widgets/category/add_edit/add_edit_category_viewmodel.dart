@@ -26,12 +26,12 @@ class AddEditCategoryViewModel extends InventoryViewModel {
           title: 'Category Updated!',
           description: 'Category updated successfully',
         );
-        navigator.back();
+        goBack();
       }
     } catch (e) {
       await dialog.showDialog(
         title: 'Error',
-        description: 'Failed to updated category',
+        description: 'Failed to update category',
       );
     }
     setBusy(false);
@@ -51,7 +51,7 @@ class AddEditCategoryViewModel extends InventoryViewModel {
 
       if (response) {
         setBusy(false);
-        navigator.back();
+        goBack();
 
         await dialog.showDialog(
           title: 'Success',
@@ -64,38 +64,8 @@ class AddEditCategoryViewModel extends InventoryViewModel {
         title: 'Error',
         description: 'Failed to add category',
       );
-      navigator.back();
-    }
-  }
-
-  Future deleteUser(Category category) async {
-    final dialogResponse = await dialog.showConfirmationDialog(
-      description: 'Are you sure you want to delete this category?',
-      confirmationTitle: 'Yes',
-      cancelTitle: 'No',
-    );
-
-    if (dialogResponse!.confirmed) {
-      setBusy(true);
-
-      try {
-        await database.deleteCategory(category.id!);
-        setBusy(false);
-
-        await dialog.showDialog(
-          title: 'Category Deleted',
-          description: 'Category deleted successfully',
-        );
-      } catch (e) {
-        setBusy(false);
-
-        await dialog.showDialog(
-          title: 'Error',
-          description: 'Failed to delete user',
-        );
-      } finally {
-        navigator.back();
-      }
+    } finally {
+      goBack();
     }
   }
 }

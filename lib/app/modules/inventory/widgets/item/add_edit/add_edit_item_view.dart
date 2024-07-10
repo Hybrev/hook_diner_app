@@ -8,16 +8,16 @@ import 'package:hook_diner/core/models/item.dart';
 import 'package:stacked/stacked.dart';
 
 class AddEditItemView extends StatelessWidget {
-  const AddEditItemView({super.key, this.isEditing});
+  const AddEditItemView({super.key, this.editingItem});
 
-  final Item? isEditing;
+  final Item? editingItem;
 
   @override
   Widget build(BuildContext context) {
     final appTheme = Theme.of(context);
     return ViewModelBuilder<AddEditItemViewModel>.reactive(
       disposeViewModel: false,
-      onViewModelReady: (viewModel) => viewModel.setUpActionModal(isEditing),
+      onViewModelReady: (viewModel) => viewModel.setUpActionModal(editingItem),
       builder: (context, viewModel, child) => SingleChildScrollView(
         child: SafeArea(
           minimum: const EdgeInsets.all(16),
@@ -51,10 +51,11 @@ class AddEditItemView extends StatelessWidget {
                 onPressed: () => viewModel.presentDatePicker(context),
               ),
               ItemTextField(
-                fieldLabel: 'Category',
+                fieldLabel: 'Item Category',
                 items: viewModel.availableCategories,
                 controller: viewModel.categoryController,
-                onDropdownChanged: (value) => viewModel.updateCategory(value),
+                onDropdownChanged: (value) =>
+                    viewModel.updateCategoryValue(value),
               ),
               const SizedBox(height: 24),
               Row(
@@ -62,9 +63,11 @@ class AddEditItemView extends StatelessWidget {
                 children: [
                   const CancelButton(),
                   BaseButton(
-                    label: 'ADD',
-                    onPressed: () => viewModel.addItem(),
+                    label: 'SAVE',
                     loading: viewModel.isBusy,
+                    onPressed: editingItem == null
+                        ? () => viewModel.addItem()
+                        : () => viewModel.updateItem(editingItem!),
                   ),
                 ],
               ),
