@@ -31,17 +31,21 @@ class InventoryViewModel extends SharedViewModel {
 
   void getItems(String? id) async {
     setBusy(true);
+    try {
+      _items = await database.getItemsInCategory(id);
 
-    _items = await database.getItemsInCategory(id);
-
-    if (_items is! List<Item>) {
+      if (_items is! List<Item>) {
+        _items = [];
+      }
+      notifyListeners();
+    } on Exception catch (e) {
+      print('error: $e');
       await dialog.showDialog(
           title: 'Error', description: 'Failed to fetch items');
       setBusy(false);
       navigator.back();
       return;
     }
-    notifyListeners();
     setBusy(false);
   }
 
@@ -70,8 +74,6 @@ class InventoryViewModel extends SharedViewModel {
           title: 'Error',
           description: 'Failed to delete category',
         );
-      } finally {
-        goBack();
       }
     }
   }
@@ -89,6 +91,7 @@ class InventoryViewModel extends SharedViewModel {
       try {
         await database.deleteItem(item.id!);
         setBusy(false);
+        getItems(item.category!.id);
 
         await dialog.showDialog(
           title: 'Item Deleted',
@@ -101,8 +104,6 @@ class InventoryViewModel extends SharedViewModel {
           title: 'Error',
           description: 'Failed to delete item',
         );
-      } finally {
-        goBack();
       }
     }
     setBusy(false);

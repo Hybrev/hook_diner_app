@@ -1,16 +1,9 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:hook_diner/app/routes/route_names.dart';
-import 'package:hook_diner/core/locator.dart';
-import 'package:hook_diner/core/services/auth_service.dart';
-import 'package:stacked/stacked.dart';
-import 'package:stacked_services/stacked_services.dart';
+import 'package:hook_diner/app/shared/viewmodel.dart';
 
-class LoginViewModel extends BaseViewModel {
-  final NavigationService _navigator = locator<NavigationService>();
-  final DialogService _dialog = locator<DialogService>();
-  final AuthService _auth = locator<AuthService>();
-
+class LoginViewModel extends SharedViewModel {
   final TextEditingController _usernameController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
 
@@ -21,11 +14,13 @@ class LoginViewModel extends BaseViewModel {
     setBusy(true);
 
     try {
-      await _auth.logIn(username: username, password: password);
+      await auth.logIn(username: username, password: password);
 
       setBusy(false);
       toMainMenu();
     } on FirebaseAuthException catch (e) {
+      print('firebase auth error: $e');
+
       String title = '', message = '';
       switch (e.code) {
         case 'network-request-failed':
@@ -36,16 +31,20 @@ class LoginViewModel extends BaseViewModel {
           title = 'Invalid Credentials';
           message = 'Username not found. Please try again.';
           break;
-        case 'invalid-credential':
+        case 'wrong-password':
           title = 'Invalid Credentials';
           message = 'Incorrect password. Please try again.';
+          break;
+        case 'invalid-credential':
+          title = 'Invalid Credentials';
+          message = 'Please check your credentials and try again.';
           break;
         case 'channel-error':
           title = 'Authentication Error';
           message = 'Please enter a valid username and password.';
           break;
       }
-      await _dialog.showDialog(
+      await dialog.showDialog(
         title: title,
         description: message,
       );
@@ -54,7 +53,16 @@ class LoginViewModel extends BaseViewModel {
     }
   }
 
+  void streamAuth() async {
+    await auth.logOut();
+    FirebaseAuth.instance.authStateChanges().listen((User? user) {
+      print(user == null
+          ? 'User is currently signed out!'
+          : 'user details: $user');
+    });
+  }
+
   void toMainMenu() {
-    _navigator.pushNamedAndRemoveUntil(homeRoute);
+    navigator.pushNamedAndRemoveUntil(homeRoute);
   }
 }

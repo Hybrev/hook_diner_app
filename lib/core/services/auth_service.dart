@@ -8,8 +8,8 @@ class AuthService {
 
   final _databaseService = locator<DatabaseService>();
 
-  // late User _currentUser;
-  // User get currentUser => _currentUser;
+  late user_model.User _currentUser;
+  user_model.User get currentUser => _currentUser;
 
   Future createUser({
     required String username,
@@ -33,6 +33,62 @@ class AuthService {
     return user.additionalUserInfo?.isNewUser;
   }
 
+  Future updateUser(user_model.User user,
+      {required String prevUsername, required String prevPassword}) async {
+    await logOut();
+    try {
+      late final UserCredential? userCredential;
+      switch (_auth.currentUser) {
+        case null:
+          userCredential = await _auth.signInWithEmailAndPassword(
+              email: '$prevUsername@hookdiner.com', password: prevPassword);
+          break;
+        default:
+          userCredential = await _auth.currentUser
+              ?.reauthenticateWithCredential((EmailAuthProvider.credential(
+            email: '$prevUsername@hookdiner.com',
+            password: prevPassword,
+          )));
+      }
+
+      await userCredential!.user!.updatePassword(user.password!);
+      await userCredential.user!.reload();
+
+      await _databaseService.updateUser(user);
+      return true;
+    } catch (e) {
+      return e.toString();
+    }
+  }
+
+  Future deleteUser(user_model.User user) async {
+    await logOut();
+    try {
+      late final UserCredential? userCredential;
+      switch (_auth.currentUser) {
+        case null:
+          userCredential = await _auth.signInWithEmailAndPassword(
+            email: '${user.username}@hookdiner.com',
+            password: user.password!,
+          );
+          break;
+        default:
+          userCredential = await _auth.currentUser
+              ?.reauthenticateWithCredential((EmailAuthProvider.credential(
+            email: '${user.username}@hookdiner.com',
+            password: user.password!,
+          )));
+      }
+
+      await userCredential!.user!.delete();
+
+      await _databaseService.deleteUser(userCredential.user!.uid);
+      return true;
+    } catch (e) {
+      return e.toString();
+    }
+  }
+
   Future logOut() async {
     await _auth.signOut();
   }
@@ -41,12 +97,11 @@ class AuthService {
     required String username,
     required String password,
   }) async {
-    final credential = EmailAuthProvider.credential(
+    final userCredential =
+        await FirebaseAuth.instance.signInWithEmailAndPassword(
       email: '$username@hookdiner.com',
       password: password,
     );
-    final userCredential =
-        await FirebaseAuth.instance.signInWithCredential(credential);
     return userCredential.user;
   }
 }

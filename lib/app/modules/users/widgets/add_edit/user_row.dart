@@ -6,10 +6,12 @@ class UserRow extends StatelessWidget {
     required this.label,
     required this.controller,
     this.onChanged,
+    this.isAdding = true,
   });
 
   final TextEditingController controller;
   final String label;
+  final bool isAdding;
   final Function(String value)? onChanged;
 
   @override
@@ -26,6 +28,8 @@ class UserRow extends StatelessWidget {
             child: label != 'Role'
                 ? TextField(
                     controller: controller,
+                    enabled: isAdding,
+                    textInputAction: TextInputAction.next,
                   )
                 : DropdownButton(
                     isExpanded: true,

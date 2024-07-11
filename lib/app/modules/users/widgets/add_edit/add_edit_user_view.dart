@@ -33,7 +33,11 @@ class AddEditUserView extends StatelessWidget {
                 height: 40,
                 child: Divider(color: appTheme.colorScheme.primary),
               ),
-              UserRow(label: 'Name', controller: viewModel.usernameController),
+              UserRow(
+                label: 'Name',
+                controller: viewModel.usernameController,
+                isAdding: editingUser == null,
+              ),
               UserRow(
                   label: 'Password', controller: viewModel.passwordController),
               UserRow(

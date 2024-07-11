@@ -17,6 +17,7 @@ class InputField extends StatelessWidget {
     return SingleChildScrollView(
       child: TextField(
         controller: controller,
+        textInputAction: TextInputAction.next,
         keyboardType:
             isPassword ? TextInputType.visiblePassword : TextInputType.text,
         obscureText: isPassword,

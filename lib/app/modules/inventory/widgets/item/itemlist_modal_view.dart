@@ -43,55 +43,80 @@ class ItemListModalView extends StatelessWidget {
           centerTitle: true,
         ),
         body: !viewModel.isBusy && viewModel.items != null
-            ? SafeArea(
-                minimum:
-                    const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-                child: Column(
-                  children: [
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+            ? viewModel.items!.isNotEmpty
+                ? SafeArea(
+                    minimum:
+                        const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                    child: Column(
                       children: [
-                        Text(
-                          'Item Info',
-                          style: appTheme.textTheme.titleLarge
-                              ?.copyWith(fontWeight: FontWeight.bold),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceAround,
+                          children: [
+                            Text(
+                              'Item Info',
+                              style: appTheme.textTheme.titleLarge
+                                  ?.copyWith(fontWeight: FontWeight.bold),
+                            ),
+                            Text(
+                              'Expiration Date',
+                              style: appTheme.textTheme.titleLarge
+                                  ?.copyWith(fontWeight: FontWeight.bold),
+                            ),
+                          ],
                         ),
-                        Text(
-                          'Expiration Date',
-                          style: appTheme.textTheme.titleLarge
-                              ?.copyWith(fontWeight: FontWeight.bold),
+                        Divider(
+                            height: 8, color: appTheme.colorScheme.secondary),
+                        ListView.separated(
+                          itemCount: viewModel.items?.length ?? 10,
+                          shrinkWrap: true,
+                          separatorBuilder: (context, index) => Divider(
+                              height: 8, color: appTheme.colorScheme.secondary),
+                          itemBuilder: (context, index) => DataTile(
+                            index,
+                            data: viewModel.items ?? [],
+                            title: viewModel.items![index].name!,
+                            subtitle:
+                                '₱ ${viewModel.items![index].price.toString()}'
+                                '\n${viewModel.items![index].quantity.toString()} pcs',
+                            trailingText: viewModel.items![index].expirationDate
+                                    ?.toString() ??
+                                '',
+                            onEditTap: () => viewModel.showActionModal(
+                              context,
+                              dialogContent: AddEditItemView(
+                                editingItem: viewModel.items![index],
+                              ),
+                            ),
+                            onDeleteTap: () =>
+                                viewModel.deleteItem(viewModel.items![index]),
+                          ),
                         ),
                       ],
                     ),
-                    Divider(height: 8, color: appTheme.colorScheme.secondary),
-                    ListView.separated(
-                      itemCount: viewModel.items?.length ?? 10,
-                      shrinkWrap: true,
-                      separatorBuilder: (context, index) => Divider(
-                          height: 8, color: appTheme.colorScheme.secondary),
-                      itemBuilder: (context, index) => DataTile(
-                        index,
-                        data: viewModel.items ?? [],
-                        title: viewModel.items![index].name!,
-                        subtitle:
-                            '₱ ${viewModel.items![index].price.toString()}'
-                            '\n${viewModel.items![index].quantity.toString()} pcs',
-                        trailingText: viewModel.items![index].expirationDate
-                                ?.toString() ??
-                            '',
-                        onEditTap: () => viewModel.showActionModal(
-                          context,
-                          dialogContent: AddEditItemView(
-                            editingItem: viewModel.items![index],
+                  )
+                : Center(
+                    child: SafeArea(
+                      minimum: const EdgeInsets.symmetric(
+                          horizontal: 16, vertical: 8),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Icon(
+                            Icons.remove_shopping_cart_outlined,
+                            size: 120,
+                            color: appTheme.colorScheme.onBackground
+                                .withOpacity(0.5),
                           ),
-                        ),
-                        onDeleteTap: () =>
-                            viewModel.deleteItem(viewModel.items![index]),
+                          const SizedBox(height: 16),
+                          Text(
+                            'NO ITEMS FOUND',
+                            style: appTheme.textTheme.titleLarge
+                                ?.copyWith(fontWeight: FontWeight.bold),
+                          ),
+                        ],
                       ),
                     ),
-                  ],
-                ),
-              )
+                  )
             : const Center(child: CircularProgressIndicator()),
       ),
     );

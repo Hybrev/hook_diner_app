@@ -10,6 +10,8 @@ class UsersViewModel extends SharedViewModel {
   TextEditingController passwordController = TextEditingController();
   TextEditingController roleController = TextEditingController();
 
+  late User currentUser;
+
   List<User>? _users;
   List<User>? get users => _users;
 
@@ -21,7 +23,7 @@ class UsersViewModel extends SharedViewModel {
         _users = updatedUsers;
         notifyListeners();
       }
-
+      notifyListeners();
       setBusy(false);
     });
 
@@ -51,21 +53,20 @@ class UsersViewModel extends SharedViewModel {
       setBusy(true);
 
       try {
-        await database.deleteUser(user.id!);
-        setBusy(false);
+        await auth.deleteUser(user);
 
         await dialog.showDialog(
           title: 'User Deleted',
           description: 'User deleted successfully',
         );
       } catch (e) {
-        setBusy(false);
-
         await dialog.showDialog(
           title: 'Error',
           description: 'Failed to delete user',
         );
       } finally {
+        setBusy(false);
+
         navigator.back();
       }
     }

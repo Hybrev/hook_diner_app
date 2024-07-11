@@ -2,7 +2,12 @@ import 'package:hook_diner/app/modules/users/users_viewmodel.dart';
 import 'package:hook_diner/core/models/user.dart';
 
 class AddEditUserViewModel extends UsersViewModel {
+  late final String prevUsername;
+  late final String prevPassword;
+
   void setUpModal(User? user) async {
+    prevUsername = user?.username ?? '';
+    prevPassword = user?.password ?? '';
     usernameController.text = user?.username ?? '';
     passwordController.text = user?.password ?? '';
     roleController.text = user?.role ?? '';
@@ -44,11 +49,9 @@ class AddEditUserViewModel extends UsersViewModel {
     setBusy(false);
   }
 
-  Future updateUser(User user) async {
-    print('received user 4 UPDATE: ${user.toJson().toString()}');
-
-    user = User(
-      id: user.id,
+  Future updateUser(User targetUser) async {
+    targetUser = User(
+      id: targetUser.id,
       username: usernameController.text,
       password: passwordController.text,
       role: roleController.text,
@@ -56,8 +59,11 @@ class AddEditUserViewModel extends UsersViewModel {
 
     setBusy(true);
     try {
-      final response = await database.updateUser(user);
-
+      final response = await auth.updateUser(
+        targetUser,
+        prevUsername: prevUsername,
+        prevPassword: prevPassword,
+      );
       if (response) {
         await dialog.showDialog(
           title: 'User Updated!',
@@ -68,7 +74,7 @@ class AddEditUserViewModel extends UsersViewModel {
     } catch (e) {
       await dialog.showDialog(
         title: 'Error',
-        description: 'Failed to updated user',
+        description: 'Failed to update user',
       );
     }
     setBusy(false);

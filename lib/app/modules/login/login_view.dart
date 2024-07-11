@@ -15,6 +15,7 @@ class LoginView extends StatelessWidget {
 
     return ViewModelBuilder<LoginViewModel>.reactive(
       fireOnViewModelReadyOnce: true,
+      onViewModelReady: (viewModel) => viewModel.streamAuth(),
       disposeViewModel: false,
       builder: (context, model, child) => Scaffold(
         body: SafeArea(
