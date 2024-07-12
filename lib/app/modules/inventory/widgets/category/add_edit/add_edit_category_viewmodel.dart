@@ -24,7 +24,7 @@ class AddEditCategoryViewModel extends InventoryViewModel {
       if (response) {
         await dialog.showDialog(
           title: 'Category Updated!',
-          description: 'Category updated successfully',
+          description: 'Category updated successfully!',
         );
         goBack();
       }
@@ -43,7 +43,6 @@ class AddEditCategoryViewModel extends InventoryViewModel {
     );
     notifyListeners();
 
-    print('received category: ${category.toJson().toString()}');
     try {
       setBusy(true);
 
@@ -55,7 +54,7 @@ class AddEditCategoryViewModel extends InventoryViewModel {
 
         await dialog.showDialog(
           title: 'Success',
-          description: 'Category added successfully!',
+          description: 'Category added successfully!!',
         );
       }
     } catch (e) {

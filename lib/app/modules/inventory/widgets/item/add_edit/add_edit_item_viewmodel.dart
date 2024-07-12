@@ -77,7 +77,7 @@ class AddEditItemViewModel extends InventoryViewModel {
       if (response == true) {
         await dialog.showDialog(
           title: 'Success',
-          description: 'Item added successfully',
+          description: 'Item added successfully!',
         );
       }
       goBack();
@@ -108,7 +108,7 @@ class AddEditItemViewModel extends InventoryViewModel {
       if (response) {
         await dialog.showDialog(
           title: 'item Updated!',
-          description: 'item updated successfully',
+          description: 'item updated successfully!',
         );
       }
       goBack();

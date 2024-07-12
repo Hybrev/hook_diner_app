@@ -42,63 +42,60 @@ class ItemListModalView extends StatelessWidget {
           automaticallyImplyLeading: true,
           centerTitle: true,
         ),
-        body: !viewModel.isBusy && viewModel.items != null
-            ? viewModel.items!.isNotEmpty
-                ? SafeArea(
-                    minimum:
-                        const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-                    child: Column(
-                      children: [
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceAround,
-                          children: [
-                            Text(
-                              'Item Info',
-                              style: appTheme.textTheme.titleLarge
-                                  ?.copyWith(fontWeight: FontWeight.bold),
-                            ),
-                            Text(
-                              'Expiration Date',
-                              style: appTheme.textTheme.titleLarge
-                                  ?.copyWith(fontWeight: FontWeight.bold),
-                            ),
-                          ],
-                        ),
-                        Divider(
-                            height: 8, color: appTheme.colorScheme.secondary),
-                        ListView.separated(
-                          itemCount: viewModel.items?.length ?? 10,
-                          shrinkWrap: true,
-                          separatorBuilder: (context, index) => Divider(
-                              height: 8, color: appTheme.colorScheme.secondary),
-                          itemBuilder: (context, index) => DataTile(
-                            index,
-                            data: viewModel.items ?? [],
-                            title: viewModel.items![index].name!,
-                            subtitle:
-                                '₱ ${viewModel.items![index].price.toString()}'
-                                '\n${viewModel.items![index].quantity.toString()} pcs',
-                            trailingText: viewModel.items![index].expirationDate
-                                    ?.toString() ??
-                                '',
-                            onEditTap: () => viewModel.showActionModal(
-                              context,
-                              dialogContent: AddEditItemView(
-                                editingItem: viewModel.items![index],
+        body: Center(
+          child: SafeArea(
+            minimum: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+            child: !viewModel.isBusy && viewModel.items != null
+                ? viewModel.items!.isNotEmpty
+                    ? Column(
+                        children: [
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceAround,
+                            children: [
+                              Text(
+                                'Item Info',
+                                style: appTheme.textTheme.titleLarge
+                                    ?.copyWith(fontWeight: FontWeight.bold),
                               ),
-                            ),
-                            onDeleteTap: () =>
-                                viewModel.deleteItem(viewModel.items![index]),
+                              Text(
+                                'Expiration Date',
+                                style: appTheme.textTheme.titleLarge
+                                    ?.copyWith(fontWeight: FontWeight.bold),
+                              ),
+                            ],
                           ),
-                        ),
-                      ],
-                    ),
-                  )
-                : Center(
-                    child: SafeArea(
-                      minimum: const EdgeInsets.symmetric(
-                          horizontal: 16, vertical: 8),
-                      child: Column(
+                          Divider(
+                              height: 8, color: appTheme.colorScheme.secondary),
+                          ListView.separated(
+                            itemCount: viewModel.items?.length ?? 10,
+                            shrinkWrap: true,
+                            separatorBuilder: (context, index) => Divider(
+                                height: 8,
+                                color: appTheme.colorScheme.secondary),
+                            itemBuilder: (context, index) => DataTile(
+                              index,
+                              data: viewModel.items ?? [],
+                              title: viewModel.items![index].name!,
+                              subtitle:
+                                  '₱ ${viewModel.items![index].price.toString()}'
+                                  '\n${viewModel.items![index].quantity.toString()} pcs',
+                              trailingText: viewModel
+                                      .items![index].expirationDate
+                                      ?.toString() ??
+                                  '',
+                              onEditTap: () => viewModel.showActionModal(
+                                context,
+                                dialogContent: AddEditItemView(
+                                  editingItem: viewModel.items![index],
+                                ),
+                              ),
+                              onDeleteTap: () =>
+                                  viewModel.deleteItem(viewModel.items![index]),
+                            ),
+                          ),
+                        ],
+                      )
+                    : Column(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           Icon(
@@ -114,10 +111,10 @@ class ItemListModalView extends StatelessWidget {
                                 ?.copyWith(fontWeight: FontWeight.bold),
                           ),
                         ],
-                      ),
-                    ),
-                  )
-            : const Center(child: CircularProgressIndicator()),
+                      )
+                : const Center(child: CircularProgressIndicator()),
+          ),
+        ),
       ),
     );
   }

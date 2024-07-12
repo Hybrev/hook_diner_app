@@ -56,8 +56,8 @@ class UsersViewModel extends SharedViewModel {
         await auth.deleteUser(user);
 
         await dialog.showDialog(
-          title: 'User Deleted',
-          description: 'User deleted successfully',
+          title: 'Deleted',
+          description: 'User deleted successfully!',
         );
       } catch (e) {
         await dialog.showDialog(
