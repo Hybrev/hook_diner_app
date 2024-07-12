@@ -29,7 +29,7 @@ class InventoryViewModel extends SharedViewModel {
     });
   }
 
-  void getItems(String? id) async {
+  Future<List<Item>?> getItems(String? id) async {
     setBusy(true);
     try {
       _items = await database.getItemsInCategory(id);
@@ -44,9 +44,9 @@ class InventoryViewModel extends SharedViewModel {
           title: 'Error', description: 'Failed to fetch items');
       setBusy(false);
       navigator.back();
-      return;
     }
     setBusy(false);
+    return _items;
   }
 
   Future deleteCategory(Category category) async {
@@ -59,20 +59,31 @@ class InventoryViewModel extends SharedViewModel {
     if (dialogResponse!.confirmed) {
       setBusy(true);
 
+      final categoryItems = await getItems(category.id);
+
+      if (categoryItems!.isNotEmpty) {
+        await dialog.showDialog(
+          title: 'Cannot Delete',
+          description: 'Category contains items.',
+        );
+        setBusy(false);
+        return;
+      }
+
       try {
         await database.deleteCategory(category.id!);
-        setBusy(false);
 
+        setBusy(false);
         await dialog.showDialog(
           title: 'Category Deleted',
-          description: 'Category deleted successfully',
+          description: 'Category deleted successfully!',
         );
       } catch (e) {
         setBusy(false);
 
         await dialog.showDialog(
           title: 'Error',
-          description: 'Failed to delete category',
+          description: 'Failed to delete category.',
         );
       }
     }

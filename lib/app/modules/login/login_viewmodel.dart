@@ -39,7 +39,8 @@ class LoginViewModel extends SharedViewModel {
           title = 'Invalid Credentials';
           message = 'Please check your credentials and try again.';
           break;
-        case 'channel-error':
+
+        default:
           title = 'Authentication Error';
           message = 'Please enter a valid username and password.';
           break;
