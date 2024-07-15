@@ -36,7 +36,7 @@ class CategoriesGrid extends ViewModelWidget<InventoryViewModel> {
                   Icon(
                     Icons.remove_shopping_cart_outlined,
                     size: 120,
-                    color: appTheme.colorScheme.onBackground.withOpacity(0.5),
+                    color: appTheme.colorScheme.onSurface.withOpacity(0.5),
                   ),
                   const SizedBox(height: 16),
                   Text(

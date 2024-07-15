@@ -21,6 +21,9 @@ class DatabaseService {
   final StreamController<List<Category>> _categoriesController =
       StreamController<List<Category>>.broadcast();
 
+  final StreamController<List<Item>> _itemsController =
+      StreamController<List<Item>>.broadcast();
+
 /* STREAM FUNCTIONS */
   // USER
   Stream listenToUsers() {
@@ -57,7 +60,44 @@ class DatabaseService {
     return _categoriesController.stream;
   }
 
+  Stream listenToItems() {
+    _itemsCollection.snapshots().listen((response) {
+      if (response.docs.isNotEmpty) {
+        final items = response.docs
+            .map((snapshot) {
+              return Item.fromJson(
+                  snapshot.data() as Map<String, dynamic>, snapshot.id);
+            })
+            .where((element) => element.name != null)
+            .toList();
+
+        _itemsController.add(items);
+      }
+    });
+    return _categoriesController.stream;
+  }
+
 /* ITEM */
+
+  Future getItems() async {
+    try {
+      final response = await _itemsCollection.get();
+
+      if (response.docs.isNotEmpty) {
+        final items = response.docs
+            .map((snapshot) => Item.fromJson(
+                snapshot.data() as Map<String, dynamic>, snapshot.id))
+            .where((element) => element.name != null)
+            .toList();
+        print('feteched items: $items');
+        return items;
+      }
+    } catch (e) {
+      print('error: $e');
+      return e.toString();
+    }
+  }
+
   // GET in CATEGORY
   Future getItemsInCategory(String? id) async {
     try {

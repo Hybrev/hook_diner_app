@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:hook_diner/app/modules/customers/customer_view.dart';
 import 'package:hook_diner/app/modules/home/home_viewmodel.dart';
 import 'package:hook_diner/app/modules/inventory/inventory_view.dart';
-import 'package:hook_diner/app/modules/menu/menu_view.dart';
+import 'package:hook_diner/app/modules/order/order_view.dart';
 import 'package:hook_diner/app/modules/sales/sales_view.dart';
 import 'package:hook_diner/app/modules/users/users_view.dart';
 import 'package:stacked/stacked.dart';
@@ -49,24 +49,24 @@ class HomeView extends StatelessWidget {
               activeIcon: Icon(Icons.receipt_long),
             ),
             BottomNavigationBarItem(
-              label: 'Inventory',
-              icon: Icon(Icons.inventory_2_outlined),
-              activeIcon: Icon(Icons.inventory_2_rounded),
-            ),
-            BottomNavigationBarItem(
               label: 'Customers',
               icon: Icon(Icons.people_alt_outlined),
               activeIcon: Icon(Icons.people_alt_rounded),
             ),
             BottomNavigationBarItem(
-              label: 'Sales',
-              icon: Icon(Icons.receipt_long_rounded),
-              activeIcon: Icon(Icons.receipt_long),
+              label: 'Inventory',
+              icon: Icon(Icons.inventory_2_outlined),
+              activeIcon: Icon(Icons.inventory_2_rounded),
             ),
             BottomNavigationBarItem(
               label: 'Users',
               icon: Icon(Icons.supervised_user_circle_outlined),
               activeIcon: Icon(Icons.supervised_user_circle_rounded),
+            ),
+            BottomNavigationBarItem(
+              label: 'Sales',
+              icon: Icon(Icons.receipt_long_rounded),
+              activeIcon: Icon(Icons.receipt_long),
             ),
           ],
         ),
@@ -79,16 +79,16 @@ class HomeView extends StatelessWidget {
 Widget getViewForIndex(int index) {
   switch (index) {
     case 0:
-      return const MenuView();
+      return const OrderView();
     case 1:
-      return const InventoryView();
-    case 2:
       return const CustomerView();
+    case 2:
+      return const InventoryView();
     case 3:
-      return const SalesView();
-    case 4:
       return const UsersView();
+    case 4:
+      return const SalesView();
     default:
-      return const MenuView();
+      return const OrderView();
   }
 }

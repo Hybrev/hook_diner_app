@@ -29,7 +29,7 @@ class MoreActionsButton extends DataTile {
               const Text('Edit'),
               Icon(
                 Icons.edit_rounded,
-                color: appTheme.colorScheme.onBackground,
+                color: appTheme.colorScheme.onSurface,
               ),
             ],
           ),

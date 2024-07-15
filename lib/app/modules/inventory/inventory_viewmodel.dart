@@ -74,18 +74,17 @@ class InventoryViewModel extends SharedViewModel {
         await database.deleteCategory(category.id!);
         _categories.removeWhere((c) => c.id == category.id);
         notifyListeners();
-        setBusy(false);
         await dialog.showDialog(
           title: 'Category Deleted',
           description: 'Category deleted successfully!',
         );
       } catch (e) {
-        setBusy(false);
-
         await dialog.showDialog(
           title: 'Error',
           description: 'Failed to delete category.',
         );
+      } finally {
+        setBusy(false);
       }
     }
   }

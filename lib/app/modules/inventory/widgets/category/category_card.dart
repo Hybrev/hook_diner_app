@@ -23,18 +23,18 @@ class CategoryCard extends ViewModelWidget<InventoryViewModel> {
           onEditTap: () => viewModel.showActionModal(
             context,
             dialogContent: AddEditCategoryView(
-              editingCategory: viewModel.categories?[index],
+              editingCategory: viewModel.categories[index],
             ),
           ),
           onDeleteTap: () =>
-              viewModel.deleteCategory(viewModel.categories![index]),
-          data: viewModel.categories!,
+              viewModel.deleteCategory(viewModel.categories[index]),
+          data: viewModel.categories,
         ),
       ),
       footer: Padding(
         padding: const EdgeInsets.symmetric(vertical: 8.0),
         child: Text(
-          viewModel.categories?[index].title?.toUpperCase() ??
+          viewModel.categories[index].title?.toUpperCase() ??
               "Category ${index + 1}",
           style: appTheme.textTheme.titleMedium,
           textAlign: TextAlign.center,
@@ -49,7 +49,7 @@ class CategoryCard extends ViewModelWidget<InventoryViewModel> {
                   context: context,
                   builder: (context) {
                     final dialogContent = ItemListModalView(
-                      category: viewModel.categories![index],
+                      category: viewModel.categories[index],
                       items: viewModel.items,
                       // if add item button is pressed
                       onPressAddItem: () => viewModel.showActionModal(

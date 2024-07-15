@@ -4,7 +4,7 @@ import 'package:hook_diner/app/modules/inventory/inventory_viewmodel.dart';
 import 'package:hook_diner/app/modules/inventory/widgets/category/add_edit/add_edit_category_viewmodel.dart';
 import 'package:hook_diner/app/modules/inventory/widgets/item/add_edit/add_edit_item_viewmodel.dart';
 import 'package:hook_diner/app/modules/login/login_viewmodel.dart';
-import 'package:hook_diner/app/modules/menu/menu_viewmodel.dart';
+import 'package:hook_diner/app/modules/order/order_viewmodel.dart';
 import 'package:hook_diner/app/modules/sales/sales_viewmodel.dart';
 import 'package:hook_diner/app/modules/users/users_viewmodel.dart';
 import 'package:hook_diner/core/services/auth_service.dart';
@@ -17,7 +17,7 @@ final locator = GetIt.instance;
 void setupLocator() {
   locator.registerLazySingleton(() => InventoryViewModel());
   locator.registerLazySingleton(() => SalesViewModel());
-  locator.registerLazySingleton(() => MenuViewModel());
+  locator.registerLazySingleton(() => OrderViewModel());
   locator.registerLazySingleton(() => CustomerViewModel());
   locator.registerLazySingleton(() => LoginViewModel());
   locator.registerLazySingleton(() => UsersViewModel());
