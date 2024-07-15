@@ -38,6 +38,7 @@ dependencies:
   stacked:
   get_it: 
   stacked_services:
+  draggable_bottom_sheet:
   animations:
   flutter_hooks:
   stacked_hooks:
