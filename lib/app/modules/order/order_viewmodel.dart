@@ -6,15 +6,16 @@ class OrderViewModel extends SharedViewModel {
   final String _title = 'Order Menu';
   String get title => _title;
 
-  List<Item> _items = [];
-  List<Item> get items => _items;
+  List<Item> _menuItems = [];
+  List<Item> get menuItems => _menuItems;
 
   List<Item> _orderedItems = [];
   List<Item> get orderedItems => _orderedItems;
   final TextEditingController searchBarController = TextEditingController();
 
   void initialize() async {
-    database.listenToItems();
+    _menuItems = await database.getItems();
+    notifyListeners();
   }
 
   void incrementCounter() {

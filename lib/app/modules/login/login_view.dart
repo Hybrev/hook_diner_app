@@ -27,14 +27,15 @@ class LoginView extends StatelessWidget {
                       children: [
                         ConstrainedBox(
                           constraints: BoxConstraints(
-                            maxHeight: mediaData.height * 0.6,
+                            maxWidth: mediaData.width * 0.6,
                           ),
-                          child: const AspectRatio(
+                          child: AspectRatio(
                             aspectRatio: 16 / 9,
                             child: Image(
-                              image:
-                                  AssetImage('lib/app/assets/img/banner.jpg'),
-                              fit: BoxFit.cover,
+                              image: const AssetImage(
+                                  'lib/app/assets/img/banner.jpg'),
+                              fit: BoxFit.fitHeight,
+                              width: mediaData.width * 0.25,
                             ),
                           ),
                         ),
