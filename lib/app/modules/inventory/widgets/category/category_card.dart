@@ -83,7 +83,7 @@ class CategoryCard extends ViewModelWidget<InventoryViewModel> {
             child: ConstrainedBox(
               constraints: const BoxConstraints(maxWidth: 340),
               child: Icon(
-                Icons.category_outlined,
+                Icons.view_module_rounded,
                 size: MediaQuery.sizeOf(context).shortestSide * 0.25,
                 color: appTheme.colorScheme.primary,
               ),

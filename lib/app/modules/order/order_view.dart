@@ -20,13 +20,13 @@ class OrderView extends StatelessWidget {
         appBar: const BaseAppBar(title: 'MENU'),
         body: Center(
           child: SafeArea(
-            minimum: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+            minimum: const EdgeInsets.all(16),
             child: Column(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 // SEARCH BAR FOR FILTERING ITEMS
-
                 SearchBar(
+                  constraints: const BoxConstraints(maxWidth: 840),
                   trailing: [
                     Tooltip(
                       message: 'Search',
@@ -40,38 +40,46 @@ class OrderView extends StatelessWidget {
                 ),
                 const SizedBox(height: 8),
                 // GRID OF AVAILABLE ITEMS
-                Expanded(
+                const Expanded(
                   child: MenuGrid(),
                 ),
                 const SizedBox(height: 8),
 
                 // TOTAL PRICE COST OF ORDER
-                GestureDetector(
-                  onTap: () {
-                    print('total price button pressed');
-                  },
-                  child: Container(
-                    decoration: BoxDecoration(
-                      color: appTheme.colorScheme.surface,
-                      borderRadius: BorderRadius.circular(8),
-                      boxShadow: [
-                        BoxShadow(
-                          color: Colors.grey.withOpacity(
-                              0.5), // Adjust color and opacity as needed
-                          spreadRadius: 1,
-                          blurRadius: 2,
-                          offset: const Offset(
-                              0, 2), // Adjust offset for shadow position
-                        ),
-                      ],
+                DecoratedBox(
+                  decoration: BoxDecoration(
+                    color: appTheme.colorScheme.primary,
+                    borderRadius: BorderRadius.circular(8),
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.grey.withOpacity(0.5),
+                        spreadRadius: 1,
+                        blurRadius: 2,
+                        offset: const Offset(0, 2),
+                      ),
+                    ],
+                  ),
+                  child: ConstrainedBox(
+                    constraints: const BoxConstraints(
+                      maxWidth: 840,
                     ),
-                    child: const Padding(
-                      padding: EdgeInsets.all(16.0),
+                    child: Padding(
+                      padding: const EdgeInsets.all(16.0),
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          Text('Total Price'),
-                          Text('PHP '),
+                          Text(
+                            'TOTAL (${model.totalItems} items)',
+                            style: appTheme.textTheme.labelLarge?.copyWith(
+                              color: appTheme.colorScheme.onPrimary,
+                            ),
+                          ),
+                          Text(
+                            'PHP ${model.totalPrice.toStringAsFixed(2)}',
+                            style: appTheme.textTheme.labelLarge?.copyWith(
+                              color: appTheme.colorScheme.onPrimary,
+                            ),
+                          ),
                         ],
                       ),
                     ),

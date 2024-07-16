@@ -10,51 +10,44 @@ class MenuCard extends ViewModelWidget<OrderViewModel> {
   @override
   Widget build(BuildContext context, OrderViewModel viewModel) {
     final appTheme = Theme.of(context);
-
     return Card(
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(12),
-      ),
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
       elevation: 2,
-      color: Colors.amber,
-      child: Row(
-        children: [
-          ClipRRect(
-            borderRadius: const BorderRadius.horizontal(
-              left: Radius.circular(12),
+      child: InkWell(
+        borderRadius: const BorderRadius.all(Radius.circular(16)),
+        onTap: () => viewModel.addItemToOrder(viewModel.menuItems[index]),
+        child: Row(
+          children: [
+            ClipRRect(
+              borderRadius: const BorderRadius.horizontal(
+                left: Radius.circular(16),
+              ),
+              child: Image.network(
+                'https://archive.org/download/placeholder-image/placeholder-image.jpg',
+                fit: BoxFit.cover,
+                width: 80,
+                height: double.infinity,
+              ),
             ),
-            child: Image.network(
-              'https://archive.org/download/placeholder-image/placeholder-image.jpg',
-              fit: BoxFit.cover,
-              width: 120,
-              height: double.infinity,
-            ),
-          ),
-          Expanded(
-            child: Padding(
-              padding: const EdgeInsets.all(8.0),
+            const SizedBox(width: 16),
+            Expanded(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
                   Text(
-                    viewModel.menuItems[index].name!,
-                    style: const TextStyle(
-                      fontWeight: FontWeight.bold,
-                      fontSize: 16,
-                    ),
+                    viewModel.menuItems[index].name ?? 'Item Name',
+                    style: appTheme.textTheme.titleLarge,
                   ),
                   Text(
-                    viewModel.menuItems[index].price.toString(),
-                    style: TextStyle(
-                      color: appTheme.colorScheme.onSurface,
-                      fontSize: 14,
-                    ),
+                    "₱ ${viewModel.menuItems[index].price?.toStringAsFixed(2)}",
+                    style: appTheme.textTheme.titleLarge,
                   ),
                 ],
               ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }
