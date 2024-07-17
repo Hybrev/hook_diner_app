@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:hook_diner/app/modules/inventory/inventory_viewmodel.dart';
 import 'package:hook_diner/app/modules/inventory/widgets/item/add_edit/add_edit_item_view.dart';
 import 'package:hook_diner/app/modules/inventory/widgets/item/add_edit/add_edit_item_viewmodel.dart';
 import 'package:hook_diner/app/shared/widgets/base_appbar.dart';
@@ -83,7 +82,7 @@ class ItemListModalView extends StatelessWidget {
                                       .items![index].expirationDate
                                       ?.toString() ??
                                   '',
-                              onEditTap: () => viewModel.showActionModal(
+                              onEditTap: () => viewModel.showCustomModal(
                                 context,
                                 dialogContent: AddEditItemView(
                                   editingItem: viewModel.items![index],

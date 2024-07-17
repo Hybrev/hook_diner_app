@@ -2,6 +2,7 @@
 import 'package:flutter/material.dart';
 import 'package:hook_diner/app/modules/order/order_viewmodel.dart';
 import 'package:hook_diner/app/modules/order/widgets/menu_grid.dart';
+import 'package:hook_diner/app/modules/order/widgets/order_list_modal.dart';
 import 'package:hook_diner/app/shared/widgets/base_appbar.dart';
 import 'package:hook_diner/core/locator.dart';
 import 'package:stacked/stacked.dart';
@@ -46,41 +47,43 @@ class OrderView extends StatelessWidget {
                 const SizedBox(height: 8),
 
                 // TOTAL PRICE COST OF ORDER
-                DecoratedBox(
-                  decoration: BoxDecoration(
-                    color: appTheme.colorScheme.primary,
-                    borderRadius: BorderRadius.circular(8),
-                    boxShadow: [
-                      BoxShadow(
-                        color: Colors.grey.withOpacity(0.5),
-                        spreadRadius: 1,
-                        blurRadius: 2,
-                        offset: const Offset(0, 2),
-                      ),
-                    ],
-                  ),
+                Visibility(
+                  visible: model.orderedItems.isNotEmpty,
                   child: ConstrainedBox(
                     constraints: const BoxConstraints(
                       maxWidth: 840,
                     ),
-                    child: Padding(
-                      padding: const EdgeInsets.all(16.0),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Text(
-                            'TOTAL (${model.totalItems} items)',
-                            style: appTheme.textTheme.labelLarge?.copyWith(
-                              color: appTheme.colorScheme.onPrimary,
-                            ),
+                    child: Card(
+                      elevation: 2,
+                      color: appTheme.colorScheme.primary,
+                      child: InkWell(
+                        borderRadius: BorderRadius.circular(8),
+                        onTap: () => model.showCustomModal(
+                          context,
+                          dialogContent: OrderListModal(
+                            orderedItems: model.orderedItems,
                           ),
-                          Text(
-                            'PHP ${model.totalPrice.toStringAsFixed(2)}',
-                            style: appTheme.textTheme.labelLarge?.copyWith(
-                              color: appTheme.colorScheme.onPrimary,
-                            ),
+                        ),
+                        child: Padding(
+                          padding: const EdgeInsets.all(16.0),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Text(
+                                'TOTAL (${model.totalItems} items)',
+                                style: appTheme.textTheme.labelLarge?.copyWith(
+                                  color: appTheme.colorScheme.onPrimary,
+                                ),
+                              ),
+                              Text(
+                                'PHP ${model.totalPrice.toStringAsFixed(2)}',
+                                style: appTheme.textTheme.labelLarge?.copyWith(
+                                  color: appTheme.colorScheme.onPrimary,
+                                ),
+                              ),
+                            ],
                           ),
-                        ],
+                        ),
                       ),
                     ),
                   ),

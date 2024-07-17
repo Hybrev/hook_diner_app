@@ -20,7 +20,7 @@ class CategoryCard extends ViewModelWidget<InventoryViewModel> {
         alignment: Alignment.topRight,
         child: MoreActionsButton(
           index,
-          onEditTap: () => viewModel.showActionModal(
+          onEditTap: () => viewModel.showCustomModal(
             context,
             dialogContent: AddEditCategoryView(
               editingCategory: viewModel.categories[index],
@@ -52,7 +52,7 @@ class CategoryCard extends ViewModelWidget<InventoryViewModel> {
                       category: viewModel.categories[index],
                       items: viewModel.items,
                       // if add item button is pressed
-                      onPressAddItem: () => viewModel.showActionModal(
+                      onPressAddItem: () => viewModel.showCustomModal(
                         context,
                         dialogContent: const AddEditItemView(),
                       ),

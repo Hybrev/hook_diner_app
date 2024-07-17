@@ -41,7 +41,7 @@ class InventoryView extends StatelessWidget {
                 Icons.note_add_rounded,
                 color: appTheme.colorScheme.tertiary,
               ),
-              onTap: () => model.showActionModal(
+              onTap: () => model.showCustomModal(
                 context,
                 dialogContent: const AddEditItemView(),
               ),
@@ -54,7 +54,7 @@ class InventoryView extends StatelessWidget {
                 Icons.category_rounded,
                 color: appTheme.colorScheme.tertiary,
               ),
-              onTap: () => model.showActionModal(
+              onTap: () => model.showCustomModal(
                 context,
                 dialogContent: const AddEditCategoryView(),
               ),

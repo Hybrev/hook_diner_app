@@ -21,7 +21,7 @@ class SharedViewModel extends BaseViewModel {
   DialogService get dialog => _dialog;
   DatabaseService get database => _database;
 
-  void showActionModal(BuildContext ctx, {required Widget dialogContent}) {
+  void showCustomModal(BuildContext ctx, {required Widget dialogContent}) {
     showDialog(
         context: ctx,
         barrierDismissible: false,

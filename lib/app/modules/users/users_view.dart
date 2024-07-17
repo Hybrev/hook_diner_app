@@ -40,7 +40,7 @@ class UsersView extends StatelessWidget {
                             leading: model.users![index].role![0].toUpperCase(),
                             title: model.users![index].username!,
                             subtitle: model.users![index].password!,
-                            onEditTap: () => model.showActionModal(
+                            onEditTap: () => model.showCustomModal(
                               context,
                               dialogContent: AddEditUserView(
                                 editingUser: model.users![index],
@@ -72,7 +72,7 @@ class UsersView extends StatelessWidget {
           ),
         ),
         floatingActionButton: FloatingActionButton(
-          onPressed: () => model.showActionModal(
+          onPressed: () => model.showCustomModal(
             context,
             dialogContent: const AddEditUserView(editingUser: null),
           ),

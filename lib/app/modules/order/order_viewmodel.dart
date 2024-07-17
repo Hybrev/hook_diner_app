@@ -23,7 +23,10 @@ class OrderViewModel extends SharedViewModel {
   void initialize() async {
     setBusy(true);
     _menuItems = await database.getItems();
+    // filters out the available items & sorts alphabetically
+    _menuItems = _menuItems.where((item) => item.quantity! > 0).toList();
     _menuItems.sort((a, b) => a.name!.compareTo(b.name!));
+
     notifyListeners();
 
     for (var item in _menuItems) {
