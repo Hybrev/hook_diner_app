@@ -21,6 +21,8 @@ class OrderListModal extends StatelessWidget {
           itemCount: orderedItems?.length ?? 0,
           itemBuilder: (context, index) => ListTile(
             title: Text(orderedItems?[index].name ?? 'Item Name'),
+            subtitle: Text(orderedItems?[index].price.toString() ?? '0'),
+            trailing: Text(orderedItems?[index].quantity.toString() ?? '0'),
           ),
         ),
       ),

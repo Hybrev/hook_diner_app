@@ -26,19 +26,72 @@ class OrderView extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 // SEARCH BAR FOR FILTERING ITEMS
-                SearchBar(
-                  constraints: const BoxConstraints(maxWidth: 840),
-                  trailing: [
-                    Tooltip(
-                      message: 'Search',
-                      child: IconButton(
-                        icon: const Icon(Icons.search),
-                        onPressed: () {},
+                if (MediaQuery.sizeOf(context).width > 600)
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: [
+                      DropdownButton<String>(
+                        value: model.selectedCategoryController.text,
+                        style: appTheme.textTheme.labelLarge,
+                        focusColor: Theme.of(context).colorScheme.tertiary,
+                        items: model.categories
+                            .map((e) => DropdownMenuItem<String>(
+                                  value: e.id,
+                                  child: Text(e.title!),
+                                ))
+                            .toList(),
+                        onChanged: (value) =>
+                            model.updateCategoryFilter(value!),
                       ),
-                    ),
-                  ],
-                  controller: model.searchBarController,
-                ),
+                      SearchBar(
+                        constraints: const BoxConstraints(maxWidth: 400),
+                        trailing: [
+                          Tooltip(
+                            message: 'Search',
+                            child: IconButton(
+                              icon: const Icon(Icons.search),
+                              onPressed: () {},
+                            ),
+                          ),
+                        ],
+                        controller: model.searchBarController,
+                      ),
+                    ],
+                  )
+                else
+                  Column(
+                    children: [
+                      SearchBar(
+                        constraints: const BoxConstraints(maxWidth: 480),
+                        trailing: [
+                          Tooltip(
+                            message: 'Search',
+                            child: IconButton(
+                              icon: const Icon(Icons.search),
+                              onPressed: () {},
+                            ),
+                          ),
+                        ],
+                        controller: model.searchBarController,
+                      ),
+                      Align(
+                        alignment: Alignment.bottomRight,
+                        child: DropdownButton<String>(
+                          value: model.selectedCategoryController.text,
+                          style: appTheme.textTheme.labelLarge,
+                          focusColor: Theme.of(context).colorScheme.tertiary,
+                          items: model.categories
+                              .map((e) => DropdownMenuItem<String>(
+                                    value: e.id,
+                                    child: Text(e.title!),
+                                  ))
+                              .toList(),
+                          onChanged: (value) =>
+                              model.updateCategoryFilter(value!),
+                        ),
+                      ),
+                    ],
+                  ),
                 const SizedBox(height: 8),
                 // GRID OF AVAILABLE ITEMS
                 const Expanded(

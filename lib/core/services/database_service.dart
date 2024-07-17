@@ -74,7 +74,7 @@ class DatabaseService {
         _itemsController.add(items);
       }
     });
-    return _categoriesController.stream;
+    return _itemsController.stream;
   }
 
 /* ITEM */
@@ -278,6 +278,13 @@ class DatabaseService {
     } catch (e) {
       return e.toString();
     }
+  }
+
+  Future<String> getItemCategory(Item item) async {
+    final itemSnapshot =
+        await _categoriesCollection.doc(item.category?.id).get();
+
+    return itemSnapshot.get('title');
   }
 
 /* ORDER */

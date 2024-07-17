@@ -1,5 +1,8 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:hook_diner/app/shared/viewmodel.dart';
+import 'package:hook_diner/core/models/category.dart';
 import 'package:hook_diner/core/models/item.dart';
 
 class OrderViewModel extends SharedViewModel {
@@ -12,6 +15,9 @@ class OrderViewModel extends SharedViewModel {
   List<Item> _orderedItems = [];
   List<Item> get orderedItems => _orderedItems;
 
+  List<Category> _categories = [];
+  List<Category> get categories => _categories;
+
   int _totalItems = 0;
   int get totalItems => _totalItems;
 
@@ -19,19 +25,30 @@ class OrderViewModel extends SharedViewModel {
   double get totalPrice => _totalPrice;
 
   final TextEditingController searchBarController = TextEditingController();
+  final TextEditingController selectedCategoryController =
+      TextEditingController();
 
   void initialize() async {
     setBusy(true);
-    _menuItems = await database.getItems();
-    // filters out the available items & sorts alphabetically
-    _menuItems = _menuItems.where((item) => item.quantity! > 0).toList();
-    _menuItems.sort((a, b) => a.name!.compareTo(b.name!));
 
+    _categories = await database.getCategories();
     notifyListeners();
+    _categories.insert(0, Category(id: 'all', title: 'All'));
+    selectedCategoryController.text = _categories.first.id.toString();
 
-    for (var item in _menuItems) {
-      print('item: ${item.toJson()}');
-    }
+    database.listenToItems().listen((items) {
+      List<Item> updatedItems = items;
+      if (updatedItems.isNotEmpty) {
+        _menuItems = updatedItems;
+
+        // filters out the available items & sorts alphabetically
+
+        _menuItems = _menuItems.where((item) => item.quantity! > 0).toList();
+        _menuItems.sort((a, b) => a.name!.compareTo(b.name!));
+        notifyListeners();
+      }
+      setBusy(false);
+    });
   }
 
   void addItemToOrder(Item item) {
@@ -39,9 +56,18 @@ class OrderViewModel extends SharedViewModel {
     _totalPrice = _totalPrice + item.price!;
     _totalItems++;
     notifyListeners();
+
+    print('item category: ${item.category}');
   }
 
-  getItemCategory(String uid) {}
+  Future<String> getItemCategory(Item item) {
+    return database.getItemCategory(item);
+  }
+
+  void updateCategoryFilter(String value) {
+    selectedCategoryController.text = value;
+    notifyListeners();
+  }
 
   void clearOrders() {
     _orderedItems = [];
