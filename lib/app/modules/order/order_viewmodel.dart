@@ -12,6 +12,9 @@ class OrderViewModel extends SharedViewModel {
   List<Item> _menuItems = [];
   List<Item> get menuItems => _menuItems;
 
+  List<Item> _filteredMenuItems = [];
+  List<Item> get filteredMenuItems => _filteredMenuItems;
+
   List<Item> _orderedItems = [];
   List<Item> get orderedItems => _orderedItems;
 
@@ -32,23 +35,44 @@ class OrderViewModel extends SharedViewModel {
     setBusy(true);
 
     _categories = await database.getCategories();
-    notifyListeners();
     _categories.insert(0, Category(id: 'all', title: 'All'));
     selectedCategoryController.text = _categories.first.id.toString();
 
-    database.listenToItems().listen((items) {
-      List<Item> updatedItems = items;
-      if (updatedItems.isNotEmpty) {
-        _menuItems = updatedItems;
+    _menuItems = await database.getItems();
+    _filteredMenuItems = _menuItems;
 
-        // filters out the available items & sorts alphabetically
+    notifyListeners();
+    setBusy(false);
 
-        _menuItems = _menuItems.where((item) => item.quantity! > 0).toList();
-        _menuItems.sort((a, b) => a.name!.compareTo(b.name!));
-        notifyListeners();
-      }
-      setBusy(false);
-    });
+    // database.listenToItems().listen((items) {
+    //   items.sort((a, b) => a.name!.compareTo(b.name!));
+
+    //   List<Item> updatedItems = items;
+    //   if (updatedItems.isNotEmpty) {
+    //     _menuItems = updatedItems;
+
+    //     // filters out the available items & sorts alphabetically
+
+    //     _filteredMenuItems =
+    //         _menuItems.where((item) => item.quantity! > 0).toList();
+    //     notifyListeners();
+    //   }
+    //   setBusy(false);
+    // });
+  }
+
+  void updateCategoryFilter(String value) {
+    selectedCategoryController.text = value;
+    switch (value != 'all') {
+      case true:
+        _filteredMenuItems =
+            _menuItems.where((item) => item.category?.id == value).toList();
+        break;
+      default:
+        _filteredMenuItems = _menuItems;
+        break;
+    }
+    notifyListeners();
   }
 
   void addItemToOrder(Item item) {
@@ -56,23 +80,28 @@ class OrderViewModel extends SharedViewModel {
     _totalPrice = _totalPrice + item.price!;
     _totalItems++;
     notifyListeners();
+  }
 
-    print('item category: ${item.category}');
+  void removeItemFromOrder(Item item) {
+    print('item: ${item.toJson()}');
+    _orderedItems.remove(item);
+    _totalPrice = _totalPrice - item.price!;
+    _totalItems--;
+    notifyListeners();
+    if (_orderedItems.isEmpty) {
+      navigator.back();
+    }
   }
 
   Future<String> getItemCategory(Item item) {
     return database.getItemCategory(item);
   }
 
-  void updateCategoryFilter(String value) {
-    selectedCategoryController.text = value;
-    notifyListeners();
-  }
-
-  void clearOrders() {
+  void clearOrder() {
     _orderedItems = [];
     _totalItems = 0;
     _totalPrice = 0.0;
     notifyListeners();
+    navigator.back();
   }
 }

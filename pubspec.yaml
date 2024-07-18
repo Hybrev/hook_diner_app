@@ -41,6 +41,7 @@ dependencies:
   modal_bottom_sheet:
   animations:
   flutter_hooks:
+  change_case: ^2.1.0
   stacked_hooks:
   flutter_speed_dial:
   intl: ^0.19.0

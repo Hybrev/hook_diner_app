@@ -16,7 +16,7 @@ class MenuGrid extends ViewModelWidget<OrderViewModel> {
           mainAxisExtent: 120,
           maxCrossAxisExtent: 500,
         ),
-        itemCount: viewModel.menuItems.length,
+        itemCount: viewModel.filteredMenuItems.length,
         shrinkWrap: true,
         itemBuilder: (context, index) => MenuCard(
           index: index,

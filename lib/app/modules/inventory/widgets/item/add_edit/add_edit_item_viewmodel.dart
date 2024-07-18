@@ -49,7 +49,6 @@ class AddEditItemViewModel extends InventoryViewModel {
         return null;
       }
       setBusy(false);
-      fetchedData.sort((a, b) => a.title!.compareTo(b.title!));
       notifyListeners();
       return fetchedData;
     } catch (e) {

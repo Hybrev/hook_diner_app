@@ -36,13 +36,12 @@ class CategoriesGrid extends ViewModelWidget<InventoryViewModel> {
                   Icon(
                     Icons.remove_shopping_cart_outlined,
                     size: 120,
-                    color: appTheme.colorScheme.onSurface.withOpacity(0.5),
+                    color: appTheme.colorScheme.primary,
                   ),
                   const SizedBox(height: 16),
                   Text(
-                    'NO CATEGORIES FOUND',
-                    style: appTheme.textTheme.titleLarge
-                        ?.copyWith(fontWeight: FontWeight.bold),
+                    'No categories found!',
+                    style: appTheme.textTheme.titleLarge,
                   ),
                 ],
               ),

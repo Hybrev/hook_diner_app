@@ -60,21 +60,18 @@ class DatabaseService {
     return _categoriesController.stream;
   }
 
-  Stream listenToItems() {
-    _itemsCollection.snapshots().listen((response) {
+  Stream<List<Item>> listenToItems() {
+    return _itemsCollection.snapshots().map((response) {
       if (response.docs.isNotEmpty) {
-        final items = response.docs
-            .map((snapshot) {
-              return Item.fromJson(
-                  snapshot.data() as Map<String, dynamic>, snapshot.id);
-            })
+        return response.docs
+            .map((snapshot) => Item.fromJson(
+                snapshot.data() as Map<String, dynamic>, snapshot.id))
             .where((element) => element.name != null)
             .toList();
-
-        _itemsController.add(items);
+      } else {
+        return [];
       }
     });
-    return _itemsController.stream;
   }
 
 /* ITEM */
@@ -89,7 +86,7 @@ class DatabaseService {
                 snapshot.data() as Map<String, dynamic>, snapshot.id))
             .where((element) => element.name != null)
             .toList();
-        print('feteched items: $items');
+        items.sort((a, b) => a.name!.compareTo(b.name!));
         return items;
       }
     } catch (e) {
@@ -116,6 +113,8 @@ class DatabaseService {
                 snapshot.data() as Map<String, dynamic>, snapshot.id))
             .where((element) => element.name != null)
             .toList();
+        items.sort((a, b) => a.name!.compareTo(b.name!));
+
         return items;
       }
     } catch (e) {

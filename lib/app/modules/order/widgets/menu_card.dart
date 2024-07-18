@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:hook_diner/app/modules/order/order_viewmodel.dart';
+import 'package:change_case/change_case.dart';
 import 'package:stacked/stacked.dart';
 
 class MenuCard extends ViewModelWidget<OrderViewModel> {
@@ -15,7 +16,8 @@ class MenuCard extends ViewModelWidget<OrderViewModel> {
       elevation: 2,
       child: InkWell(
         borderRadius: const BorderRadius.all(Radius.circular(16)),
-        onTap: () => viewModel.addItemToOrder(viewModel.menuItems[index]),
+        onTap: () =>
+            viewModel.addItemToOrder(viewModel.filteredMenuItems[index]),
         child: Row(
           children: [
             ClipRRect(
@@ -36,11 +38,13 @@ class MenuCard extends ViewModelWidget<OrderViewModel> {
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
                   Text(
-                    viewModel.menuItems[index].name ?? 'Item Name',
-                    style: appTheme.textTheme.titleLarge,
+                    viewModel.filteredMenuItems[index].name?.toCapitalCase() ??
+                        'Item Name',
+                    style: appTheme.textTheme.titleLarge
+                        ?.copyWith(fontWeight: FontWeight.bold),
                   ),
                   Text(
-                    "₱ ${viewModel.menuItems[index].price?.toStringAsFixed(2)}",
+                    "₱ ${viewModel.filteredMenuItems[index].price?.toStringAsFixed(2)}",
                     style: appTheme.textTheme.titleLarge,
                   ),
                 ],

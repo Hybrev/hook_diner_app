@@ -1,8 +1,9 @@
 // views/home_view.dart
+import 'package:change_case/change_case.dart';
 import 'package:flutter/material.dart';
 import 'package:hook_diner/app/modules/order/order_viewmodel.dart';
 import 'package:hook_diner/app/modules/order/widgets/menu_grid.dart';
-import 'package:hook_diner/app/modules/order/widgets/order_list_modal.dart';
+import 'package:hook_diner/app/modules/order/widgets/checkout/checkout_modal.dart';
 import 'package:hook_diner/app/shared/widgets/base_appbar.dart';
 import 'package:hook_diner/core/locator.dart';
 import 'package:stacked/stacked.dart';
@@ -78,12 +79,11 @@ class OrderView extends StatelessWidget {
                         alignment: Alignment.bottomRight,
                         child: DropdownButton<String>(
                           value: model.selectedCategoryController.text,
-                          style: appTheme.textTheme.labelLarge,
                           focusColor: Theme.of(context).colorScheme.tertiary,
                           items: model.categories
                               .map((e) => DropdownMenuItem<String>(
                                     value: e.id,
-                                    child: Text(e.title!),
+                                    child: Text(e.title ?? ''),
                                   ))
                               .toList(),
                           onChanged: (value) =>
@@ -113,7 +113,7 @@ class OrderView extends StatelessWidget {
                         borderRadius: BorderRadius.circular(8),
                         onTap: () => model.showCustomModal(
                           context,
-                          dialogContent: OrderListModal(
+                          dialogContent: CheckOutModal(
                             orderedItems: model.orderedItems,
                           ),
                         ),
