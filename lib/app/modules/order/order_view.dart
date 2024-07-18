@@ -1,5 +1,4 @@
 // views/home_view.dart
-import 'package:change_case/change_case.dart';
 import 'package:flutter/material.dart';
 import 'package:hook_diner/app/modules/order/order_viewmodel.dart';
 import 'package:hook_diner/app/modules/order/widgets/filter_actions.dart';
@@ -42,6 +41,7 @@ class OrderView extends StatelessWidget {
                       maxWidth: 840,
                     ),
                     child: Card(
+                      shadowColor: appTheme.colorScheme.onSurface,
                       elevation: 2,
                       color: appTheme.colorScheme.primary,
                       child: InkWell(

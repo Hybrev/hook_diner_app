@@ -1,5 +1,3 @@
-import 'dart:math';
-
 import 'package:flutter/material.dart';
 import 'package:hook_diner/app/shared/viewmodel.dart';
 import 'package:hook_diner/core/models/category.dart';
@@ -31,15 +29,22 @@ class OrderViewModel extends SharedViewModel {
   final TextEditingController selectedCategoryController =
       TextEditingController();
 
+  bool? _isRegularCustomer;
+  bool? get isRegularCustomer => _isRegularCustomer;
+
   void initialize() async {
     setBusy(true);
 
     _categories = await database.getCategories();
     _categories.insert(0, Category(id: 'all', title: 'All'));
+
+    searchBarController.text = '';
     selectedCategoryController.text = _categories.first.id.toString();
 
     _menuItems = await database.getItems();
     _filteredMenuItems = _menuItems;
+
+    _isRegularCustomer = false;
 
     notifyListeners();
     setBusy(false);
@@ -62,6 +67,11 @@ class OrderViewModel extends SharedViewModel {
     // });
   }
 
+  void updateCustomerStatus(bool value) {
+    _isRegularCustomer = value;
+    notifyListeners();
+  }
+
   void updateCategoryFilter(String value) {
     selectedCategoryController.text = value;
     switch (value != 'all') {
@@ -77,7 +87,6 @@ class OrderViewModel extends SharedViewModel {
   }
 
   void updateSearchText(String value) {
-    print('updateSearchText: $value');
     searchBarController.text = value;
 
     _filteredMenuItems = _menuItems

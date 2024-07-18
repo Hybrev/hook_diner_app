@@ -21,18 +21,16 @@ class CheckOutTile extends CheckOutModal {
       child: ListTile(
         leading: Text(
           "${index + 1}",
-          style: Theme.of(context).textTheme.labelMedium?.copyWith(
+          style: Theme.of(context).textTheme.titleSmall?.copyWith(
                 fontWeight: FontWeight.bold,
               ),
         ),
         title: Text(
           orderedItems?[index].name?.toCapitalCase() ?? 'Item Name',
-          style: Theme.of(context).textTheme.labelLarge?.copyWith(
-                fontWeight: FontWeight.bold,
-              ),
+          style: Theme.of(context).textTheme.titleMedium,
         ),
         trailing: Text(orderedItems?[index].price?.toStringAsFixed(2) ?? '0.00',
-            style: Theme.of(context).textTheme.labelLarge),
+            style: Theme.of(context).textTheme.titleMedium),
       ),
     );
   }

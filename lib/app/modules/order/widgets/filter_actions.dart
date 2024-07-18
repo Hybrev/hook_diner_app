@@ -44,6 +44,7 @@ class FilterActions extends ViewModelWidget<OrderViewModel> {
     return Column(
       children: [
         SearchBar(
+          onChanged: (value) => viewModel.updateSearchText(value),
           constraints: const BoxConstraints(maxWidth: 480),
           trailing: [
             Tooltip(

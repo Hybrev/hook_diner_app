@@ -61,17 +61,20 @@ class DatabaseService {
   }
 
   Stream<List<Item>> listenToItems() {
-    return _itemsCollection.snapshots().map((response) {
+    _itemsCollection.snapshots().listen((response) {
       if (response.docs.isNotEmpty) {
-        return response.docs
-            .map((snapshot) => Item.fromJson(
-                snapshot.data() as Map<String, dynamic>, snapshot.id))
+        final items = response.docs
+            .map((snapshot) {
+              return Item.fromJson(
+                  snapshot.data() as Map<String, dynamic>, snapshot.id);
+            })
             .where((element) => element.name != null)
             .toList();
-      } else {
-        return [];
+
+        _itemsController.add(items);
       }
     });
+    return _itemsController.stream;
   }
 
 /* ITEM */
