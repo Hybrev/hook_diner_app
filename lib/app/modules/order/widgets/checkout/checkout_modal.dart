@@ -29,30 +29,62 @@ class CheckOutModal extends StatelessWidget {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text(
-                      viewModel.isRegularCustomer!
-                          ? 'Regular Customer'
-                          : 'Customer Number',
-                      style: appTheme.textTheme.titleLarge
-                          ?.copyWith(fontWeight: FontWeight.bold),
-                      textAlign: TextAlign.center,
-                    ),
-                    const DropdownMenu(dropdownMenuEntries: []),
-                    // DropdownButton<String>(
-                    //   onChanged: (value) {},
-                    //   items: const [],
-                    // ),
-                    Switch(
-                      value: viewModel.isRegularCustomer!,
-                      activeColor: appTheme.colorScheme.primary,
-                      onChanged: (value) =>
-                          viewModel.updateCustomerStatus(value),
-                    ),
-                  ],
-                ),
+                if (MediaQuery.sizeOf(context).width > 600)
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                        viewModel.isRegularCustomer!
+                            ? 'Regular Customer'
+                            : 'Customer Number',
+                        style: appTheme.textTheme.titleLarge
+                            ?.copyWith(fontWeight: FontWeight.bold),
+                        textAlign: TextAlign.center,
+                      ),
+                      const DropdownMenu(dropdownMenuEntries: []),
+                      // DropdownButton<String>(
+                      //   onChanged: (value) {},
+                      //   items: const [],
+                      // ),
+                      Switch(
+                        value: viewModel.isRegularCustomer!,
+                        activeColor: appTheme.colorScheme.primary,
+                        onChanged: (value) =>
+                            viewModel.updateCustomerStatus(value),
+                      ),
+                    ],
+                  )
+                else
+                  Column(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                        viewModel.isRegularCustomer!
+                            ? 'Regular Customer'
+                            : 'Customer Number',
+                        style: appTheme.textTheme.titleLarge
+                            ?.copyWith(fontWeight: FontWeight.bold),
+                        textAlign: TextAlign.center,
+                      ),
+                      const SizedBox(height: 16),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          const DropdownMenu(dropdownMenuEntries: []),
+                          // DropdownButton<String>(
+                          //   onChanged: (value) {},
+                          //   items: const [],
+                          // ),
+                          Switch(
+                            value: viewModel.isRegularCustomer!,
+                            activeColor: appTheme.colorScheme.primary,
+                            onChanged: (value) =>
+                                viewModel.updateCustomerStatus(value),
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
                 const SizedBox(height: 16),
                 CheckoutItemList(viewModel, orderedItems: orderedItems),
                 Row(
@@ -82,8 +114,6 @@ class CheckOutModal extends StatelessWidget {
           child: ElevatedButton(
             onPressed: () => viewModel.clearOrder(),
             style: ElevatedButton.styleFrom(
-              shape: const RoundedRectangleBorder(
-                  borderRadius: BorderRadius.all(Radius.circular(16))),
               textStyle:
                   const TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
               backgroundColor: appTheme.colorScheme.primary,
