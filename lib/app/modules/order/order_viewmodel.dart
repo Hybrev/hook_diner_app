@@ -76,6 +76,16 @@ class OrderViewModel extends SharedViewModel {
     notifyListeners();
   }
 
+  void updateSearchText(String value) {
+    print('updateSearchText: $value');
+    searchBarController.text = value;
+
+    _filteredMenuItems = _menuItems
+        .where((item) => item.name!.toLowerCase().contains(value.toLowerCase()))
+        .toList();
+    notifyListeners();
+  }
+
   void addItemToOrder(Item item) {
     _orderedItems.add(item);
     _totalPrice = _totalPrice + item.price!;

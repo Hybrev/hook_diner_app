@@ -2,6 +2,7 @@
 import 'package:change_case/change_case.dart';
 import 'package:flutter/material.dart';
 import 'package:hook_diner/app/modules/order/order_viewmodel.dart';
+import 'package:hook_diner/app/modules/order/widgets/filter_actions.dart';
 import 'package:hook_diner/app/modules/order/widgets/menu_grid.dart';
 import 'package:hook_diner/app/modules/order/widgets/checkout/checkout_modal.dart';
 import 'package:hook_diner/app/shared/widgets/base_appbar.dart';
@@ -26,77 +27,11 @@ class OrderView extends StatelessWidget {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                // SEARCH BAR FOR FILTERING ITEMS
-                if (MediaQuery.sizeOf(context).width > 600)
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: [
-                      DropdownButton<String>(
-                        value: model.selectedCategoryController.text,
-                        style: appTheme.textTheme.labelLarge,
-                        focusColor: Theme.of(context).colorScheme.tertiary,
-                        items: model.categories
-                            .map((e) => DropdownMenuItem<String>(
-                                  value: e.id,
-                                  child: Text(e.title!),
-                                ))
-                            .toList(),
-                        onChanged: (value) =>
-                            model.updateCategoryFilter(value!),
-                      ),
-                      SearchBar(
-                        constraints: const BoxConstraints(maxWidth: 400),
-                        trailing: [
-                          Tooltip(
-                            message: 'Search',
-                            child: IconButton(
-                              icon: const Icon(Icons.search),
-                              onPressed: () {},
-                            ),
-                          ),
-                        ],
-                        controller: model.searchBarController,
-                      ),
-                    ],
-                  )
-                else
-                  Column(
-                    children: [
-                      SearchBar(
-                        constraints: const BoxConstraints(maxWidth: 480),
-                        trailing: [
-                          Tooltip(
-                            message: 'Search',
-                            child: IconButton(
-                              icon: const Icon(Icons.search),
-                              onPressed: () {},
-                            ),
-                          ),
-                        ],
-                        controller: model.searchBarController,
-                      ),
-                      Align(
-                        alignment: Alignment.bottomRight,
-                        child: DropdownButton<String>(
-                          value: model.selectedCategoryController.text,
-                          focusColor: Theme.of(context).colorScheme.tertiary,
-                          items: model.categories
-                              .map((e) => DropdownMenuItem<String>(
-                                    value: e.id,
-                                    child: Text(e.title ?? ''),
-                                  ))
-                              .toList(),
-                          onChanged: (value) =>
-                              model.updateCategoryFilter(value!),
-                        ),
-                      ),
-                    ],
-                  ),
+                // ACTIONS ROW FOR FILTERING ITEMS
+                const FilterActions(),
                 const SizedBox(height: 8),
                 // GRID OF AVAILABLE ITEMS
-                const Expanded(
-                  child: MenuGrid(),
-                ),
+                const Expanded(child: MenuGrid()),
                 const SizedBox(height: 8),
 
                 // TOTAL PRICE COST OF ORDER
