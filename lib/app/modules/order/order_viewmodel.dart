@@ -44,6 +44,7 @@ class OrderViewModel extends SharedViewModel {
     notifyListeners();
     setBusy(false);
 
+    /* STREAM APPROACH, REMOVED FOR NOW */
     // database.listenToItems().listen((items) {
     //   items.sort((a, b) => a.name!.compareTo(b.name!));
 

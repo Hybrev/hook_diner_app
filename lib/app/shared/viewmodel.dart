@@ -26,6 +26,14 @@ class SharedViewModel extends BaseViewModel {
         context: ctx,
         barrierDismissible: false,
         builder: (_) {
+          final showFullScreenDialog = MediaQuery.sizeOf(ctx).width < 600;
+
+          if (showFullScreenDialog) {
+            return Dialog.fullscreen(
+              child: dialogContent,
+            );
+          }
+
           return Dialog(
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(16.0),

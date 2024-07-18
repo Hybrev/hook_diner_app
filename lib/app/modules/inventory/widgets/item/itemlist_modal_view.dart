@@ -76,7 +76,7 @@ class ItemListModalView extends StatelessWidget {
                               data: viewModel.items ?? [],
                               title: viewModel.items![index].name!,
                               subtitle:
-                                  '₱ ${viewModel.items![index].price.toString()}'
+                                  '₱ ${viewModel.items![index].price?.toStringAsFixed(2)}'
                                   '\n${viewModel.items![index].quantity.toString()} pcs',
                               trailingText: viewModel
                                       .items![index].expirationDate
