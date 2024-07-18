@@ -56,8 +56,9 @@ class FilterActions extends ViewModelWidget<OrderViewModel> {
           ],
           controller: viewModel.searchBarController,
         ),
+        const SizedBox(height: 16),
         Align(
-          alignment: Alignment.bottomRight,
+          alignment: Alignment.topRight,
           child: DropdownButton<String>(
             value: viewModel.selectedCategoryController.text,
             focusColor: Theme.of(context).colorScheme.tertiary,

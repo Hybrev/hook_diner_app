@@ -20,16 +20,23 @@ class MenuCard extends ViewModelWidget<OrderViewModel> {
             viewModel.addItemToOrder(viewModel.filteredMenuItems[index]),
         child: Row(
           children: [
-            ClipRRect(
-              borderRadius: const BorderRadius.horizontal(
-                left: Radius.circular(16),
-              ),
-              child: Image.network(
-                'https://archive.org/download/placeholder-image/placeholder-image.jpg',
-                fit: BoxFit.cover,
-                width: 80,
-                height: double.infinity,
-              ),
+            // ClipRRect(
+            //   borderRadius: const BorderRadius.horizontal(
+            //     left: Radius.circular(16),
+            //   ),
+            //   child: Image.network(
+            //     'https://archive.org/download/placeholder-image/placeholder-image.jpg',
+            //     fit: BoxFit.cover,
+            //     width: 80,
+            //     height: double.infinity,
+            //   ),
+            // ),
+            Icon(
+              index % 2 == 0
+                  ? Icons.fastfood_rounded
+                  : Icons.restaurant_rounded,
+              size: 80,
+              color: appTheme.colorScheme.primary,
             ),
             const SizedBox(width: 16),
             Expanded(
