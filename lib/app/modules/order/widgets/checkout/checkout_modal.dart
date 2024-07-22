@@ -41,11 +41,11 @@ class CheckOutModal extends StatelessWidget {
                             ?.copyWith(fontWeight: FontWeight.bold),
                         textAlign: TextAlign.center,
                       ),
-                      const DropdownMenu(dropdownMenuEntries: []),
-                      // DropdownButton<String>(
-                      //   onChanged: (value) {},
-                      //   items: const [],
-                      // ),
+                      // const DropdownMenu(dropdownMenuEntries: []),
+                      DropdownButton<String>(
+                        onChanged: (value) {},
+                        items: const [],
+                      ),
                       Switch(
                         value: viewModel.isRegularCustomer!,
                         activeColor: appTheme.colorScheme.primary,
@@ -70,11 +70,34 @@ class CheckOutModal extends StatelessWidget {
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          const DropdownMenu(dropdownMenuEntries: []),
-                          // DropdownButton<String>(
-                          //   onChanged: (value) {},
-                          //   items: const [],
-                          // ),
+                          // const DropdownMenu(dropdownMenuEntries: []),
+                          DropdownButton<String>(
+                            onChanged: (value) =>
+                                viewModel.updateCustomerNumber(value!),
+                            value: viewModel.customerNumber,
+                            items: const [
+                              DropdownMenuItem<String>(
+                                value: '1',
+                                child: Text('1'),
+                              ),
+                              DropdownMenuItem<String>(
+                                value: '2',
+                                child: Text('2'),
+                              ),
+                              DropdownMenuItem<String>(
+                                value: '3',
+                                child: Text('3'),
+                              ),
+                              DropdownMenuItem<String>(
+                                value: '4',
+                                child: Text('4'),
+                              ),
+                              DropdownMenuItem<String>(
+                                value: '5',
+                                child: Text('5'),
+                              ),
+                            ],
+                          ),
                           Switch(
                             value: viewModel.isRegularCustomer!,
                             activeColor: appTheme.colorScheme.primary,
@@ -86,6 +109,19 @@ class CheckOutModal extends StatelessWidget {
                     ],
                   ),
                 const SizedBox(height: 16),
+                // ORDER LIST
+                ListTile(
+                  title: Text(
+                    'ORDER LIST',
+                    style: appTheme.textTheme.titleLarge
+                        ?.copyWith(fontWeight: FontWeight.bold),
+                  ),
+                  trailing: Text(
+                    'PRICE',
+                    style: appTheme.textTheme.titleLarge
+                        ?.copyWith(fontWeight: FontWeight.bold),
+                  ),
+                ),
                 CheckoutItemList(viewModel, orderedItems: orderedItems),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,

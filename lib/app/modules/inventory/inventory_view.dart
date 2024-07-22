@@ -45,7 +45,7 @@ class InventoryView extends StatelessWidget {
                 context,
                 dialogContent: const AddEditItemView(),
               ),
-              visible: model.categories.isNotEmpty,
+              visible: model.categories?.isNotEmpty ?? false,
             ),
             SpeedDialChild(
               label: "Category",

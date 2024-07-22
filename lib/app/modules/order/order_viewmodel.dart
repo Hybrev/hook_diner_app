@@ -32,6 +32,9 @@ class OrderViewModel extends SharedViewModel {
   bool? _isRegularCustomer;
   bool? get isRegularCustomer => _isRegularCustomer;
 
+  String? _customerNumber;
+  String? get customerNumber => _customerNumber;
+
   void initialize() async {
     setBusy(true);
 
@@ -45,6 +48,7 @@ class OrderViewModel extends SharedViewModel {
     _filteredMenuItems = _menuItems;
 
     _isRegularCustomer = false;
+    _customerNumber = '1';
 
     notifyListeners();
     setBusy(false);
@@ -69,6 +73,11 @@ class OrderViewModel extends SharedViewModel {
 
   void updateCustomerStatus(bool value) {
     _isRegularCustomer = value;
+    notifyListeners();
+  }
+
+  void updateCustomerNumber(String value) {
+    _customerNumber = value;
     notifyListeners();
   }
 

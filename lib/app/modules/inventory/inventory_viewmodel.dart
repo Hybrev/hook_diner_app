@@ -6,8 +6,8 @@ class InventoryViewModel extends SharedViewModel {
   final String _title = 'Inventory';
   String get title => _title;
 
-  List<Category> _categories = [];
-  List<Category> get categories => _categories;
+  List<Category>? _categories = [];
+  List<Category>? get categories => _categories;
 
   List<Item>? _items;
   List<Item>? get items => _items;
@@ -22,7 +22,10 @@ class InventoryViewModel extends SharedViewModel {
       List<Category> updatedCategories = categories;
       if (updatedCategories.isNotEmpty) {
         _categories = updatedCategories;
-        _categories.sort((a, b) => a.title!.compareTo(b.title!));
+        _categories!.sort((a, b) => a.title!.compareTo(b.title!));
+        notifyListeners();
+      } else {
+        _categories = [];
         notifyListeners();
       }
       setBusy(false);
@@ -72,7 +75,7 @@ class InventoryViewModel extends SharedViewModel {
 
       try {
         await database.deleteCategory(category.id!);
-        _categories.removeWhere((c) => c.id == category.id);
+        _categories!.removeWhere((c) => c.id == category.id);
         notifyListeners();
         await dialog.showDialog(
           title: 'Category Deleted',
