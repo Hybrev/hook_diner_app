@@ -17,7 +17,7 @@ class MenuCard extends ViewModelWidget<OrderViewModel> {
       child: InkWell(
         borderRadius: const BorderRadius.all(Radius.circular(16)),
         onTap: () =>
-            viewModel.addItemToOrder(viewModel.filteredMenuItems[index]),
+            viewModel.addItemToOrder(viewModel.filteredMenuItems![index]),
         child: Row(
           children: [
             // ClipRRect(
@@ -45,13 +45,13 @@ class MenuCard extends ViewModelWidget<OrderViewModel> {
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
                   Text(
-                    viewModel.filteredMenuItems[index].name?.toCapitalCase() ??
+                    viewModel.filteredMenuItems?[index].name?.toCapitalCase() ??
                         'Item Name',
                     style: appTheme.textTheme.titleLarge
                         ?.copyWith(fontWeight: FontWeight.bold),
                   ),
                   Text(
-                    "₱ ${viewModel.filteredMenuItems[index].price?.toStringAsFixed(2)}",
+                    "₱ ${viewModel.filteredMenuItems?[index].price?.toStringAsFixed(2)}",
                     style: appTheme.textTheme.titleLarge,
                   ),
                 ],

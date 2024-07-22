@@ -7,17 +7,17 @@ class OrderViewModel extends SharedViewModel {
   final String _title = 'Order Menu';
   String get title => _title;
 
-  List<Item> _menuItems = [];
-  List<Item> get menuItems => _menuItems;
+  List<Item>? _menuItems;
+  List<Item>? get menuItems => _menuItems;
 
-  List<Item> _filteredMenuItems = [];
-  List<Item> get filteredMenuItems => _filteredMenuItems;
+  List<Item>? _filteredMenuItems;
+  List<Item>? get filteredMenuItems => _filteredMenuItems;
 
   List<Item> _orderedItems = [];
   List<Item> get orderedItems => _orderedItems;
 
-  List<Category> _categories = [];
-  List<Category> get categories => _categories;
+  List<Category>? _categories = [];
+  List<Category>? get categories => _categories;
 
   int _totalItems = 0;
   int get totalItems => _totalItems;
@@ -39,10 +39,10 @@ class OrderViewModel extends SharedViewModel {
     setBusy(true);
 
     _categories = await database.getCategories();
-    _categories.insert(0, Category(id: 'all', title: 'All'));
+    _categories?.insert(0, Category(id: 'all', title: 'All'));
 
     searchBarController.text = '';
-    selectedCategoryController.text = _categories.first.id.toString();
+    selectedCategoryController.text = _categories?.first.id.toString() ?? '';
 
     _menuItems = await database.getItems();
     _filteredMenuItems = _menuItems;
@@ -86,7 +86,7 @@ class OrderViewModel extends SharedViewModel {
     switch (value != 'all') {
       case true:
         _filteredMenuItems =
-            _menuItems.where((item) => item.category?.id == value).toList();
+            _menuItems?.where((item) => item.category?.id == value).toList();
         break;
       default:
         _filteredMenuItems = _menuItems;
@@ -99,7 +99,8 @@ class OrderViewModel extends SharedViewModel {
     searchBarController.text = value;
 
     _filteredMenuItems = _menuItems
-        .where((item) => item.name!.toLowerCase().contains(value.toLowerCase()))
+        ?.where(
+            (item) => item.name!.toLowerCase().contains(value.toLowerCase()))
         .toList();
     notifyListeners();
   }
@@ -112,7 +113,6 @@ class OrderViewModel extends SharedViewModel {
   }
 
   void removeItemFromOrder(Item item) {
-    print('item: ${item.toJson()}');
     _orderedItems.remove(item);
     _totalPrice = _totalPrice - item.price!;
     _totalItems--;

@@ -290,5 +290,6 @@ class DatabaseService {
   }
 
 /* ORDER */
-// GET
+
+/* CUSTOMER */
 }

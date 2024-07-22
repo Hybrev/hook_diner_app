@@ -17,7 +17,7 @@ class FilterActions extends ViewModelWidget<OrderViewModel> {
             style: appTheme.textTheme.labelLarge,
             focusColor: Theme.of(context).colorScheme.tertiary,
             items: viewModel.categories
-                .map((e) => DropdownMenuItem<String>(
+                ?.map((e) => DropdownMenuItem<String>(
                       value: e.id,
                       child: Text(e.title!),
                     ))
@@ -64,7 +64,7 @@ class FilterActions extends ViewModelWidget<OrderViewModel> {
             value: viewModel.selectedCategoryController.text,
             focusColor: Theme.of(context).colorScheme.tertiary,
             items: viewModel.categories
-                .map((e) => DropdownMenuItem<String>(
+                ?.map((e) => DropdownMenuItem<String>(
                       value: e.id,
                       child: Text(e.title ?? ''),
                     ))
