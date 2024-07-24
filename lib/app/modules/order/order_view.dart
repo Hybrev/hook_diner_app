@@ -19,13 +19,16 @@ class OrderView extends StatelessWidget {
       onViewModelReady: (viewModel) => viewModel.initialize(),
       disposeViewModel: false,
       builder: (context, model, child) => Scaffold(
-        appBar: const BaseAppBar(title: 'MENU'),
+        appBar: const BaseAppBar(
+          title: 'ORDER MENU',
+          centerTitle: true,
+        ),
         body: Center(
           child: model.isBusy
               ? const CircularProgressIndicator()
-              : model.menuItems != null ||
-                      model.orderedItems.isNotEmpty ||
-                      model.categories != null
+              : model.menuItems != null &&
+                      (model.orderedItems.isNotEmpty ||
+                          model.categories != null)
                   ? SafeArea(
                       minimum: const EdgeInsets.all(16),
                       child: Column(

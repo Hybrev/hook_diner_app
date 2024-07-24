@@ -1,20 +1,13 @@
-import 'package:stacked/stacked.dart';
+import 'package:hook_diner/app/shared/viewmodel.dart';
 
-class CustomerViewModel extends BaseViewModel {
+class CustomerViewModel extends SharedViewModel {
   final String _title = 'Customer List';
   String get title => _title;
 
   String? data;
-  int counter = 0;
+  int currentIndex = 0;
 
   void initialize() async {
     print('viewModel initialized');
-  }
-
-  void incrementCounter() {
-    print('incrementing counter');
-    counter++;
-    data = 'Counter: $counter';
-    notifyListeners();
   }
 }

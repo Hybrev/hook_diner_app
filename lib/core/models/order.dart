@@ -3,35 +3,31 @@ import 'package:hook_diner/core/models/item.dart';
 
 class Order {
   String? id;
-  String? name;
   DocumentReference? customerId;
-  List<Item>? items;
+  int? orderNumber;
   double? totalPrice;
   String? orderStatus;
 
   Order({
     this.id,
-    this.name,
     this.customerId,
-    this.items,
+    this.orderNumber,
     this.totalPrice,
     this.orderStatus,
   });
 
   factory Order.fromJson(Map<String, dynamic> json, String id) => Order(
         id: json['id'] as String?,
-        name: json['name'] as String?,
         customerId: json['customer_id'] as DocumentReference?,
-        items: json['items'] as List<Item>?,
+        orderNumber: json['order_number'] as int?,
         totalPrice: json['total_price'] as double?,
         orderStatus: json['order_status'] as String?,
       );
 
   Map<String, dynamic> toJson() => {
         'id': id,
-        'name': name,
         'customer_id': customerId,
-        'items': items,
+        'order_number': orderNumber,
         'total_price': totalPrice,
         'order_status': orderStatus,
       };

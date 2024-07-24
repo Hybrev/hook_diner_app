@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:hook_diner/core/models/category.dart';
 import 'package:hook_diner/core/models/item.dart';
+import 'package:hook_diner/core/models/order.dart' as order_model;
 import 'package:hook_diner/core/models/user.dart';
 
 class DatabaseService {
@@ -14,6 +15,9 @@ class DatabaseService {
 
   final CollectionReference _itemsCollection =
       FirebaseFirestore.instance.collection('items');
+
+  final CollectionReference _ordersCollection =
+      FirebaseFirestore.instance.collection('orders');
 
   final StreamController<List<User>> _usersController =
       StreamController<List<User>>.broadcast();
@@ -290,6 +294,36 @@ class DatabaseService {
   }
 
 /* ORDER */
+  Future addOrder(order_model.Order order,
+      {required List<Item> orderedItems}) async {
+    print('order received: ${order.toJson()}');
+    try {
+      // adds order info w/ auto-gen ID
+      final docRef = _ordersCollection.doc();
+      await docRef.set(order.toJson());
+
+      // get newly created  document id & set to order id
+      final orderId = docRef.id;
+      order.id = orderId;
+      docRef.update(order.toJson());
+
+      // finds reference based on list of ordered items
+      Map<String, dynamic> item = {
+        'item_id': '',
+      };
+      for (var i = 0; i < orderedItems.length; i++) {
+        // gets each item id for reference
+        DocumentReference itemRef = _itemsCollection.doc(orderedItems[i].id);
+        item = {'item_id': itemRef};
+
+        await _ordersCollection.doc(orderId).collection('items').add(item);
+      }
+      return true;
+    } catch (e) {
+      print('error: $e');
+      return e.toString();
+    }
+  }
 
 /* CUSTOMER */
 }

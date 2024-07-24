@@ -42,6 +42,7 @@ class UsersView extends StatelessWidget {
                             subtitle: model.users![index].password!,
                             onEditTap: () => model.showCustomModal(
                               context,
+                              isAddEdit: true,
                               dialogContent: AddEditUserView(
                                 editingUser: model.users![index],
                               ),
@@ -73,6 +74,7 @@ class UsersView extends StatelessWidget {
         ),
         floatingActionButton: FloatingActionButton(
           onPressed: () => model.showCustomModal(
+            isAddEdit: true,
             context,
             dialogContent: const AddEditUserView(editingUser: null),
           ),

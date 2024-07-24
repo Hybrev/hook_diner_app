@@ -6,11 +6,13 @@ class BaseButton extends StatelessWidget {
     required this.label,
     required this.onPressed,
     this.loading = false,
+    this.buttonIcon = Icons.add_rounded,
   });
 
   final Function() onPressed;
   final bool loading;
   final String label;
+  final IconData? buttonIcon;
 
   @override
   Widget build(BuildContext context) {
@@ -30,10 +32,11 @@ class BaseButton extends StatelessWidget {
               mainAxisSize: MainAxisSize.min,
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: [
-                Icon(
-                  Icons.add_rounded,
-                  color: appTheme.colorScheme.onPrimary,
-                ),
+                if (buttonIcon != null)
+                  Icon(
+                    buttonIcon,
+                    color: appTheme.colorScheme.onPrimary,
+                  ),
                 const SizedBox(width: 8),
                 Text(
                   label,

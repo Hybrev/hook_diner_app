@@ -50,7 +50,6 @@ class AddEditCategoryViewModel extends InventoryViewModel {
 
       if (response) {
         setBusy(false);
-        goBack();
 
         await dialog.showDialog(
           title: 'Success',

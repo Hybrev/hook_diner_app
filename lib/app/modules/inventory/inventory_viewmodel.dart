@@ -27,6 +27,7 @@ class InventoryViewModel extends SharedViewModel {
       } else {
         _categories = [];
         notifyListeners();
+        setBusy(false);
       }
       setBusy(false);
     });

@@ -43,6 +43,7 @@ class InventoryView extends StatelessWidget {
               ),
               onTap: () => model.showCustomModal(
                 context,
+                isAddEdit: true,
                 dialogContent: const AddEditItemView(),
               ),
               visible: model.categories?.isNotEmpty ?? false,
@@ -56,6 +57,7 @@ class InventoryView extends StatelessWidget {
               ),
               onTap: () => model.showCustomModal(
                 context,
+                isAddEdit: true,
                 dialogContent: const AddEditCategoryView(),
               ),
             ),

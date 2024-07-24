@@ -21,11 +21,17 @@ class SharedViewModel extends BaseViewModel {
   DialogService get dialog => _dialog;
   DatabaseService get database => _database;
 
-  void showCustomModal(BuildContext ctx, {required Widget dialogContent}) {
+  void showCustomModal(BuildContext ctx,
+      {required Widget dialogContent, bool isAddEdit = false}) {
     showDialog(
         context: ctx,
         barrierDismissible: false,
         builder: (_) {
+          if (MediaQuery.sizeOf(ctx).width < 600 && !isAddEdit) {
+            return Dialog.fullscreen(
+              child: dialogContent,
+            );
+          }
           return Dialog(
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(16.0),

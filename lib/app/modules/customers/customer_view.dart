@@ -1,7 +1,9 @@
 // views/home_view.dart
 import 'package:flutter/material.dart';
 import 'package:hook_diner/app/modules/customers/customer_viewmodel.dart';
-import 'package:hook_diner/app/shared/widgets/base_appbar.dart';
+import 'package:hook_diner/app/modules/customers/widgets/customer_appbar.dart';
+import 'package:hook_diner/app/modules/customers/widgets/paid/paid_orders.dart';
+import 'package:hook_diner/app/modules/customers/widgets/unpaid/unpaid_orders.dart';
 import 'package:hook_diner/core/locator.dart';
 import 'package:stacked/stacked.dart';
 
@@ -16,12 +18,15 @@ class CustomerView extends StatelessWidget {
       onViewModelReady: (viewModel) => viewModel.initialize(),
       fireOnViewModelReadyOnce: true,
       disposeViewModel: false,
-      builder: (context, model, child) => Scaffold(
-        appBar: const BaseAppBar(title: "CUSTOMERS"),
-        body: Center(
-          child: Text(
-            model.title,
-            style: appTheme.textTheme.displaySmall,
+      builder: (context, model, child) => const DefaultTabController(
+        length: 2,
+        child: Scaffold(
+          appBar: CustomerAppBar(),
+          body: TabBarView(
+            children: [
+              UnpaidOrders(),
+              PaidOrders(),
+            ],
           ),
         ),
       ),
