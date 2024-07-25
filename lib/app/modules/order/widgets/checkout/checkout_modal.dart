@@ -24,10 +24,12 @@ class CheckOutModal extends StatelessWidget {
           centerTitle: true,
           automaticallyImplyLeading: true,
           actions: [
-            Switch(
-              value: viewModel.isRegularCustomer!,
-              activeColor: appTheme.colorScheme.primary,
-              onChanged: (value) => viewModel.updateCustomerStatus(value),
+            IconButton(
+              onPressed: () => viewModel.clearOrder(),
+              icon: Icon(
+                Icons.delete_rounded,
+                color: appTheme.colorScheme.error,
+              ),
             ),
           ],
         ),
@@ -60,6 +62,12 @@ class CheckOutModal extends StatelessWidget {
                                   child: Text(e),
                                 ))
                             .toList(),
+                      ),
+                      Switch(
+                        value: viewModel.isRegularCustomer!,
+                        activeColor: appTheme.colorScheme.primary,
+                        onChanged: (value) =>
+                            viewModel.updateCustomerStatus(value),
                       ),
                     ],
                   )

@@ -30,7 +30,16 @@ class OrderViewModel extends SharedViewModel {
     '7',
     '8',
     '9',
-    '10'
+    '10',
+    '11',
+    '13',
+    '14',
+    '15',
+    '16',
+    '17',
+    '18',
+    '19',
+    '20',
   ];
   List<String> get numberCards => _numberCards;
 
@@ -59,31 +68,21 @@ class OrderViewModel extends SharedViewModel {
     searchBarController.text = '';
     selectedCategoryController.text = _categories?.first.id.toString() ?? '';
 
-    _menuItems = await database.getItems();
-    _filteredMenuItems = _menuItems;
+    database.listenToItems().listen((items) {
+      items.sort((a, b) => a.name!.compareTo(b.name!));
+
+      _menuItems = items;
+      _filteredMenuItems = items;
+
+      notifyListeners();
+      setBusy(false);
+    });
 
     _isRegularCustomer = false;
     _orderCardNumber = '1';
 
     notifyListeners();
     setBusy(false);
-
-    /* STREAM APPROACH, REMOVED FOR NOW */
-    // database.listenToItems().listen((items) {
-    //   items.sort((a, b) => a.name!.compareTo(b.name!));
-
-    //   List<Item> updatedItems = items;
-    //   if (updatedItems.isNotEmpty) {
-    //     _menuItems = updatedItems;
-
-    //     // filters out the available items & sorts alphabetically
-
-    //     _filteredMenuItems =
-    //         _menuItems.where((item) => item.quantity! > 0).toList();
-    //     notifyListeners();
-    //   }
-    //   setBusy(false);
-    // });
   }
 
   Future<String> getItemCategory(Item item) {
@@ -149,15 +148,21 @@ class OrderViewModel extends SharedViewModel {
       setBusy(true);
       final response =
           await database.addOrder(newOrder, orderedItems: _orderedItems);
-      if (response) {
-        setBusy(false);
-        goBack();
-        ();
-        await dialog.showDialog(
-          title: 'SUCCESS',
-          description: 'Your order has been placed successfully!',
-        );
-        clearOrder();
+
+      switch (response) {
+        case 'Exception: out-of-stock':
+          await dialog.showDialog(
+            title: 'ERROR',
+            description: 'Not enough items in stock.',
+          );
+          clearOrder();
+          break;
+        case true:
+          await dialog.showDialog(
+            title: 'SUCCESS',
+            description: 'Your order has been placed successfully!',
+          );
+          clearOrder();
       }
     } catch (e) {
       print('error: $e');
@@ -166,7 +171,8 @@ class OrderViewModel extends SharedViewModel {
         description: 'Failed to place order.',
       );
       goBack();
-      ();
+    } finally {
+      setBusy(false);
     }
   }
 
@@ -177,7 +183,6 @@ class OrderViewModel extends SharedViewModel {
     notifyListeners();
     if (_orderedItems.isEmpty) {
       goBack();
-      ();
     }
   }
 
@@ -186,5 +191,6 @@ class OrderViewModel extends SharedViewModel {
     _totalItems = 0;
     _totalPrice = 0.0;
     notifyListeners();
+    goBack();
   }
 }

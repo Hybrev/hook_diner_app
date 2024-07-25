@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:hook_diner/app/shared/viewmodel.dart';
 import 'package:hook_diner/core/models/order.dart';
 
@@ -11,8 +12,8 @@ class CustomerViewModel extends SharedViewModel {
   List<Order>? _paidOrders;
   List<Order>? get paidOrders => _paidOrders;
 
-  String? data;
-  int currentIndex = 0;
+  TextEditingController searchBarController = TextEditingController();
+  TextEditingController dropdownController = TextEditingController();
 
   void initialize() async {
     print('viewModel initialized');

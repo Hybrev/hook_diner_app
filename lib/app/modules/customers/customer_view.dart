@@ -18,11 +18,14 @@ class CustomerView extends StatelessWidget {
         length: 2,
         child: Scaffold(
           appBar: CustomerAppBar(),
-          body: TabBarView(
-            children: [
-              OrderGrid(status: 'unpaid'),
-              OrderGrid(status: 'paid'),
-            ],
+          body: SafeArea(
+            minimum: EdgeInsets.all(16),
+            child: TabBarView(
+              children: [
+                OrderGrid(status: 'unpaid'),
+                OrderGrid(status: 'paid'),
+              ],
+            ),
           ),
         ),
       ),

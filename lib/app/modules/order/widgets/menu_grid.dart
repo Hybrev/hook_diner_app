@@ -12,15 +12,14 @@ class MenuGrid extends ViewModelWidget<OrderViewModel> {
       constraints: const BoxConstraints(maxWidth: 840),
       child: GridView.builder(
         gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
-          mainAxisSpacing: 8,
-          mainAxisExtent: 120,
+          mainAxisSpacing: 4,
+          crossAxisSpacing: 4,
+          mainAxisExtent: 140,
           maxCrossAxisExtent: 500,
         ),
         itemCount: viewModel.filteredMenuItems!.length,
         shrinkWrap: true,
-        itemBuilder: (context, index) => MenuCard(
-          index: index,
-        ),
+        itemBuilder: (context, index) => MenuCard(index: index),
       ),
     );
   }

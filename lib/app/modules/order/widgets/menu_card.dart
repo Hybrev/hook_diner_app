@@ -13,13 +13,18 @@ class MenuCard extends ViewModelWidget<OrderViewModel> {
     final appTheme = Theme.of(context);
     return Card(
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
-      color: appTheme.colorScheme.tertiary,
       elevation: 2,
+      color: viewModel.filteredMenuItems![index].quantity! >= 1
+          ? appTheme.colorScheme.surface
+          : appTheme.colorScheme.tertiary,
       child: InkWell(
         borderRadius: const BorderRadius.all(Radius.circular(16)),
-        onTap: () =>
-            viewModel.addItemToOrder(viewModel.filteredMenuItems![index]),
+        onTap: viewModel.filteredMenuItems![index].quantity! >= 1
+            ? () =>
+                viewModel.addItemToOrder(viewModel.filteredMenuItems![index])
+            : null,
         child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
             // ClipRRect(
             //   borderRadius: const BorderRadius.horizontal(
@@ -32,12 +37,15 @@ class MenuCard extends ViewModelWidget<OrderViewModel> {
             //     height: double.infinity,
             //   ),
             // ),
-            Icon(
-              index % 2 == 0
-                  ? Icons.fastfood_rounded
-                  : Icons.restaurant_rounded,
-              size: 80,
-              color: appTheme.colorScheme.primary,
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Icon(
+                index % 2 == 0
+                    ? Icons.fastfood_rounded
+                    : Icons.restaurant_rounded,
+                size: 80,
+                color: appTheme.colorScheme.primary,
+              ),
             ),
             const SizedBox(width: 16),
             Expanded(
@@ -58,6 +66,13 @@ class MenuCard extends ViewModelWidget<OrderViewModel> {
                 ],
               ),
             ),
+            if (viewModel.filteredMenuItems![index].quantity! < 1)
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Text('Out of Stock',
+                    style: appTheme.textTheme.titleMedium
+                        ?.copyWith(color: appTheme.colorScheme.error)),
+              ),
           ],
         ),
       ),

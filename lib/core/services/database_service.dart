@@ -333,12 +333,40 @@ class DatabaseService {
         DocumentReference itemRef = _itemsCollection.doc(orderedItems[i].id);
         item = {'item_id': itemRef};
 
+        // deducts quantity from item
+        try {
+          await updateItemQuantity(orderedItems, i);
+        } on Exception catch (e) {
+          if (e.toString() == 'Exception: out-of-stock') {
+            return e.toString();
+          }
+        }
         await _ordersCollection.doc(orderId).collection('items').add(item);
       }
+
       return true;
     } catch (e) {
       print('error: $e');
       return e.toString();
+    }
+  }
+
+  Future<void> updateItemQuantity(List<Item> orderedItems, int i) async {
+    final docRef = _itemsCollection.doc(orderedItems[i].id);
+    final snapshot = await docRef.get();
+
+    if (snapshot.exists) {
+      final currentQuantity = snapshot.get('quantity') as int;
+
+      print('current quantity: $currentQuantity');
+
+      if (currentQuantity - 1 < 0) {
+        // Handle out-of-stock scenario: return 'out-of-stock' code
+        throw Exception('out-of-stock'); // Or return a specific value/object
+      }
+      await docRef.update({
+        'quantity': currentQuantity - 1,
+      });
     }
   }
 

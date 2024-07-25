@@ -22,6 +22,7 @@ class CategoriesGrid extends ViewModelWidget<InventoryViewModel> {
                         gridDelegate:
                             const SliverGridDelegateWithMaxCrossAxisExtent(
                           mainAxisSpacing: 8,
+                          crossAxisSpacing: 8,
                           maxCrossAxisExtent: 340,
                         ),
                         itemBuilder: (context, index) => CategoryCard(index),
