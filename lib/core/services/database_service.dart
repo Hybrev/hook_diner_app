@@ -28,6 +28,9 @@ class DatabaseService {
   final StreamController<List<Item>> _itemsController =
       StreamController<List<Item>>.broadcast();
 
+  final StreamController<List<order_model.Order>> _ordersController =
+      StreamController<List<order_model.Order>>.broadcast();
+
 /* STREAM FUNCTIONS */
   // USER
   Stream listenToUsers() {
@@ -79,6 +82,20 @@ class DatabaseService {
       }
     });
     return _itemsController.stream;
+  }
+
+  Stream<List<order_model.Order>> listenToOrders() {
+    _ordersCollection.snapshots().listen((response) {
+      if (response.docs.isNotEmpty) {
+        final orders = response.docs.map((snapshot) {
+          return order_model.Order.fromJson(
+              snapshot.data() as Map<String, dynamic>, snapshot.id);
+        }).toList();
+
+        _ordersController.add(orders);
+      }
+    });
+    return _ordersController.stream;
   }
 
 /* ITEM */
@@ -326,4 +343,20 @@ class DatabaseService {
   }
 
 /* CUSTOMER */
+
+  // Future getOrdersByStatus({required String orderStatus}) async {
+  //   try {
+  //     final response = await _ordersCollection.get();
+  //     if (response.docs.isNotEmpty) {
+  //       return response.docs
+  //           .map((snapshot) => order_model.Order.fromJson(
+  //               snapshot.data() as Map<String, dynamic>, snapshot.id))
+  //           .where((element) => element.orderStatus == orderStatus)
+  //           .toList();
+  //     }
+  //   } catch (e) {
+  //     print('error: $e');
+  //     return e.toString();
+  //   }
+  // }
 }

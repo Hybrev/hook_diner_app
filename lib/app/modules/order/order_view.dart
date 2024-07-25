@@ -1,10 +1,10 @@
 // views/home_view.dart
 import 'package:flutter/material.dart';
 import 'package:hook_diner/app/modules/order/order_viewmodel.dart';
-import 'package:hook_diner/app/modules/order/widgets/filter_actions.dart';
 import 'package:hook_diner/app/modules/order/widgets/menu_grid.dart';
 import 'package:hook_diner/app/modules/order/widgets/checkout/checkout_modal.dart';
 import 'package:hook_diner/app/shared/widgets/base_appbar.dart';
+import 'package:hook_diner/app/shared/widgets/filter_actions.dart';
 import 'package:hook_diner/core/locator.dart';
 import 'package:stacked/stacked.dart';
 
@@ -35,7 +35,16 @@ class OrderView extends StatelessWidget {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           // ACTIONS ROW FOR FILTERING ITEMS
-                          const FilterActions(),
+                          FilterActions(
+                            searchBarController: model.searchBarController,
+                            dropdownController:
+                                model.selectedCategoryController,
+                            dropdownItems: model.categories ?? [],
+                            onDropdownChanged: (value) =>
+                                model.updateCategoryFilter(value),
+                            onSearchBarChanged: (value) =>
+                                model.updateSearchText(value),
+                          ),
                           const SizedBox(height: 8),
                           // GRID OF AVAILABLE ITEMS
                           const Expanded(child: MenuGrid()),

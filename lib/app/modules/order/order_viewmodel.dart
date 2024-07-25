@@ -140,6 +140,8 @@ class OrderViewModel extends SharedViewModel {
           _orderCardNumber != null ? int.tryParse(_orderCardNumber!) : null,
       totalPrice: _totalPrice.toDouble(),
       orderStatus: 'unpaid',
+      orderDate:
+          '${DateTime.now().month}/${DateTime.now().day}/${DateTime.now().year}',
     );
     notifyListeners();
 
@@ -149,9 +151,10 @@ class OrderViewModel extends SharedViewModel {
           await database.addOrder(newOrder, orderedItems: _orderedItems);
       if (response) {
         setBusy(false);
-        navigator.back();
+        goBack();
+        ();
         await dialog.showDialog(
-          title: 'Order Placed',
+          title: 'SUCCESS',
           description: 'Your order has been placed successfully!',
         );
         clearOrder();
@@ -159,10 +162,11 @@ class OrderViewModel extends SharedViewModel {
     } catch (e) {
       print('error: $e');
       await dialog.showDialog(
-        title: 'Error',
+        title: 'ERROR',
         description: 'Failed to place order.',
       );
-      navigator.back();
+      goBack();
+      ();
     }
   }
 
@@ -172,7 +176,8 @@ class OrderViewModel extends SharedViewModel {
     _totalItems--;
     notifyListeners();
     if (_orderedItems.isEmpty) {
-      navigator.back();
+      goBack();
+      ();
     }
   }
 

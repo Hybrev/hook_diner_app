@@ -84,6 +84,7 @@ class ItemListModalView extends StatelessWidget {
                                   '',
                               onEditTap: () => viewModel.showCustomModal(
                                 context,
+                                isAddEdit: true,
                                 dialogContent: AddEditItemView(
                                   editingItem: viewModel.items![index],
                                 ),

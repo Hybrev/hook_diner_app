@@ -46,4 +46,8 @@ class SharedViewModel extends BaseViewModel {
           );
         });
   }
+
+  void goBack() {
+    navigator.back();
+  }
 }

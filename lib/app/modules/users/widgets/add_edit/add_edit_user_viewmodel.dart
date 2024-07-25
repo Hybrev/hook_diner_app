@@ -37,21 +37,22 @@ class AddEditUserViewModel extends UsersViewModel {
       );
 
       await dialog.showDialog(
-        title: 'Success',
+        title: 'SUCCESS',
         description: 'User added successfully!',
       );
-      navigator.back();
+      goBack();
+      ();
     } on FirebaseAuthException catch (e) {
       switch (e.code) {
         case 'weak-password':
           await dialog.showDialog(
-            title: 'Password Error',
+            title: 'ERROR',
             description: 'Password must be at least 6 characters',
           );
           break;
         default:
           await dialog.showDialog(
-            title: 'Error',
+            title: 'ERROR',
             description: 'Failed to add user',
           );
       }
@@ -76,21 +77,22 @@ class AddEditUserViewModel extends UsersViewModel {
       );
       if (response) {
         await dialog.showDialog(
-          title: 'Updated!',
+          title: 'SUCCESS',
           description: 'User updated successfully!',
         );
-        navigator.back();
+        goBack();
+        ();
       }
     } catch (e) {
       await dialog.showDialog(
-        title: 'Error',
-        description: 'Failed to update user',
+        title: 'ERROR',
+        description: 'Failed to update user.',
       );
     }
     setBusy(false);
   }
 
   void closeModal() {
-    navigator.back();
+    goBack();
   }
 }

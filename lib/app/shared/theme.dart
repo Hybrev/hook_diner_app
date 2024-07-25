@@ -6,7 +6,7 @@ const primaryColor = Color(0xFF48bef4);
 const primaryFgColor = Color(0xFFfffcfa);
 const secondaryColor = Color(0xFFc5eafc);
 const secondaryFgColor = Color(0xFFfffcfa);
-const accentColor = Color(0xFF73cdf7);
+const accentColor = Color(0xFFF2F7FA);
 const accentFgColor = Color(0xFFfffcfa);
 
 const defaultScheme = ColorScheme(

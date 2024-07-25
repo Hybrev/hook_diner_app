@@ -42,7 +42,7 @@ class AddEditItemViewModel extends InventoryViewModel {
 
       if (fetchedData is! List<Category>) {
         await dialog.showDialog(
-          title: 'Error',
+          title: 'ERROR',
           description: 'Failed to fetch categories',
         );
         setBusy(false);
@@ -75,7 +75,7 @@ class AddEditItemViewModel extends InventoryViewModel {
       );
       if (response == true) {
         await dialog.showDialog(
-          title: 'Success',
+          title: 'SUCCESS',
           description: 'Item added successfully!',
         );
       }
@@ -106,15 +106,15 @@ class AddEditItemViewModel extends InventoryViewModel {
       notifyListeners();
       if (response) {
         await dialog.showDialog(
-          title: 'item Updated!',
-          description: 'item updated successfully!',
+          title: 'SUCCESS',
+          description: 'Item updated successfully!',
         );
       }
       goBack();
     } catch (e) {
       print('error: $e');
       await dialog.showDialog(
-        title: 'Error',
+        title: 'ERROR',
         description: 'Failed to update item',
       );
     } finally {

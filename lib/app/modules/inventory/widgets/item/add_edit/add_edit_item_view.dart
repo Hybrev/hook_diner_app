@@ -25,7 +25,7 @@ class AddEditItemView extends StatelessWidget {
             mainAxisSize: MainAxisSize.min,
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
-              Text('ADD ITEM',
+              Text(editingItem == null ? 'ADD ITEM' : 'EDIT ITEM',
                   style: appTheme.textTheme.headlineLarge
                       ?.copyWith(fontWeight: FontWeight.bold)),
               Divider(color: appTheme.colorScheme.primary),

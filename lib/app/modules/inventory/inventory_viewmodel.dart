@@ -45,9 +45,10 @@ class InventoryViewModel extends SharedViewModel {
     } on Exception catch (e) {
       print('error: $e');
       await dialog.showDialog(
-          title: 'Error', description: 'Failed to fetch items');
+          title: 'ERROR', description: 'Failed to fetch items');
       setBusy(false);
-      navigator.back();
+      goBack();
+      ();
     }
     setBusy(false);
     return _items;
@@ -67,7 +68,7 @@ class InventoryViewModel extends SharedViewModel {
 
       if (categoryItems!.isNotEmpty) {
         await dialog.showDialog(
-          title: 'Cannot Delete',
+          title: 'ERROR - Cannot Delete',
           description: 'Category contains items.',
         );
         setBusy(false);
@@ -79,12 +80,12 @@ class InventoryViewModel extends SharedViewModel {
         _categories!.removeWhere((c) => c.id == category.id);
         notifyListeners();
         await dialog.showDialog(
-          title: 'Category Deleted',
+          title: 'SUCCESS',
           description: 'Category deleted successfully!',
         );
       } catch (e) {
         await dialog.showDialog(
-          title: 'Error',
+          title: 'ERROR',
           description: 'Failed to delete category.',
         );
       } finally {
@@ -109,8 +110,8 @@ class InventoryViewModel extends SharedViewModel {
         getItems(item.category!.id);
 
         await dialog.showDialog(
-          title: 'Item Deleted',
-          description: 'Item deleted successfully',
+          title: 'SUCCESS',
+          description: 'Item deleted successfully!',
         );
       } catch (e) {
         setBusy(false);
@@ -122,9 +123,5 @@ class InventoryViewModel extends SharedViewModel {
       }
     }
     setBusy(false);
-  }
-
-  void goBack() {
-    navigator.back();
   }
 }

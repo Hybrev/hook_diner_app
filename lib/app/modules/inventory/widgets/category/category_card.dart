@@ -25,6 +25,7 @@ class CategoryCard extends ViewModelWidget<InventoryViewModel> {
             dialogContent: AddEditCategoryView(
               editingCategory: viewModel.categories![index],
             ),
+            isAddEdit: true,
           ),
           onDeleteTap: () =>
               viewModel.deleteCategory(viewModel.categories![index]),
@@ -41,6 +42,7 @@ class CategoryCard extends ViewModelWidget<InventoryViewModel> {
         ),
       ),
       child: Card(
+        color: appTheme.colorScheme.tertiary,
         child: InkWell(
             borderRadius: BorderRadius.circular(12),
             splashColor: appTheme.colorScheme.secondary,

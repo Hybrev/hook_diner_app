@@ -13,6 +13,7 @@ class MenuCard extends ViewModelWidget<OrderViewModel> {
     final appTheme = Theme.of(context);
     return Card(
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+      color: appTheme.colorScheme.tertiary,
       elevation: 2,
       child: InkWell(
         borderRadius: const BorderRadius.all(Radius.circular(16)),

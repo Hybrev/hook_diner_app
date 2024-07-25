@@ -56,18 +56,19 @@ class UsersViewModel extends SharedViewModel {
         await auth.deleteUser(user);
 
         await dialog.showDialog(
-          title: 'Deleted',
+          title: 'SUCCESS',
           description: 'User deleted successfully!',
         );
       } catch (e) {
         await dialog.showDialog(
-          title: 'Error',
+          title: 'ERROR',
           description: 'Failed to delete user',
         );
       } finally {
         setBusy(false);
 
-        navigator.back();
+        goBack();
+        ();
       }
     }
   }

@@ -20,7 +20,7 @@ class CheckOutModal extends StatelessWidget {
       disposeViewModel: false,
       builder: (context, viewModel, child) => Scaffold(
         appBar: BaseAppBar(
-          title: 'ORDER',
+          title: 'CHECKOUT',
           centerTitle: true,
           automaticallyImplyLeading: true,
           actions: [
@@ -37,7 +37,7 @@ class CheckOutModal extends StatelessWidget {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                if (MediaQuery.sizeOf(context).width > 600)
+                if (MediaQuery.sizeOf(context).width > 320)
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceAround,
                     children: [
@@ -67,30 +67,24 @@ class CheckOutModal extends StatelessWidget {
                   Column(
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceAround,
-                        children: [
-                          Text(
-                            viewModel.isRegularCustomer!
-                                ? 'Regular Customer'
-                                : 'Customer Number',
-                            style: appTheme.textTheme.titleLarge
-                                ?.copyWith(fontWeight: FontWeight.bold),
-                            textAlign: TextAlign.center,
-                          ),
-                          DropdownButton<String>(
-                            onChanged: (value) => viewModel
-                                .updateOrderCardNumber(value!.toString()),
-                            value: viewModel.orderCardNumber,
-                            items: viewModel.numberCards
-                                .map((e) => DropdownMenuItem<String>(
-                                      value: e,
-                                      child: Text(e),
-                                    ))
-                                .toList(),
-                          ),
-                          // const DropdownMenu(dropdownMenuEntries: []),
-                        ],
+                      Text(
+                        viewModel.isRegularCustomer!
+                            ? 'Regular Customer'
+                            : 'Customer Number',
+                        style: appTheme.textTheme.titleLarge
+                            ?.copyWith(fontWeight: FontWeight.bold),
+                        textAlign: TextAlign.center,
+                      ),
+                      DropdownButton<String>(
+                        onChanged: (value) =>
+                            viewModel.updateOrderCardNumber(value!.toString()),
+                        value: viewModel.orderCardNumber,
+                        items: viewModel.numberCards
+                            .map((e) => DropdownMenuItem<String>(
+                                  value: e,
+                                  child: Text(e),
+                                ))
+                            .toList(),
                       ),
                     ],
                   ),

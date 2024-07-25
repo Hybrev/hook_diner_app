@@ -23,15 +23,15 @@ class AddEditCategoryViewModel extends InventoryViewModel {
       notifyListeners();
       if (response) {
         await dialog.showDialog(
-          title: 'Category Updated!',
+          title: 'SUCCESS',
           description: 'Category updated successfully!',
         );
         goBack();
       }
     } catch (e) {
       await dialog.showDialog(
-        title: 'Error',
-        description: 'Failed to update category',
+        title: 'ERROR',
+        description: 'Failed to update category.',
       );
     }
     setBusy(false);
@@ -52,15 +52,15 @@ class AddEditCategoryViewModel extends InventoryViewModel {
         setBusy(false);
 
         await dialog.showDialog(
-          title: 'Success',
-          description: 'Category added successfully!!',
+          title: 'SUCESS',
+          description: 'Category added successfully!',
         );
       }
     } catch (e) {
       print('error: $e');
       await dialog.showDialog(
-        title: 'Error',
-        description: 'Failed to add category',
+        title: 'ERROR',
+        description: 'Failed to add category.',
       );
     } finally {
       goBack();
