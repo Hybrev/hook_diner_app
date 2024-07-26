@@ -13,10 +13,9 @@ class MenuCard extends ViewModelWidget<OrderViewModel> {
     final appTheme = Theme.of(context);
     return Card(
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
-      elevation: 2,
       color: viewModel.filteredMenuItems![index].quantity! >= 1
-          ? appTheme.colorScheme.surface
-          : appTheme.colorScheme.tertiary,
+          ? appTheme.colorScheme.tertiary
+          : appTheme.colorScheme.tertiary.withOpacity(0.75),
       child: InkWell(
         borderRadius: const BorderRadius.all(Radius.circular(16)),
         onTap: viewModel.filteredMenuItems![index].quantity! >= 1
@@ -51,7 +50,7 @@ class MenuCard extends ViewModelWidget<OrderViewModel> {
             Expanded(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Text(
                     viewModel.filteredMenuItems?[index].name?.toCapitalCase() ??
@@ -59,9 +58,15 @@ class MenuCard extends ViewModelWidget<OrderViewModel> {
                     style: appTheme.textTheme.titleLarge
                         ?.copyWith(fontWeight: FontWeight.bold),
                   ),
+                  const SizedBox(height: 8),
                   Text(
                     "₱ ${viewModel.filteredMenuItems?[index].price?.toStringAsFixed(2)}",
                     style: appTheme.textTheme.titleLarge,
+                  ),
+                  const SizedBox(height: 8),
+                  Text(
+                    "Qty: ${viewModel.filteredMenuItems?[index].quantity?.toString()}",
+                    style: appTheme.textTheme.titleMedium,
                   ),
                 ],
               ),
@@ -69,7 +74,7 @@ class MenuCard extends ViewModelWidget<OrderViewModel> {
             if (viewModel.filteredMenuItems![index].quantity! < 1)
               Padding(
                 padding: const EdgeInsets.all(8.0),
-                child: Text('Out of Stock',
+                child: Text('OUT OF STOCK',
                     style: appTheme.textTheme.titleMedium
                         ?.copyWith(color: appTheme.colorScheme.error)),
               ),

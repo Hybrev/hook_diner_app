@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:hook_diner/core/models/category.dart';
+import 'package:hook_diner/core/models/customer.dart';
 import 'package:hook_diner/core/models/item.dart';
 import 'package:hook_diner/core/models/order.dart' as order_model;
 import 'package:hook_diner/core/models/user.dart';
@@ -19,6 +20,9 @@ class DatabaseService {
   final CollectionReference _ordersCollection =
       FirebaseFirestore.instance.collection('orders');
 
+  final CollectionReference _customersCollection =
+      FirebaseFirestore.instance.collection('customers');
+
   final StreamController<List<User>> _usersController =
       StreamController<List<User>>.broadcast();
 
@@ -30,6 +34,9 @@ class DatabaseService {
 
   final StreamController<List<order_model.Order>> _ordersController =
       StreamController<List<order_model.Order>>.broadcast();
+
+  final StreamController<List<Customer>> _customersController =
+      StreamController<List<Customer>>.broadcast();
 
 /* STREAM FUNCTIONS */
   // USER
@@ -67,6 +74,7 @@ class DatabaseService {
     return _categoriesController.stream;
   }
 
+  // ITEM
   Stream<List<Item>> listenToItems() {
     _itemsCollection.snapshots().listen((response) {
       if (response.docs.isNotEmpty) {
@@ -84,6 +92,7 @@ class DatabaseService {
     return _itemsController.stream;
   }
 
+  // ORDER
   Stream<List<order_model.Order>> listenToOrders() {
     _ordersCollection.snapshots().listen((response) {
       if (response.docs.isNotEmpty) {
@@ -96,6 +105,20 @@ class DatabaseService {
       }
     });
     return _ordersController.stream;
+  }
+
+  // CUSTOMER
+  Stream<List<Customer>> listenToCustomers() {
+    _customersCollection.snapshots().listen((response) {
+      if (response.docs.isNotEmpty) {
+        final customers = response.docs
+            .map((snapshot) => Customer.fromJson(
+                snapshot.data() as Map<String, dynamic>, snapshot.id))
+            .toList();
+        _customersController.add(customers);
+      }
+    });
+    return _customersController.stream;
   }
 
 /* ITEM */
@@ -312,7 +335,7 @@ class DatabaseService {
 
 /* ORDER */
   Future addOrder(order_model.Order order,
-      {required List<Item> orderedItems}) async {
+      {required List<Item> orderedItems, String? customerId}) async {
     print('order received: ${order.toJson()}');
     try {
       // adds order info w/ auto-gen ID
@@ -322,12 +345,17 @@ class DatabaseService {
       // get newly created  document id & set to order id
       final orderId = docRef.id;
       order.id = orderId;
+      if (customerId != null) {
+        order.customerId = _customersCollection.doc(customerId);
+      }
+
       docRef.update(order.toJson());
 
       // finds reference based on list of ordered items
       Map<String, dynamic> item = {
         'item_id': '',
       };
+
       for (var i = 0; i < orderedItems.length; i++) {
         // gets each item id for reference
         DocumentReference itemRef = _itemsCollection.doc(orderedItems[i].id);
@@ -357,12 +385,14 @@ class DatabaseService {
 
     if (snapshot.exists) {
       final currentQuantity = snapshot.get('quantity') as int;
-
-      print('current quantity: $currentQuantity');
+      final initialQuantity = orderedItems[i].quantity!;
 
       if (currentQuantity - 1 < 0) {
         // Handle out-of-stock scenario: return 'out-of-stock' code
-        throw Exception('out-of-stock'); // Or return a specific value/object
+        await docRef.update({
+          'quantity': initialQuantity,
+        });
+        throw Exception('out-of-stock');
       }
       await docRef.update({
         'quantity': currentQuantity - 1,
@@ -371,6 +401,22 @@ class DatabaseService {
   }
 
 /* CUSTOMER */
+  Future addCustomer(Customer customer) async {
+    try {
+      // create document for new data
+      final docRef = _customersCollection.doc();
+      await docRef.set(customer.toJson());
+
+      // get newly created  document id & set to category id
+      final docId = docRef.id;
+      customer.id = docId;
+
+      docRef.update(customer.toJson());
+      return true;
+    } catch (e) {
+      return e.toString();
+    }
+  }
 
   // Future getOrdersByStatus({required String orderStatus}) async {
   //   try {

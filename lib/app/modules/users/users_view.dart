@@ -81,7 +81,7 @@ class UsersView extends StatelessWidget {
           backgroundColor: appTheme.colorScheme.primary,
           elevation: 2,
           shape: const CircleBorder(),
-          child: const Icon(Icons.add_rounded),
+          child: const Icon(Icons.person_add_alt_1_rounded),
         ),
       ),
     );

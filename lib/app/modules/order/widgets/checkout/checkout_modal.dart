@@ -41,13 +41,13 @@ class CheckOutModal extends StatelessWidget {
               children: [
                 if (MediaQuery.sizeOf(context).width > 320)
                   Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Text(
                         viewModel.isRegularCustomer!
                             ? 'Regular Customer'
                             : 'Customer Number',
-                        style: appTheme.textTheme.titleLarge
+                        style: appTheme.textTheme.titleMedium
                             ?.copyWith(fontWeight: FontWeight.bold),
                         textAlign: TextAlign.center,
                       ),
@@ -55,13 +55,22 @@ class CheckOutModal extends StatelessWidget {
                       DropdownButton<String>(
                         onChanged: (value) =>
                             viewModel.updateOrderCardNumber(value!.toString()),
-                        value: viewModel.orderCardNumber,
-                        items: viewModel.numberCards
-                            .map((e) => DropdownMenuItem<String>(
-                                  value: e,
-                                  child: Text(e),
-                                ))
-                            .toList(),
+                        value: viewModel.isRegularCustomer!
+                            ? viewModel.customerName
+                            : viewModel.orderCardNumber,
+                        items: viewModel.isRegularCustomer!
+                            ? viewModel.customers
+                                ?.map((e) => DropdownMenuItem<String>(
+                                      value: e.id,
+                                      child: Text(e.name ?? ''),
+                                    ))
+                                .toList()
+                            : viewModel.numberCards
+                                .map((e) => DropdownMenuItem<String>(
+                                      value: e,
+                                      child: Text(e),
+                                    ))
+                                .toList(),
                       ),
                       Switch(
                         value: viewModel.isRegularCustomer!,
@@ -83,17 +92,29 @@ class CheckOutModal extends StatelessWidget {
                             ?.copyWith(fontWeight: FontWeight.bold),
                         textAlign: TextAlign.center,
                       ),
-                      DropdownButton<String>(
-                        onChanged: (value) =>
-                            viewModel.updateOrderCardNumber(value!.toString()),
-                        value: viewModel.orderCardNumber,
-                        items: viewModel.numberCards
-                            .map((e) => DropdownMenuItem<String>(
-                                  value: e,
-                                  child: Text(e),
-                                ))
-                            .toList(),
-                      ),
+                      viewModel.isRegularCustomer!
+                          ? DropdownButton<String>(
+                              onChanged: (value) =>
+                                  viewModel.updateCustomerName(value!),
+                              value: viewModel.customerName,
+                              items: viewModel.customers
+                                  ?.map((e) => DropdownMenuItem<String>(
+                                        value: e.id,
+                                        child: Text(e.name ?? ''),
+                                      ))
+                                  .toList(),
+                            )
+                          : DropdownButton<String>(
+                              onChanged: (value) => viewModel
+                                  .updateOrderCardNumber(value!.toString()),
+                              value: viewModel.orderCardNumber,
+                              items: viewModel.numberCards
+                                  .map((e) => DropdownMenuItem<String>(
+                                        value: e,
+                                        child: Text(e),
+                                      ))
+                                  .toList(),
+                            ),
                     ],
                   ),
                 const SizedBox(height: 16),
@@ -136,20 +157,6 @@ class CheckOutModal extends StatelessWidget {
         ],
         bottomNavigationBar: BottomAppBar(
           elevation: 4,
-          // child: ElevatedButton(
-          //   onPressed: () => viewModel.placeOrder(),
-          //   style: ElevatedButton.styleFrom(
-          //     textStyle:
-          //         const TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
-          //     backgroundColor: appTheme.colorScheme.primary,
-          //     foregroundColor: appTheme.colorScheme.onPrimary,
-          //     elevation: 2,
-          //   ),
-          //   child: const Text(
-          //     'PLACE ORDER',
-          //     textAlign: TextAlign.center,
-          //   ),
-          // ),
           child: BaseButton(
             label: 'PLACE ORDER',
             onPressed: () => viewModel.placeOrder(),

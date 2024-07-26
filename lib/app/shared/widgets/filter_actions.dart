@@ -24,18 +24,21 @@ class FilterActions extends StatelessWidget {
       return Row(
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: [
-          SearchBar(
-            onChanged: (value) => onSearchBarChanged(value),
-            constraints: const BoxConstraints(maxWidth: 400),
-            padding: const WidgetStatePropertyAll(EdgeInsets.all(8)),
-            hintText: 'Search...',
-            trailing: const [
-              Tooltip(
-                message: 'Search',
-                child: Icon(Icons.search),
-              ),
-            ],
-            controller: searchBarController,
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: SearchBar(
+              onChanged: (value) => onSearchBarChanged(value),
+              constraints: const BoxConstraints(maxWidth: 400),
+              padding: const WidgetStatePropertyAll(EdgeInsets.all(8)),
+              hintText: 'Search...',
+              trailing: const [
+                Tooltip(
+                  message: 'Search',
+                  child: Icon(Icons.search),
+                ),
+              ],
+              controller: searchBarController,
+            ),
           ),
           DropdownButton<String>(
             value: dropdownController.text,
@@ -54,18 +57,21 @@ class FilterActions extends StatelessWidget {
     }
     return Column(
       children: [
-        SearchBar(
-          onChanged: (value) => onSearchBarChanged(value),
-          constraints: const BoxConstraints(maxWidth: 480),
-          padding: const WidgetStatePropertyAll(EdgeInsets.all(8)),
-          hintText: 'Search...',
-          trailing: const [
-            Tooltip(
-              message: 'Search',
-              child: Icon(Icons.search),
-            ),
-          ],
-          controller: searchBarController,
+        Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: SearchBar(
+            onChanged: (value) => onSearchBarChanged(value),
+            constraints: const BoxConstraints(maxWidth: 480),
+            padding: const WidgetStatePropertyAll(EdgeInsets.all(8)),
+            hintText: 'Search...',
+            trailing: const [
+              Tooltip(
+                message: 'Search',
+                child: Icon(Icons.search),
+              ),
+            ],
+            controller: searchBarController,
+          ),
         ),
         const SizedBox(height: 16),
         Align(

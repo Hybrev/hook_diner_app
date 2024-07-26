@@ -27,7 +27,7 @@ class SharedViewModel extends BaseViewModel {
         context: ctx,
         barrierDismissible: false,
         builder: (_) {
-          if (MediaQuery.sizeOf(ctx).width < 600 && !isAddEdit) {
+          if (MediaQuery.sizeOf(ctx).width < 600 && isAddEdit == false) {
             return Dialog.fullscreen(
               child: dialogContent,
             );

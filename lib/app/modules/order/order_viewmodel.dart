@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:hook_diner/app/shared/viewmodel.dart';
 import 'package:hook_diner/core/models/category.dart';
+import 'package:hook_diner/core/models/customer.dart';
 import 'package:hook_diner/core/models/item.dart';
 import 'package:hook_diner/core/models/order.dart';
 
@@ -43,12 +44,16 @@ class OrderViewModel extends SharedViewModel {
   ];
   List<String> get numberCards => _numberCards;
 
+  List<Customer>? _customers;
+  List<Customer>? get customers => _customers;
+
   int _totalItems = 0;
   int get totalItems => _totalItems;
 
   double _totalPrice = 0.0;
   double get totalPrice => _totalPrice;
 
+  final TextEditingController customerController = TextEditingController();
   final TextEditingController searchBarController = TextEditingController();
   final TextEditingController selectedCategoryController =
       TextEditingController();
@@ -59,6 +64,9 @@ class OrderViewModel extends SharedViewModel {
   String? _orderCardNumber;
   String? get orderCardNumber => _orderCardNumber;
 
+  String? _customerName;
+  String? get customerName => _customerName;
+
   void initialize() async {
     setBusy(true);
 
@@ -68,6 +76,19 @@ class OrderViewModel extends SharedViewModel {
     searchBarController.text = '';
     selectedCategoryController.text = _categories?.first.id.toString() ?? '';
 
+    streamMenuItems();
+    streamCustomers();
+
+    _isRegularCustomer = false;
+    _orderCardNumber = '1';
+
+    _customerName = _customers?.first.id;
+
+    notifyListeners();
+    setBusy(false);
+  }
+
+  void streamMenuItems() {
     database.listenToItems().listen((items) {
       items.sort((a, b) => a.name!.compareTo(b.name!));
 
@@ -77,12 +98,14 @@ class OrderViewModel extends SharedViewModel {
       notifyListeners();
       setBusy(false);
     });
+  }
 
-    _isRegularCustomer = false;
-    _orderCardNumber = '1';
-
-    notifyListeners();
-    setBusy(false);
+  void streamCustomers() {
+    database.listenToCustomers().listen((customers) {
+      _customers = customers;
+      notifyListeners();
+      setBusy(false);
+    });
   }
 
   Future<String> getItemCategory(Item item) {
@@ -96,6 +119,11 @@ class OrderViewModel extends SharedViewModel {
 
   void updateOrderCardNumber(String value) {
     _orderCardNumber = value;
+    notifyListeners();
+  }
+
+  void updateCustomerName(String value) {
+    _customerName = value;
     notifyListeners();
   }
 
@@ -130,39 +158,75 @@ class OrderViewModel extends SharedViewModel {
     notifyListeners();
   }
 
-  void placeOrder() async {
-    print('ordered items: ${_orderedItems.length}');
+  void addCustomer() async {
+    setBusy(true);
+    final Customer newCustomer = Customer(
+      name: customerController.text,
+    );
 
+    try {
+      final response = await database.addCustomer(newCustomer);
+
+      if (response) {
+        setBusy(false);
+
+        await dialog.showDialog(
+          title: 'SUCESS',
+          description: 'Customer added successfully!',
+        );
+      }
+    } catch (e) {
+      await dialog.showDialog(
+        title: 'ERROR',
+        description: 'Failed to add customer.',
+      );
+    } finally {
+      goBack();
+    }
+
+    notifyListeners();
+  }
+
+  void placeOrder() async {
     setBusy(true);
     final Order newOrder = Order(
-      orderNumber:
-          _orderCardNumber != null ? int.tryParse(_orderCardNumber!) : null,
+      orderNumber: _orderCardNumber != null
+          ? int.tryParse(_orderCardNumber ?? '')
+          : null,
       totalPrice: _totalPrice.toDouble(),
       orderStatus: 'unpaid',
       orderDate:
           '${DateTime.now().month}/${DateTime.now().day}/${DateTime.now().year}',
     );
+
+    if (_orderCardNumber != null) {
+      newOrder.orderNumber = int.tryParse(_orderCardNumber ?? '');
+    }
     notifyListeners();
 
     try {
       setBusy(true);
-      final response =
-          await database.addOrder(newOrder, orderedItems: _orderedItems);
-
+      final response = await database.addOrder(
+        newOrder,
+        orderedItems: _orderedItems,
+        customerId: _customerName,
+      );
       switch (response) {
         case 'Exception: out-of-stock':
+          goBack();
+          clearOrder();
           await dialog.showDialog(
             title: 'ERROR',
             description: 'Not enough items in stock.',
           );
-          clearOrder();
           break;
         case true:
+          goBack();
+          clearOrder();
           await dialog.showDialog(
             title: 'SUCCESS',
             description: 'Your order has been placed successfully!',
           );
-          clearOrder();
       }
     } catch (e) {
       print('error: $e');
@@ -170,7 +234,6 @@ class OrderViewModel extends SharedViewModel {
         title: 'ERROR',
         description: 'Failed to place order.',
       );
-      goBack();
     } finally {
       setBusy(false);
     }
@@ -191,6 +254,5 @@ class OrderViewModel extends SharedViewModel {
     _totalItems = 0;
     _totalPrice = 0.0;
     notifyListeners();
-    goBack();
   }
 }

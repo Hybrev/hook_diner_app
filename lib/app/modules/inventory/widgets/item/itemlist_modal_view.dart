@@ -30,7 +30,7 @@ class ItemListModalView extends StatelessWidget {
     return ViewModelBuilder<AddEditItemViewModel>.reactive(
       disposeViewModel: false,
       onViewModelReady: (viewModel) => viewModel.getItems(category.id),
-      viewModelBuilder: () => locator<AddEditItemViewModel>(),
+      viewModelBuilder: () => AddEditItemViewModel(),
       builder: (context, viewModel, child) => Scaffold(
         appBar: BaseAppBar(
           title: 'ITEMS',

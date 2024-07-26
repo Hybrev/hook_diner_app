@@ -1,8 +1,6 @@
 import 'package:get_it/get_it.dart';
 import 'package:hook_diner/app/modules/customers/customer_viewmodel.dart';
 import 'package:hook_diner/app/modules/inventory/inventory_viewmodel.dart';
-import 'package:hook_diner/app/modules/inventory/widgets/category/add_edit/add_edit_category_viewmodel.dart';
-import 'package:hook_diner/app/modules/inventory/widgets/item/add_edit/add_edit_item_viewmodel.dart';
 import 'package:hook_diner/app/modules/login/login_viewmodel.dart';
 import 'package:hook_diner/app/modules/order/order_viewmodel.dart';
 import 'package:hook_diner/app/modules/sales/sales_viewmodel.dart';
@@ -21,9 +19,6 @@ void setupLocator() {
   locator.registerLazySingleton(() => CustomerViewModel());
   locator.registerLazySingleton(() => LoginViewModel());
   locator.registerLazySingleton(() => UsersViewModel());
-
-  locator.registerLazySingleton(() => AddEditItemViewModel());
-  locator.registerLazySingleton(() => AddEditCategoryViewModel());
 
   locator.registerLazySingleton(() => NavigationService());
   locator.registerLazySingleton(() => SnackbarService());

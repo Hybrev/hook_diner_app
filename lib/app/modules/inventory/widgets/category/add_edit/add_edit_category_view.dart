@@ -3,7 +3,6 @@ import 'package:hook_diner/app/modules/inventory/widgets/category/add_edit/add_e
 import 'package:hook_diner/app/modules/inventory/widgets/item/item_text_field.dart';
 import 'package:hook_diner/app/shared/widgets/base_button.dart';
 import 'package:hook_diner/app/shared/widgets/cancel_button.dart';
-import 'package:hook_diner/core/locator.dart';
 import 'package:hook_diner/core/models/category.dart';
 import 'package:stacked/stacked.dart';
 
@@ -54,7 +53,7 @@ class AddEditCategoryView extends StatelessWidget {
           ),
         ),
       ),
-      viewModelBuilder: () => locator<AddEditCategoryViewModel>(),
+      viewModelBuilder: () => AddEditCategoryViewModel(),
     );
   }
 }

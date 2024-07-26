@@ -36,10 +36,10 @@ class InventoryView extends StatelessWidget {
           children: [
             SpeedDialChild(
               label: "Item",
-              backgroundColor: appTheme.colorScheme.onTertiary,
+              backgroundColor: appTheme.colorScheme.tertiary,
               child: Icon(
                 Icons.note_add_rounded,
-                color: appTheme.colorScheme.tertiary,
+                color: appTheme.colorScheme.primary,
               ),
               onTap: () => model.showCustomModal(
                 context,
@@ -50,10 +50,10 @@ class InventoryView extends StatelessWidget {
             ),
             SpeedDialChild(
               label: "Category",
-              backgroundColor: appTheme.colorScheme.onTertiary,
+              backgroundColor: appTheme.colorScheme.tertiary,
               child: Icon(
-                Icons.category_rounded,
-                color: appTheme.colorScheme.tertiary,
+                Icons.view_module_rounded,
+                color: appTheme.colorScheme.primary,
               ),
               onTap: () => model.showCustomModal(
                 context,

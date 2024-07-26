@@ -56,6 +56,7 @@ class CategoryCard extends ViewModelWidget<InventoryViewModel> {
                     onPressAddItem: () => viewModel.showCustomModal(
                       context,
                       dialogContent: const AddEditItemView(),
+                      isAddEdit: true,
                     ),
                   ),
                 ),
