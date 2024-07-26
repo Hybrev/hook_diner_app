@@ -6,6 +6,12 @@ class CustomerViewModel extends SharedViewModel {
   final String _title = 'Customer List';
   String get title => _title;
 
+  String _searchText = '';
+  String get searchText => _searchText;
+
+  String _customerName = '';
+  String get customerName => _customerName;
+
   List<Order>? _unpaidOrders;
   List<Order>? get unpaidOrders => _unpaidOrders;
 
@@ -36,4 +42,10 @@ class CustomerViewModel extends SharedViewModel {
       setBusy(false);
     });
   }
+
+  // void getCustomerName(Order order) async {
+  //   _customerName = await database.getCustomerByOrder(order.customerId!);
+  //   print('response: $response');
+  //   return response ?? ''; // Return an empty string if response is null
+  // }
 }

@@ -55,6 +55,7 @@ class OrderGrid extends ViewModelWidget<CustomerViewModel> {
                           //   size: 80,
                           // ),
                           Text('${index + 1}',
+                              textAlign: TextAlign.center,
                               style: appTheme.textTheme.titleLarge
                                   ?.copyWith(fontWeight: FontWeight.bold)),
                           const VerticalDivider(),
@@ -62,7 +63,10 @@ class OrderGrid extends ViewModelWidget<CustomerViewModel> {
                             mainAxisAlignment: MainAxisAlignment.spaceAround,
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              Text('Card Number:',
+                              Text(
+                                  orders![index].orderNumber != null
+                                      ? 'Card Number:'
+                                      : 'Customer Name:',
                                   style: appTheme.textTheme.titleMedium),
                               Text(
                                 'Total Price:',
@@ -82,12 +86,13 @@ class OrderGrid extends ViewModelWidget<CustomerViewModel> {
                             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                             children: [
                               Text(
-                                '#${orders![index].orderNumber!.toString()}',
+                                /* orders[index].orderNumber != null ?  */
+                                '#${orders[index].orderNumber?.toString()}',
                                 style: appTheme.textTheme.titleMedium
                                     ?.copyWith(fontWeight: FontWeight.bold),
                               ),
                               Text(
-                                '₱${orders[index].totalPrice!.toStringAsFixed(2)}',
+                                '₱${orders[index].totalPrice?.toStringAsFixed(2)}',
                                 style: appTheme.textTheme.titleLarge?.copyWith(
                                   color: appTheme.colorScheme.primary,
                                 ),

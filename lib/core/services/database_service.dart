@@ -326,13 +326,6 @@ class DatabaseService {
     }
   }
 
-  Future<String> getItemCategory(Item item) async {
-    final itemSnapshot =
-        await _categoriesCollection.doc(item.category?.id).get();
-
-    return itemSnapshot.get('title');
-  }
-
 /* ORDER */
   Future addOrder(order_model.Order order,
       {required List<Item> orderedItems, String? customerId}) async {
@@ -416,6 +409,12 @@ class DatabaseService {
     } catch (e) {
       return e.toString();
     }
+  }
+
+  Future<String?> getCustomerByOrder(DocumentReference customer) async {
+    final customerSnapshot = await _customersCollection.doc(customer.id).get();
+
+    return customerSnapshot.get('name');
   }
 
   // Future getOrdersByStatus({required String orderStatus}) async {

@@ -82,7 +82,7 @@ class OrderViewModel extends SharedViewModel {
     _isRegularCustomer = false;
     _orderCardNumber = '1';
 
-    _customerName = _customers?.first.id;
+    _customerName = _customers?.first.id ?? '';
 
     notifyListeners();
     setBusy(false);
@@ -102,14 +102,12 @@ class OrderViewModel extends SharedViewModel {
 
   void streamCustomers() {
     database.listenToCustomers().listen((customers) {
+      customers.sort((a, b) => a.name!.compareTo(b.name!));
+
       _customers = customers;
       notifyListeners();
       setBusy(false);
     });
-  }
-
-  Future<String> getItemCategory(Item item) {
-    return database.getItemCategory(item);
   }
 
   void updateCustomerStatus(bool value) {
@@ -117,14 +115,16 @@ class OrderViewModel extends SharedViewModel {
     notifyListeners();
   }
 
-  void updateOrderCardNumber(String value) {
-    _orderCardNumber = value;
-    notifyListeners();
-  }
-
-  void updateCustomerName(String value) {
-    _customerName = value;
-    notifyListeners();
+  void updateDropdownValue(String value, {bool isRegular = false}) {
+    switch (isRegular) {
+      case true:
+        _customerName = value;
+        notifyListeners();
+        break;
+      default:
+        _orderCardNumber = value;
+        notifyListeners();
+    }
   }
 
   void updateCategoryFilter(String value) {
@@ -190,16 +190,13 @@ class OrderViewModel extends SharedViewModel {
   void placeOrder() async {
     setBusy(true);
     final Order newOrder = Order(
-      orderNumber: _orderCardNumber != null
-          ? int.tryParse(_orderCardNumber ?? '')
-          : null,
       totalPrice: _totalPrice.toDouble(),
       orderStatus: 'unpaid',
       orderDate:
           '${DateTime.now().month}/${DateTime.now().day}/${DateTime.now().year}',
     );
 
-    if (_orderCardNumber != null) {
+    if (_isRegularCustomer == false) {
       newOrder.orderNumber = int.tryParse(_orderCardNumber ?? '');
     }
     notifyListeners();

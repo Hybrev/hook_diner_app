@@ -51,27 +51,29 @@ class CheckOutModal extends StatelessWidget {
                             ?.copyWith(fontWeight: FontWeight.bold),
                         textAlign: TextAlign.center,
                       ),
-                      // const DropdownMenu(dropdownMenuEntries: []),
-                      DropdownButton<String>(
-                        onChanged: (value) =>
-                            viewModel.updateOrderCardNumber(value!.toString()),
-                        value: viewModel.isRegularCustomer!
-                            ? viewModel.customerName
-                            : viewModel.orderCardNumber,
-                        items: viewModel.isRegularCustomer!
-                            ? viewModel.customers
-                                ?.map((e) => DropdownMenuItem<String>(
-                                      value: e.id,
-                                      child: Text(e.name ?? ''),
-                                    ))
-                                .toList()
-                            : viewModel.numberCards
-                                .map((e) => DropdownMenuItem<String>(
-                                      value: e,
-                                      child: Text(e),
-                                    ))
-                                .toList(),
-                      ),
+                      viewModel.isRegularCustomer!
+                          ? DropdownButton<String>(
+                              onChanged: (value) => viewModel
+                                  .updateDropdownValue(value!, isRegular: true),
+                              value: viewModel.customerName,
+                              items: viewModel.customers
+                                  ?.map((e) => DropdownMenuItem<String>(
+                                        value: e.id,
+                                        child: Text(e.name!),
+                                      ))
+                                  .toList(),
+                            )
+                          : DropdownButton<String>(
+                              onChanged: (value) => viewModel
+                                  .updateDropdownValue(value!.toString()),
+                              value: viewModel.orderCardNumber ?? '',
+                              items: viewModel.numberCards
+                                  .map((e) => DropdownMenuItem<String>(
+                                        value: e,
+                                        child: Text(e),
+                                      ))
+                                  .toList(),
+                            ),
                       Switch(
                         value: viewModel.isRegularCustomer!,
                         activeColor: appTheme.colorScheme.primary,
@@ -94,20 +96,20 @@ class CheckOutModal extends StatelessWidget {
                       ),
                       viewModel.isRegularCustomer!
                           ? DropdownButton<String>(
-                              onChanged: (value) =>
-                                  viewModel.updateCustomerName(value!),
+                              onChanged: (value) => viewModel
+                                  .updateDropdownValue(value!, isRegular: true),
                               value: viewModel.customerName,
                               items: viewModel.customers
                                   ?.map((e) => DropdownMenuItem<String>(
                                         value: e.id,
-                                        child: Text(e.name ?? ''),
+                                        child: Text(e.name!),
                                       ))
                                   .toList(),
                             )
                           : DropdownButton<String>(
                               onChanged: (value) => viewModel
-                                  .updateOrderCardNumber(value!.toString()),
-                              value: viewModel.orderCardNumber,
+                                  .updateDropdownValue(value!.toString()),
+                              value: viewModel.orderCardNumber ?? '',
                               items: viewModel.numberCards
                                   .map((e) => DropdownMenuItem<String>(
                                         value: e,
