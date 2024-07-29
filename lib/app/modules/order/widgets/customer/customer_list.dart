@@ -20,7 +20,7 @@ class CustomerList extends StatelessWidget {
                 automaticallyImplyLeading: true,
                 centerTitle: true,
               ),
-              body: viewModel.customers!.isNotEmpty
+              body: viewModel.customers?.isNotEmpty ?? false
                   ? ListView.builder(
                       itemCount: viewModel.customers?.length ?? 0,
                       itemBuilder: (context, index) => DataTile(

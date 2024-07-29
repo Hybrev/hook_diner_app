@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:hook_diner/app/shared/viewmodel.dart';
+import 'package:hook_diner/core/models/customer.dart';
 import 'package:hook_diner/core/models/order.dart';
 
 class CustomerViewModel extends SharedViewModel {
@@ -11,6 +12,9 @@ class CustomerViewModel extends SharedViewModel {
 
   String _customerName = '';
   String get customerName => _customerName;
+
+  List<Customer>? _customers;
+  List<Customer>? get customers => _customers;
 
   List<Order>? _unpaidOrders;
   List<Order>? get unpaidOrders => _unpaidOrders;
@@ -25,6 +29,7 @@ class CustomerViewModel extends SharedViewModel {
     print('viewModel initialized');
 
     streamOrders();
+    streamCustomers();
     notifyListeners();
   }
 
@@ -43,8 +48,41 @@ class CustomerViewModel extends SharedViewModel {
     });
   }
 
+  void streamCustomers() {
+    database.listenToCustomers().listen((customers) {
+      customers.sort((a, b) => a.name!.compareTo(b.name!));
+      _customers = customers;
+      _customerName = _customers?.first.id ?? '';
+
+      notifyListeners();
+
+      setBusy(false);
+    });
+  }
+
   Future<String?> getCustomerName(Order order) async {
     final response = await database.getCustomerByOrder(order.customerId!);
     return response;
+  }
+
+  void updateCustomerFilter(String value, {required String status}) {
+    dropdownController.text = value;
+
+    switch (status) {
+      case 'unpaid':
+        _unpaidOrders = _unpaidOrders
+            ?.where((order) => order.customerId?.id == value)
+            .toList();
+        break;
+
+      case 'paid':
+        _paidOrders = _paidOrders
+            ?.where((order) => order.customerId?.id == value)
+            .toList();
+        break;
+
+      default:
+        break;
+    }
   }
 }

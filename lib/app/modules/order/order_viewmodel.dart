@@ -23,27 +23,9 @@ class OrderViewModel extends SharedViewModel {
   List<Category>? _categories = [];
   List<Category>? get categories => _categories;
 
-  final List<String> _numberCards = [
-    '1',
-    '2',
-    '3',
-    '4',
-    '5',
-    '6',
-    '7',
-    '8',
-    '9',
-    '10',
-    '11',
-    '13',
-    '14',
-    '15',
-    '16',
-    '17',
-    '18',
-    '19',
-    '20',
-  ];
+  final List<String> _numberCards =
+      List<String>.generate(20, (i) => (i + 1).toString());
+
   List<String> get numberCards => _numberCards;
 
   List<Customer>? _customers;
@@ -226,15 +208,11 @@ class OrderViewModel extends SharedViewModel {
 
   void updateCategoryFilter(String value) {
     selectedCategoryController.text = value;
-    switch (value != 'all') {
-      case true:
-        _filteredMenuItems =
-            _menuItems?.where((item) => item.category?.id == value).toList();
-        break;
-      default:
-        _filteredMenuItems = _menuItems;
-        break;
-    }
+    _filteredMenuItems = value == 'all'
+        ? _menuItems
+        : _menuItems?.where((item) => item.category?.id == value).toList() ??
+            [];
+
     notifyListeners();
   }
 

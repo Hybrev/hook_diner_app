@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:hook_diner/core/models/category.dart';
+import 'package:hook_diner/core/models/customer.dart';
 
 class FilterActions extends StatelessWidget {
   const FilterActions({
@@ -45,10 +47,14 @@ class FilterActions extends StatelessWidget {
             style: appTheme.textTheme.labelLarge,
             focusColor: Theme.of(context).colorScheme.tertiary,
             items: dropdownItems
-                .map((e) => DropdownMenuItem<String>(
-                      value: e.id,
-                      child: Text(e.title!),
-                    ))
+                .map(
+                  (e) => DropdownMenuItem<String>(
+                    value: e.id,
+                    child: e != Customer
+                        ? Text(e.title ?? '')
+                        : Text(e.name ?? ''),
+                  ),
+                )
                 .toList(),
             onChanged: (value) => onDropdownChanged(value!),
           ),
