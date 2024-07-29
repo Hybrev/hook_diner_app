@@ -25,7 +25,10 @@ class CheckOutModal extends StatelessWidget {
           automaticallyImplyLeading: true,
           actions: [
             IconButton(
-              onPressed: () => viewModel.clearOrder(),
+              onPressed: () {
+                viewModel.clearOrder();
+                viewModel.goBack();
+              },
               icon: Icon(
                 Icons.delete_rounded,
                 color: appTheme.colorScheme.error,
@@ -56,6 +59,7 @@ class CheckOutModal extends StatelessWidget {
                               onChanged: (value) => viewModel
                                   .updateDropdownValue(value!, isRegular: true),
                               value: viewModel.customerName,
+                              hint: const Text('Select...'),
                               items: viewModel.customers
                                   ?.map((e) => DropdownMenuItem<String>(
                                         value: e.id,
@@ -67,6 +71,7 @@ class CheckOutModal extends StatelessWidget {
                               onChanged: (value) => viewModel
                                   .updateDropdownValue(value!.toString()),
                               value: viewModel.orderCardNumber ?? '',
+                              hint: const Text('Select...'),
                               items: viewModel.numberCards
                                   .map((e) => DropdownMenuItem<String>(
                                         value: e,
@@ -77,8 +82,9 @@ class CheckOutModal extends StatelessWidget {
                       Switch(
                         value: viewModel.isRegularCustomer!,
                         activeColor: appTheme.colorScheme.primary,
-                        onChanged: (value) =>
-                            viewModel.updateCustomerStatus(value),
+                        onChanged: viewModel.customers?.isEmpty ?? true
+                            ? null
+                            : (value) => viewModel.updateCustomerStatus(value),
                       ),
                     ],
                   )
@@ -99,6 +105,7 @@ class CheckOutModal extends StatelessWidget {
                               onChanged: (value) => viewModel
                                   .updateDropdownValue(value!, isRegular: true),
                               value: viewModel.customerName,
+                              hint: const Text('Select...'),
                               items: viewModel.customers
                                   ?.map((e) => DropdownMenuItem<String>(
                                         value: e.id,
@@ -109,6 +116,7 @@ class CheckOutModal extends StatelessWidget {
                           : DropdownButton<String>(
                               onChanged: (value) => viewModel
                                   .updateDropdownValue(value!.toString()),
+                              hint: const Text('Select...'),
                               value: viewModel.orderCardNumber ?? '',
                               items: viewModel.numberCards
                                   .map((e) => DropdownMenuItem<String>(

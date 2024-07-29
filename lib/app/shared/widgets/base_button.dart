@@ -26,7 +26,7 @@ class BaseButton extends StatelessWidget {
           vertical: 8,
         ),
       ),
-      onPressed: onPressed,
+      onPressed: loading ? null : onPressed,
       child: !loading
           ? Row(
               mainAxisSize: MainAxisSize.min,
@@ -48,7 +48,7 @@ class BaseButton extends StatelessWidget {
               ],
             )
           : CircularProgressIndicator(
-              color: appTheme.colorScheme.onPrimary,
+              color: appTheme.colorScheme.primary,
             ),
     );
   }

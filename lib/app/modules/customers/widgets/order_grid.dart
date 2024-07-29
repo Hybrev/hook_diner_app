@@ -85,12 +85,24 @@ class OrderGrid extends ViewModelWidget<CustomerViewModel> {
                           Column(
                             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                             children: [
-                              Text(
-                                /* orders[index].orderNumber != null ?  */
-                                '#${orders[index].orderNumber?.toString()}',
-                                style: appTheme.textTheme.titleMedium
-                                    ?.copyWith(fontWeight: FontWeight.bold),
-                              ),
+                              orders[index].orderNumber == null
+                                  ? FutureBuilder(
+                                      future: viewModel
+                                          .getCustomerName(orders[index]),
+                                      builder: (context, snapshot) => Text(
+                                            snapshot.data ?? 'Loading...',
+                                            style: appTheme
+                                                .textTheme.titleMedium
+                                                ?.copyWith(
+                                                    fontWeight:
+                                                        FontWeight.bold),
+                                          ))
+                                  : Text(
+                                      '#${orders[index].orderNumber?.toString()}',
+                                      style: appTheme.textTheme.titleMedium
+                                          ?.copyWith(
+                                              fontWeight: FontWeight.bold),
+                                    ),
                               Text(
                                 '₱${orders[index].totalPrice?.toStringAsFixed(2)}',
                                 style: appTheme.textTheme.titleLarge?.copyWith(

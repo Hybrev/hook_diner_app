@@ -2,16 +2,21 @@ import 'package:flutter/material.dart';
 import 'package:hook_diner/app/modules/order/order_viewmodel.dart';
 import 'package:hook_diner/app/shared/widgets/base_button.dart';
 import 'package:hook_diner/app/shared/widgets/cancel_button.dart';
+import 'package:hook_diner/core/models/customer.dart';
 import 'package:stacked/stacked.dart';
 
 class AddCustomerModal extends StatelessWidget {
-  const AddCustomerModal({super.key});
+  const AddCustomerModal({super.key, this.editingCustomer});
+
+  final Customer? editingCustomer;
 
   @override
   Widget build(BuildContext context) {
     final appTheme = Theme.of(context);
     return ViewModelBuilder<OrderViewModel>.nonReactive(
       viewModelBuilder: () => OrderViewModel(),
+      onViewModelReady: (viewModel) =>
+          viewModel.setupCustomerModal(editingCustomer),
       builder: (context, viewModel, child) => SingleChildScrollView(
         child: SafeArea(
           minimum: const EdgeInsets.all(16),
@@ -20,7 +25,7 @@ class AddCustomerModal extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               Text(
-                'ADD CUSTOMER',
+                editingCustomer == null ? 'ADD CUSTOMER' : 'EDIT CUSTOMER',
                 style: appTheme.textTheme.headlineLarge
                     ?.copyWith(fontWeight: FontWeight.bold),
               ),

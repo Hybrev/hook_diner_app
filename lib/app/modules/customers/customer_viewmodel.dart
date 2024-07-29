@@ -43,9 +43,8 @@ class CustomerViewModel extends SharedViewModel {
     });
   }
 
-  // void getCustomerName(Order order) async {
-  //   _customerName = await database.getCustomerByOrder(order.customerId!);
-  //   print('response: $response');
-  //   return response ?? ''; // Return an empty string if response is null
-  // }
+  Future<String?> getCustomerName(Order order) async {
+    final response = await database.getCustomerByOrder(order.customerId!);
+    return response;
+  }
 }

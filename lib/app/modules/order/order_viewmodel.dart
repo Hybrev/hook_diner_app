@@ -82,10 +82,13 @@ class OrderViewModel extends SharedViewModel {
     _isRegularCustomer = false;
     _orderCardNumber = '1';
 
-    _customerName = _customers?.first.id ?? '';
-
     notifyListeners();
     setBusy(false);
+  }
+
+  void setupCustomerModal(Customer? editingCustomer) {
+    customerController.text = editingCustomer?.name ?? '';
+    notifyListeners();
   }
 
   void streamMenuItems() {
@@ -103,9 +106,11 @@ class OrderViewModel extends SharedViewModel {
   void streamCustomers() {
     database.listenToCustomers().listen((customers) {
       customers.sort((a, b) => a.name!.compareTo(b.name!));
-
       _customers = customers;
+      _customerName = _customers?.first.id ?? '';
+
       notifyListeners();
+
       setBusy(false);
     });
   }

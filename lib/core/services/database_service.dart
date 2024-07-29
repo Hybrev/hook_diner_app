@@ -338,11 +338,6 @@ class DatabaseService {
       // get newly created  document id & set to order id
       final orderId = docRef.id;
       order.id = orderId;
-      if (customerId != null) {
-        order.customerId = _customersCollection.doc(customerId);
-      }
-
-      docRef.update(order.toJson());
 
       // finds reference based on list of ordered items
       Map<String, dynamic> item = {
@@ -364,6 +359,13 @@ class DatabaseService {
         }
         await _ordersCollection.doc(orderId).collection('items').add(item);
       }
+
+      // checks if order is made by a regular customer
+      if (customerId != null && customerId.isNotEmpty) {
+        order.customerId = _customersCollection.doc(customerId);
+      }
+
+      docRef.update(order.toJson());
 
       return true;
     } catch (e) {
@@ -394,6 +396,24 @@ class DatabaseService {
   }
 
 /* CUSTOMER */
+  Future getCustomers() async {
+    try {
+      final response = await _customersCollection.get();
+
+      // filter out categories without title
+      if (response.docs.isNotEmpty) {
+        return response.docs
+            .map((snapshot) => Customer.fromJson(
+                snapshot.data() as Map<String, dynamic>, snapshot.id))
+            .where((element) => element.name != null)
+            .toList();
+      }
+    } catch (e) {
+      print('error: $e');
+      return e.toString();
+    }
+  }
+
   Future addCustomer(Customer customer) async {
     try {
       // create document for new data
