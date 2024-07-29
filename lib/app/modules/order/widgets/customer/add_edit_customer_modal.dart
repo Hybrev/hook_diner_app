@@ -2,11 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:hook_diner/app/modules/order/order_viewmodel.dart';
 import 'package:hook_diner/app/shared/widgets/base_button.dart';
 import 'package:hook_diner/app/shared/widgets/cancel_button.dart';
+import 'package:hook_diner/core/locator.dart';
 import 'package:hook_diner/core/models/customer.dart';
 import 'package:stacked/stacked.dart';
 
-class AddCustomerModal extends StatelessWidget {
-  const AddCustomerModal({super.key, this.editingCustomer});
+class AddEditCustomerModal extends StatelessWidget {
+  const AddEditCustomerModal({super.key, this.editingCustomer});
 
   final Customer? editingCustomer;
 
@@ -14,7 +15,6 @@ class AddCustomerModal extends StatelessWidget {
   Widget build(BuildContext context) {
     final appTheme = Theme.of(context);
     return ViewModelBuilder<OrderViewModel>.nonReactive(
-      viewModelBuilder: () => OrderViewModel(),
       onViewModelReady: (viewModel) =>
           viewModel.setupCustomerModal(editingCustomer),
       builder: (context, viewModel, child) => SingleChildScrollView(
@@ -61,7 +61,9 @@ class AddCustomerModal extends StatelessWidget {
                   BaseButton(
                     label: 'ADD',
                     loading: viewModel.isBusy,
-                    onPressed: () => viewModel.addCustomer(),
+                    onPressed: editingCustomer == null
+                        ? () => viewModel.addCustomer()
+                        : () => viewModel.updateCustomer(editingCustomer!),
                   ),
                 ],
               ),
@@ -69,6 +71,7 @@ class AddCustomerModal extends StatelessWidget {
           ),
         ),
       ),
+      viewModelBuilder: () => locator<OrderViewModel>(),
     );
   }
 }

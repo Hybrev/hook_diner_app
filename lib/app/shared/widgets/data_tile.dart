@@ -8,7 +8,7 @@ class DataTile extends StatelessWidget {
     required this.data,
     this.leading = "",
     required this.title,
-    required this.subtitle,
+    this.subtitle,
     this.trailingText = "",
     this.onEditTap,
     this.onDeleteTap,
@@ -19,7 +19,7 @@ class DataTile extends StatelessWidget {
 
   final String leading;
   final String title;
-  final String subtitle;
+  final String? subtitle;
   final String trailingText;
 
   final Function()? onEditTap;
@@ -35,7 +35,7 @@ class DataTile extends StatelessWidget {
             ),
       ),
       title: Text(title),
-      subtitle: Text(subtitle),
+      subtitle: Text(subtitle ?? ''),
       trailing: Row(
         mainAxisSize: MainAxisSize.min,
         children: [

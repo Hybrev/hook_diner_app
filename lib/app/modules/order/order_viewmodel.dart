@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:hook_diner/app/shared/viewmodel.dart';
 import 'package:hook_diner/core/models/category.dart';
@@ -105,6 +107,10 @@ class OrderViewModel extends SharedViewModel {
 
   void streamCustomers() {
     database.listenToCustomers().listen((customers) {
+      if (customers.isEmpty) {
+        _isRegularCustomer = false;
+        notifyListeners();
+      }
       customers.sort((a, b) => a.name!.compareTo(b.name!));
       _customers = customers;
       _customerName = _customers?.first.id ?? '';
@@ -113,6 +119,92 @@ class OrderViewModel extends SharedViewModel {
 
       setBusy(false);
     });
+  }
+
+  void addCustomer() async {
+    setBusy(true);
+
+    final Customer newCustomer = Customer(
+      name: customerController.text,
+    );
+    try {
+      final response = await database.addCustomer(newCustomer);
+
+      if (response) {
+        await dialog.showDialog(
+          title: 'SUCESS',
+          description: 'Customer added successfully!',
+        );
+      }
+      goBack();
+    } catch (e) {
+      await dialog.showDialog(
+        title: 'ERROR',
+        description: 'Failed to add customer.',
+      );
+    } finally {
+      goBack();
+      setBusy(false);
+    }
+
+    notifyListeners();
+  }
+
+  void updateCustomer(Customer customer) async {
+    customer = Customer(
+      id: customer.id,
+      name: customerController.text,
+    );
+
+    setBusy(true);
+    try {
+      final response = await database.updateCustomer(customer);
+      notifyListeners();
+      if (response) {
+        await dialog.showDialog(
+          title: 'SUCCESS',
+          description: 'Customer updated successfully!',
+        );
+      }
+      goBack();
+    } catch (e) {
+      await dialog.showDialog(
+        title: 'ERROR',
+        description: 'Failed to update customer.',
+      );
+    }
+    goBack();
+    setBusy(false);
+  }
+
+  Future deleteCustomer(Customer customer) async {
+    final dialogResponse = await dialog.showConfirmationDialog(
+      description: 'Are you sure you want to delete this customer?',
+      confirmationTitle: 'Yes',
+      cancelTitle: 'No',
+    );
+
+    if (dialogResponse!.confirmed) {
+      setBusy(true);
+
+      try {
+        await database.deleteCustomer(customer.id!);
+        _customers!.removeWhere((c) => c.id == customer.id);
+        notifyListeners();
+        await dialog.showDialog(
+          title: 'SUCCESS',
+          description: 'Customer deleted successfully!',
+        );
+      } catch (e) {
+        await dialog.showDialog(
+          title: 'ERROR',
+          description: 'Failed to delete customer.',
+        );
+      } finally {
+        goBack();
+        setBusy(false);
+      }
+    }
   }
 
   void updateCustomerStatus(bool value) {
@@ -160,35 +252,6 @@ class OrderViewModel extends SharedViewModel {
     _orderedItems.add(item);
     _totalPrice = _totalPrice + item.price!;
     _totalItems++;
-    notifyListeners();
-  }
-
-  void addCustomer() async {
-    setBusy(true);
-    final Customer newCustomer = Customer(
-      name: customerController.text,
-    );
-
-    try {
-      final response = await database.addCustomer(newCustomer);
-
-      if (response) {
-        setBusy(false);
-
-        await dialog.showDialog(
-          title: 'SUCESS',
-          description: 'Customer added successfully!',
-        );
-      }
-    } catch (e) {
-      await dialog.showDialog(
-        title: 'ERROR',
-        description: 'Failed to add customer.',
-      );
-    } finally {
-      goBack();
-    }
-
     notifyListeners();
   }
 

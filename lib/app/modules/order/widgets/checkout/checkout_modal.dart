@@ -47,14 +47,16 @@ class CheckOutModal extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Text(
-                        viewModel.isRegularCustomer!
+                        viewModel.isRegularCustomer! &&
+                                viewModel.customers!.isNotEmpty
                             ? 'Regular Customer'
                             : 'Customer Number',
                         style: appTheme.textTheme.titleMedium
                             ?.copyWith(fontWeight: FontWeight.bold),
                         textAlign: TextAlign.center,
                       ),
-                      viewModel.isRegularCustomer!
+                      viewModel.isRegularCustomer! &&
+                              viewModel.customers!.isNotEmpty
                           ? DropdownButton<String>(
                               onChanged: (value) => viewModel
                                   .updateDropdownValue(value!, isRegular: true),
@@ -80,7 +82,8 @@ class CheckOutModal extends StatelessWidget {
                                   .toList(),
                             ),
                       Switch(
-                        value: viewModel.isRegularCustomer!,
+                        value: viewModel.isRegularCustomer! &&
+                            viewModel.customers!.isNotEmpty,
                         activeColor: appTheme.colorScheme.primary,
                         onChanged: viewModel.customers?.isEmpty ?? true
                             ? null
@@ -93,14 +96,16 @@ class CheckOutModal extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
                       Text(
-                        viewModel.isRegularCustomer!
+                        viewModel.isRegularCustomer! &&
+                                viewModel.customers!.isNotEmpty
                             ? 'Regular Customer'
                             : 'Customer Number',
                         style: appTheme.textTheme.titleLarge
                             ?.copyWith(fontWeight: FontWeight.bold),
                         textAlign: TextAlign.center,
                       ),
-                      viewModel.isRegularCustomer!
+                      viewModel.isRegularCustomer! &&
+                              viewModel.customers!.isNotEmpty
                           ? DropdownButton<String>(
                               onChanged: (value) => viewModel
                                   .updateDropdownValue(value!, isRegular: true),

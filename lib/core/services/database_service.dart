@@ -396,24 +396,6 @@ class DatabaseService {
   }
 
 /* CUSTOMER */
-  Future getCustomers() async {
-    try {
-      final response = await _customersCollection.get();
-
-      // filter out categories without title
-      if (response.docs.isNotEmpty) {
-        return response.docs
-            .map((snapshot) => Customer.fromJson(
-                snapshot.data() as Map<String, dynamic>, snapshot.id))
-            .where((element) => element.name != null)
-            .toList();
-      }
-    } catch (e) {
-      print('error: $e');
-      return e.toString();
-    }
-  }
-
   Future addCustomer(Customer customer) async {
     try {
       // create document for new data
@@ -437,19 +419,22 @@ class DatabaseService {
     return customerSnapshot.get('name');
   }
 
-  // Future getOrdersByStatus({required String orderStatus}) async {
-  //   try {
-  //     final response = await _ordersCollection.get();
-  //     if (response.docs.isNotEmpty) {
-  //       return response.docs
-  //           .map((snapshot) => order_model.Order.fromJson(
-  //               snapshot.data() as Map<String, dynamic>, snapshot.id))
-  //           .where((element) => element.orderStatus == orderStatus)
-  //           .toList();
-  //     }
-  //   } catch (e) {
-  //     print('error: $e');
-  //     return e.toString();
-  //   }
-  // }
+  // UPDATE
+  Future updateCustomer(Customer customer) async {
+    try {
+      await _customersCollection.doc(customer.id).update(customer.toJson());
+      return true;
+    } catch (e) {
+      return e.toString();
+    }
+  }
+
+// DELETE
+  Future deleteCustomer(String id) async {
+    try {
+      await _customersCollection.doc(id).delete();
+    } catch (e) {
+      return e.toString();
+    }
+  }
 }

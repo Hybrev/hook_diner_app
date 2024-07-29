@@ -3,7 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_speed_dial/flutter_speed_dial.dart';
 import 'package:hook_diner/app/modules/inventory/widgets/category/add_edit/add_edit_category_view.dart';
 import 'package:hook_diner/app/modules/order/order_viewmodel.dart';
-import 'package:hook_diner/app/modules/order/widgets/customer/add_customer_modal.dart';
+import 'package:hook_diner/app/modules/order/widgets/customer/add_edit_customer_modal.dart';
+import 'package:hook_diner/app/modules/order/widgets/customer/customer_list.dart';
 import 'package:hook_diner/app/modules/order/widgets/menu_grid.dart';
 import 'package:hook_diner/app/modules/order/widgets/checkout/checkout_modal.dart';
 import 'package:hook_diner/app/shared/widgets/base_appbar.dart';
@@ -124,6 +125,18 @@ class OrderView extends StatelessWidget {
           spaceBetweenChildren: 8,
           children: [
             SpeedDialChild(
+              label: "Customer List",
+              backgroundColor: appTheme.colorScheme.tertiary,
+              child: Icon(
+                Icons.groups_rounded,
+                color: appTheme.colorScheme.primary,
+              ),
+              onTap: () => model.showCustomModal(
+                context,
+                dialogContent: const CustomerList(),
+              ),
+            ),
+            SpeedDialChild(
               label: "Add Customer",
               backgroundColor: appTheme.colorScheme.tertiary,
               child: Icon(
@@ -133,22 +146,9 @@ class OrderView extends StatelessWidget {
               onTap: () => model.showCustomModal(
                 context,
                 isAddEdit: true,
-                dialogContent: const AddCustomerModal(),
+                dialogContent: const AddEditCustomerModal(),
               ),
               visible: model.categories?.isNotEmpty ?? false,
-            ),
-            SpeedDialChild(
-              label: "Customer List",
-              backgroundColor: appTheme.colorScheme.tertiary,
-              child: Icon(
-                Icons.groups_rounded,
-                color: appTheme.colorScheme.primary,
-              ),
-              onTap: () => model.showCustomModal(
-                context,
-                isAddEdit: true,
-                dialogContent: const AddCustomerModal(),
-              ),
             ),
           ],
         ),
