@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:hook_diner/app/modules/order/order_viewmodel.dart';
-import 'package:hook_diner/app/modules/order/widgets/menu_card.dart';
+import 'package:hook_diner/app/modules/menu/order_menu_viewmodel.dart';
+import 'package:hook_diner/app/modules/menu/widgets/menu_card.dart';
 import 'package:stacked/stacked.dart';
 
-class MenuGrid extends ViewModelWidget<OrderViewModel> {
+class MenuGrid extends ViewModelWidget<OrderMenuViewModel> {
   const MenuGrid({super.key});
 
   @override
-  Widget build(BuildContext context, OrderViewModel viewModel) {
+  Widget build(BuildContext context, OrderMenuViewModel viewModel) {
     return ConstrainedBox(
       constraints: const BoxConstraints(maxWidth: 840),
       child: GridView.builder(

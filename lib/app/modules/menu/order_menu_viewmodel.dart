@@ -7,7 +7,7 @@ import 'package:hook_diner/core/models/customer.dart';
 import 'package:hook_diner/core/models/item.dart';
 import 'package:hook_diner/core/models/order.dart';
 
-class OrderViewModel extends SharedViewModel {
+class OrderMenuViewModel extends SharedViewModel {
   final String _title = 'Order Menu';
   String get title => _title;
 

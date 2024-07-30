@@ -1,17 +1,17 @@
 import 'package:flutter/material.dart';
-import 'package:hook_diner/app/modules/customers/customer_viewmodel.dart';
-import 'package:hook_diner/app/modules/customers/widgets/order_card.dart';
+import 'package:hook_diner/app/modules/orders/customer_orders_viewmodel.dart';
+import 'package:hook_diner/app/modules/orders/widgets/order_card.dart';
 import 'package:hook_diner/app/shared/widgets/filter_actions.dart';
 import 'package:hook_diner/core/models/order.dart';
 import 'package:stacked/stacked.dart';
 
-class OrderGrid extends ViewModelWidget<CustomerViewModel> {
+class OrderGrid extends ViewModelWidget<CustomerOrdersViewModel> {
   const OrderGrid({required this.status, super.key});
 
   final String? status;
 
   @override
-  Widget build(BuildContext context, CustomerViewModel viewModel) {
+  Widget build(BuildContext context, CustomerOrdersViewModel viewModel) {
     final orders =
         status == 'unpaid' ? viewModel.unpaidOrders : viewModel.paidOrders;
 

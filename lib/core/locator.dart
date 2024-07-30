@@ -1,8 +1,8 @@
 import 'package:get_it/get_it.dart';
-import 'package:hook_diner/app/modules/customers/customer_viewmodel.dart';
+import 'package:hook_diner/app/modules/orders/customer_orders_viewmodel.dart';
 import 'package:hook_diner/app/modules/inventory/inventory_viewmodel.dart';
 import 'package:hook_diner/app/modules/login/login_viewmodel.dart';
-import 'package:hook_diner/app/modules/order/order_viewmodel.dart';
+import 'package:hook_diner/app/modules/menu/order_menu_viewmodel.dart';
 import 'package:hook_diner/app/modules/sales/sales_viewmodel.dart';
 import 'package:hook_diner/app/modules/users/users_viewmodel.dart';
 import 'package:hook_diner/core/services/auth_service.dart';
@@ -15,8 +15,8 @@ final locator = GetIt.instance;
 void setupLocator() {
   locator.registerLazySingleton(() => InventoryViewModel());
   locator.registerLazySingleton(() => SalesViewModel());
-  locator.registerLazySingleton(() => OrderViewModel());
-  locator.registerLazySingleton(() => CustomerViewModel());
+  locator.registerLazySingleton(() => OrderMenuViewModel());
+  locator.registerLazySingleton(() => CustomerOrdersViewModel());
   locator.registerLazySingleton(() => LoginViewModel());
   locator.registerLazySingleton(() => UsersViewModel());
 

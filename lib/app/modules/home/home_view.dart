@@ -1,9 +1,9 @@
 import 'package:animations/animations.dart';
 import 'package:flutter/material.dart';
-import 'package:hook_diner/app/modules/customers/customer_view.dart';
+import 'package:hook_diner/app/modules/orders/customer_orders_view.dart';
 import 'package:hook_diner/app/modules/home/home_viewmodel.dart';
 import 'package:hook_diner/app/modules/inventory/inventory_view.dart';
-import 'package:hook_diner/app/modules/order/order_view.dart';
+import 'package:hook_diner/app/modules/menu/order_menu_view.dart';
 import 'package:hook_diner/app/modules/sales/sales_view.dart';
 import 'package:hook_diner/app/modules/users/users_view.dart';
 import 'package:stacked/stacked.dart';
@@ -79,7 +79,7 @@ class HomeView extends StatelessWidget {
 Widget getViewForIndex(int index) {
   switch (index) {
     case 0:
-      return const OrderView();
+      return const OrderMenuView();
     case 1:
       return const CustomerView();
     case 2:
@@ -89,6 +89,6 @@ Widget getViewForIndex(int index) {
     case 4:
       return const SalesView();
     default:
-      return const OrderView();
+      return const OrderMenuView();
   }
 }

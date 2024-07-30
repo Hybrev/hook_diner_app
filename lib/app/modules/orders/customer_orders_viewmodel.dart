@@ -3,7 +3,7 @@ import 'package:hook_diner/app/shared/viewmodel.dart';
 import 'package:hook_diner/core/models/customer.dart';
 import 'package:hook_diner/core/models/order.dart';
 
-class CustomerViewModel extends SharedViewModel {
+class CustomerOrdersViewModel extends SharedViewModel {
   final String _title = 'Customer List';
   String get title => _title;
 
@@ -100,8 +100,10 @@ class CustomerViewModel extends SharedViewModel {
             break;
 
           case 'numbers':
-            _unpaidOrders =
-                _allOrders?.where((order) => order.customerId == null).toList();
+            _unpaidOrders = _allOrders
+                ?.where((order) =>
+                    order.customerId == null && order.orderNumber != null)
+                .toList();
             break;
           default:
             _unpaidOrders = _allOrders

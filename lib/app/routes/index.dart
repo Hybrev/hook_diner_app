@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:hook_diner/app/modules/customers/customer_view.dart';
+import 'package:hook_diner/app/modules/orders/customer_orders_view.dart';
 import 'package:hook_diner/app/modules/home/home_view.dart';
 import 'package:hook_diner/app/modules/login/login_view.dart';
-import 'package:hook_diner/app/modules/order/order_view.dart';
+import 'package:hook_diner/app/modules/menu/order_menu_view.dart';
 import 'package:hook_diner/app/modules/sales/sales_view.dart';
 import 'package:hook_diner/app/routes/route_names.dart';
 
@@ -17,7 +17,7 @@ Route<dynamic> generateRoute(RouteSettings settings) {
     case customerRoute:
       return MaterialPageRoute(builder: (_) => const CustomerView());
     case menuRoute:
-      return MaterialPageRoute(builder: (_) => const OrderView());
+      return MaterialPageRoute(builder: (_) => const OrderMenuView());
     case salesRoute:
       return MaterialPageRoute(builder: (_) => const SalesView());
     default:

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:hook_diner/app/modules/order/widgets/checkout/checkout_modal.dart';
+import 'package:hook_diner/app/modules/menu/widgets/checkout/checkout_modal.dart';
 import 'package:change_case/change_case.dart';
 
 class CheckOutTile extends CheckOutModal {

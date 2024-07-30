@@ -1,16 +1,16 @@
 import 'package:flutter/material.dart';
-import 'package:hook_diner/app/modules/customers/customer_viewmodel.dart';
+import 'package:hook_diner/app/modules/orders/customer_orders_viewmodel.dart';
 import 'package:hook_diner/core/models/order.dart';
 import 'package:stacked/stacked.dart';
 
-class OrderCard extends ViewModelWidget<CustomerViewModel> {
+class OrderCard extends ViewModelWidget<CustomerOrdersViewModel> {
   const OrderCard(this.index, {super.key, required this.order});
 
   final int index;
   final Order order;
 
   @override
-  Widget build(BuildContext context, CustomerViewModel viewModel) {
+  Widget build(BuildContext context, CustomerOrdersViewModel viewModel) {
     final appTheme = Theme.of(context);
     return Card(
       color: appTheme.colorScheme.tertiary,

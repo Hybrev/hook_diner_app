@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:hook_diner/app/modules/order/order_viewmodel.dart';
+import 'package:hook_diner/app/modules/menu/order_menu_viewmodel.dart';
 import 'package:hook_diner/app/shared/widgets/base_button.dart';
 import 'package:hook_diner/app/shared/widgets/cancel_button.dart';
 import 'package:hook_diner/core/locator.dart';
@@ -14,7 +14,7 @@ class AddEditCustomerModal extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final appTheme = Theme.of(context);
-    return ViewModelBuilder<OrderViewModel>.nonReactive(
+    return ViewModelBuilder<OrderMenuViewModel>.nonReactive(
       onViewModelReady: (viewModel) =>
           viewModel.setupCustomerModal(editingCustomer),
       builder: (context, viewModel, child) => SingleChildScrollView(
@@ -71,7 +71,7 @@ class AddEditCustomerModal extends StatelessWidget {
           ),
         ),
       ),
-      viewModelBuilder: () => locator<OrderViewModel>(),
+      viewModelBuilder: () => locator<OrderMenuViewModel>(),
     );
   }
 }

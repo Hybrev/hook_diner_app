@@ -1,8 +1,8 @@
 // views/home_view.dart
 import 'package:flutter/material.dart';
-import 'package:hook_diner/app/modules/customers/customer_viewmodel.dart';
-import 'package:hook_diner/app/modules/customers/widgets/customer_appbar.dart';
-import 'package:hook_diner/app/modules/customers/widgets/order_grid.dart';
+import 'package:hook_diner/app/modules/orders/customer_orders_viewmodel.dart';
+import 'package:hook_diner/app/modules/orders/widgets/customer_appbar.dart';
+import 'package:hook_diner/app/modules/orders/widgets/order_grid.dart';
 import 'package:hook_diner/core/locator.dart';
 import 'package:stacked/stacked.dart';
 
@@ -11,7 +11,7 @@ class CustomerView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ViewModelBuilder<CustomerViewModel>.reactive(
+    return ViewModelBuilder<CustomerOrdersViewModel>.reactive(
       onViewModelReady: (viewModel) => viewModel.initialize(),
       disposeViewModel: false,
       builder: (context, model, child) => const DefaultTabController(
@@ -31,7 +31,7 @@ class CustomerView extends StatelessWidget {
           ),
         ),
       ),
-      viewModelBuilder: () => locator<CustomerViewModel>(),
+      viewModelBuilder: () => locator<CustomerOrdersViewModel>(),
     );
   }
 }
