@@ -142,6 +142,25 @@ class DatabaseService {
     }
   }
 
+  Future getOrderedItemsFromCustomer(String? id) async {
+    try {
+      final response =
+          await _ordersCollection.doc(id).collection('items').get();
+
+      if (response.docs.isNotEmpty) {
+        final items = response.docs
+            .map((snapshot) => Item.fromJson(snapshot.data(), snapshot.id))
+            .where((element) => element.name != null)
+            .toList();
+        items.sort((a, b) => a.name!.compareTo(b.name!));
+        return items;
+      }
+    } catch (e) {
+      print('error: $e');
+      return e.toString();
+    }
+  }
+
   // GET in CATEGORY
   Future getItemsInCategory(String? id) async {
     try {

@@ -13,7 +13,6 @@ class CustomerView extends StatelessWidget {
   Widget build(BuildContext context) {
     return ViewModelBuilder<CustomerOrdersViewModel>.reactive(
       onViewModelReady: (viewModel) => viewModel.initialize(),
-      fireOnViewModelReadyOnce: true,
       disposeViewModel: false,
       builder: (context, model, child) => const DefaultTabController(
         length: 2,

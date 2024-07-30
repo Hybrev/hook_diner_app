@@ -41,7 +41,8 @@ class LoginSection extends ViewModelWidget<LoginViewModel> {
             password: viewModel.passwordController.text.trim(),
           ),
           loading: viewModel.isBusy,
-          label: 'Login',
+          label: 'LOGIN',
+          buttonIcon: null,
         ),
       ],
     );

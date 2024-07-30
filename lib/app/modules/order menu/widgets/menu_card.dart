@@ -17,7 +17,9 @@ class MenuCard extends ViewModelWidget<OrderMenuViewModel> {
           ? appTheme.colorScheme.tertiary
           : appTheme.colorScheme.tertiary.withOpacity(0.75),
       child: InkWell(
-        borderRadius: const BorderRadius.all(Radius.circular(16)),
+        splashColor: appTheme.colorScheme.secondary,
+        highlightColor: appTheme.colorScheme.secondary,
+        borderRadius: BorderRadius.circular(16.0),
         onTap: viewModel.filteredMenuItems![index].quantity! >= 1
             ? () =>
                 viewModel.addItemToOrder(viewModel.filteredMenuItems![index])

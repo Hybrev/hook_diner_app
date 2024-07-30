@@ -46,6 +46,7 @@ class CategoryCard extends ViewModelWidget<InventoryViewModel> {
         child: InkWell(
             borderRadius: BorderRadius.circular(12),
             splashColor: appTheme.colorScheme.secondary,
+            highlightColor: appTheme.colorScheme.secondary,
             // shows list of items
             onTap: () => viewModel.showCustomModal(
                   context,

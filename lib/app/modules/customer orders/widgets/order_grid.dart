@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:hook_diner/app/modules/customer%20orders/customer_orders_viewmodel.dart';
 import 'package:hook_diner/app/modules/customer%20orders/widgets/order_card.dart';
+import 'package:hook_diner/app/modules/customer%20orders/widgets/order_details_modal.dart';
 import 'package:hook_diner/app/shared/widgets/filter_actions.dart';
 import 'package:hook_diner/core/models/order.dart';
 import 'package:stacked/stacked.dart';
@@ -58,9 +59,9 @@ class OrderGrid extends ViewModelWidget<CustomerOrdersViewModel> {
                         maxCrossAxisExtent: 500,
                       ),
                       itemCount: orders?.length,
-                      itemBuilder: (context, index) => InkWell(
-                        child:
-                            OrderCard(index, order: orders?[index] ?? Order()),
+                      itemBuilder: (context, index) => OrderCard(
+                        index,
+                        order: orders![index],
                       ),
                     ),
                   ),

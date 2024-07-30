@@ -31,9 +31,7 @@ class CustomerOrdersViewModel extends SharedViewModel {
   TextEditingController get paidDropdown => _paidDropdown;
 
   void initialize() async {
-    print('viewModel initialized');
-
-    // _regularCustomers = await getCustomers()
+// _regularCustomers = await getCustomers()
 
     streamOrders();
     streamCustomers();
@@ -109,7 +107,7 @@ class CustomerOrdersViewModel extends SharedViewModel {
 
   Future<String?> getCustomerName(Order order) async {
     final response = await database.getCustomerByOrder(order.customerId!);
-    return response?.toUpperCase();
+    return response?.toTitleCase();
   }
 
   void updateCustomerFilter(String value, {required String status}) {
@@ -127,6 +125,8 @@ class CustomerOrdersViewModel extends SharedViewModel {
             _unpaidOrders = _allOrders
                 ?.where((order) => order.orderNumber != null)
                 .toList();
+            _unpaidOrders
+                ?.sort((a, b) => a.orderNumber!.compareTo(b.orderNumber!));
             break;
           default:
             _unpaidOrders = _allOrders
@@ -151,6 +151,9 @@ class CustomerOrdersViewModel extends SharedViewModel {
           case 'numbers':
             _paidOrders =
                 _allOrders?.where((order) => order.customerId == null).toList();
+            _paidOrders
+                ?.sort((a, b) => a.orderNumber!.compareTo(b.orderNumber!));
+
             break;
           default:
             _paidOrders = _allOrders
@@ -166,5 +169,9 @@ class CustomerOrdersViewModel extends SharedViewModel {
       default:
     }
     notifyListeners();
+  }
+
+  void setupOrderDetailsModal({required Order order}) async {
+    print('Order: ${order.toJson()}');
   }
 }

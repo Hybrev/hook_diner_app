@@ -200,6 +200,7 @@ class OrderMenuViewModel extends SharedViewModel {
   }
 
   void updateCustomerStatus(bool value) {
+    _customerName = value ? _customers?.first.id : null;
     _isRegularCustomer = value;
     notifyListeners();
   }
@@ -280,6 +281,7 @@ class OrderMenuViewModel extends SharedViewModel {
             title: 'SUCCESS',
             description: 'Your order has been placed successfully!',
           );
+          break;
       }
     } catch (e) {
       print('error: $e');
@@ -287,9 +289,8 @@ class OrderMenuViewModel extends SharedViewModel {
         title: 'ERROR',
         description: 'Failed to place order.',
       );
-    } finally {
-      setBusy(false);
     }
+    setBusy(false);
   }
 
   void removeItemFromOrder(Item item) {
