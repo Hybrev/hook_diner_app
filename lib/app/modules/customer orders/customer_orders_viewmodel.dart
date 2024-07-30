@@ -23,25 +23,19 @@ class CustomerOrdersViewModel extends SharedViewModel {
 
   TextEditingController searchBarController = TextEditingController();
 
-  TextEditingController _unpaidDropdown = TextEditingController();
+  final TextEditingController _unpaidDropdown = TextEditingController();
   TextEditingController get unpaidDropdown => _unpaidDropdown;
 
-  TextEditingController _paidDropdown = TextEditingController();
+  final TextEditingController _paidDropdown = TextEditingController();
   TextEditingController get paidDropdown => _paidDropdown;
 
   void initialize() async {
     print('viewModel initialized');
 
-    _regularCustomers = await getCustomers();
-    _regularCustomers?.insert(0, Customer(id: 'all', name: 'All'));
-    _regularCustomers?.insert(1, Customer(id: 'numbers', name: 'NUMBERS ONLY'));
-
-    print('regular customers: $_regularCustomers');
-    _unpaidDropdown.text = _regularCustomers?.first.id ?? '';
-    _paidDropdown.text = _regularCustomers?.first.id ?? '';
-    notifyListeners();
+    // _regularCustomers = await getCustomers()
 
     streamOrders();
+    streamCustomers();
   }
 
   void streamOrders() {
@@ -49,7 +43,9 @@ class CustomerOrdersViewModel extends SharedViewModel {
 
     database.listenToOrders().listen((orders) {
       if (orders.isNotEmpty) {
+        orders.sort((a, b) => a.orderDate!.compareTo(b.orderDate!));
         _allOrders = orders;
+
         _unpaidOrders = _allOrders
             ?.where((order) => order.orderStatus == 'unpaid')
             .toList();
@@ -61,27 +57,52 @@ class CustomerOrdersViewModel extends SharedViewModel {
     });
   }
 
-  Future<List<Customer>?> getCustomers() async {
+  void streamCustomers() {
     setBusy(true);
-    try {
-      _regularCustomers = await database.getCustomers();
 
-      if (_regularCustomers is! List<Customer>) {
-        _regularCustomers = [];
+    database.listenToCustomers().listen((customers) {
+      if (customers.isNotEmpty) {
+        customers.sort((a, b) => a.name!.compareTo(b.name!));
+
+        _regularCustomers = [
+          Customer(id: 'all', name: 'All'),
+          Customer(id: 'numbers', name: 'NUMBERS ONLY')
+        ];
+        notifyListeners();
+
+        _regularCustomers?.addAll(customers);
+
+        _unpaidDropdown.text = _regularCustomers?.first.id ?? '';
+        _paidDropdown.text = _regularCustomers?.first.id ?? '';
+
+        notifyListeners();
       }
-      _regularCustomers?.sort((a, b) => a.name!.compareTo(b.name!));
 
-      notifyListeners();
-    } on Exception catch (e) {
-      print('error: $e');
-      await dialog.showDialog(
-          title: 'ERROR', description: 'Failed to fetch customers.');
       setBusy(false);
-      goBack();
-    }
-    setBusy(false);
-    return _regularCustomers;
+    });
   }
+
+  // Future<List<Customer>?> getCustomers() async {
+  //   setBusy(true);
+  //   try {
+  //     _regularCustomers = await database.getCustomers();
+
+  //     if (_regularCustomers is! List<Customer>) {
+  //       _regularCustomers = [];
+  //     }
+  //     _regularCustomers?.sort((a, b) => a.name!.compareTo(b.name!));
+
+  //     notifyListeners();
+  //   } on Exception catch (e) {
+  //     print('error: $e');
+  //     await dialog.showDialog(
+  //         title: 'ERROR', description: 'Failed to fetch customers.');
+  //     setBusy(false);
+  //     goBack();
+  //   }
+  //   setBusy(false);
+  //   return _regularCustomers;
+  // }
 
   Future<String?> getCustomerName(Order order) async {
     final response = await database.getCustomerByOrder(order.customerId!);
@@ -101,8 +122,7 @@ class CustomerOrdersViewModel extends SharedViewModel {
 
           case 'numbers':
             _unpaidOrders = _allOrders
-                ?.where((order) =>
-                    order.customerId == null && order.orderNumber != null)
+                ?.where((order) => order.orderNumber != null)
                 .toList();
             break;
           default:
