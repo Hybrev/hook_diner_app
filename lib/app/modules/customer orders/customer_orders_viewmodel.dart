@@ -1,3 +1,4 @@
+import 'package:change_case/change_case.dart';
 import 'package:flutter/material.dart';
 import 'package:hook_diner/app/shared/viewmodel.dart';
 import 'package:hook_diner/core/models/customer.dart';
@@ -64,12 +65,14 @@ class CustomerOrdersViewModel extends SharedViewModel {
       if (customers.isNotEmpty) {
         customers.sort((a, b) => a.name!.compareTo(b.name!));
 
+        // sets intial filters before adding customers
         _regularCustomers = [
-          Customer(id: 'all', name: 'All'),
-          Customer(id: 'numbers', name: 'NUMBERS ONLY')
+          Customer(id: 'all', name: 'ALL'),
+          Customer(id: 'numbers', name: '* NUMBERS ONLY'),
         ];
         notifyListeners();
 
+        // adds customer data
         _regularCustomers?.addAll(customers);
 
         _unpaidDropdown.text = _regularCustomers?.first.id ?? '';
@@ -106,7 +109,7 @@ class CustomerOrdersViewModel extends SharedViewModel {
 
   Future<String?> getCustomerName(Order order) async {
     final response = await database.getCustomerByOrder(order.customerId!);
-    return response;
+    return response?.toUpperCase();
   }
 
   void updateCustomerFilter(String value, {required String status}) {

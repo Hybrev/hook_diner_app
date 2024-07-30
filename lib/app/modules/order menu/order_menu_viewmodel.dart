@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:change_case/change_case.dart';
 import 'package:flutter/material.dart';
 import 'package:hook_diner/app/shared/viewmodel.dart';
 import 'package:hook_diner/core/models/category.dart';
@@ -55,7 +56,16 @@ class OrderMenuViewModel extends SharedViewModel {
     setBusy(true);
 
     _categories = await database.getCategories();
-    _categories?.insert(0, Category(id: 'all', title: 'All'));
+    _categories?.insert(0, Category(id: 'all', title: 'ALL'));
+
+    _categories = _categories
+        ?.map(
+          (category) => category = Category(
+            id: category.id,
+            title: category.title?.toTitleCase(),
+          ),
+        )
+        .toList();
 
     searchBarController.text = '';
     selectedCategoryController.text = _categories?.first.id.toString() ?? '';
