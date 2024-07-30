@@ -88,7 +88,7 @@ class OrderCard extends ViewModelWidget<CustomerViewModel> {
                         ?.copyWith(fontWeight: FontWeight.bold),
                   ),
                   Text(
-                    order.datePaid.toString(),
+                    order.orderStatus.toString(),
                     style: appTheme.textTheme.titleMedium
                         ?.copyWith(fontWeight: FontWeight.bold),
                   ),

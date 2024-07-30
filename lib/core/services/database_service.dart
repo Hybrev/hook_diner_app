@@ -413,6 +413,25 @@ class DatabaseService {
     }
   }
 
+  Future getCustomers() async {
+    try {
+      final response = await _customersCollection.get();
+
+      if (response.docs.isNotEmpty) {
+        final customers = response.docs
+            .map((snapshot) => Customer.fromJson(
+                snapshot.data() as Map<String, dynamic>, snapshot.id))
+            .where((element) => element.name != null)
+            .toList();
+        customers.sort((a, b) => a.name!.compareTo(b.name!));
+        return customers;
+      }
+    } catch (e) {
+      print('error: $e');
+      return e.toString();
+    }
+  }
+
   Future<String?> getCustomerByOrder(DocumentReference customer) async {
     final customerSnapshot = await _customersCollection.doc(customer.id).get();
 

@@ -51,7 +51,25 @@ class OrderView extends StatelessWidget {
                           ),
                           const SizedBox(height: 8),
                           // GRID OF AVAILABLE ITEMS
-                          const Expanded(child: MenuGrid()),
+                          Expanded(
+                            child: model.filteredMenuItems?.isEmpty ?? true
+                                ? Column(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      Icon(
+                                        Icons.remove_shopping_cart_outlined,
+                                        size: 120,
+                                        color: appTheme.colorScheme.primary,
+                                      ),
+                                      const SizedBox(height: 16),
+                                      Text(
+                                        'No items found!',
+                                        style: appTheme.textTheme.titleLarge,
+                                      ),
+                                    ],
+                                  )
+                                : const MenuGrid(),
+                          ),
                           const SizedBox(height: 8),
                         ],
                       ),

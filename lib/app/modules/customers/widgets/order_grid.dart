@@ -17,38 +17,38 @@ class OrderGrid extends ViewModelWidget<CustomerViewModel> {
 
     final appTheme = Theme.of(context);
     return Center(
-      child: orders?.isEmpty ?? true
-          ? Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Icon(
-                  Icons.remove_shopping_cart_outlined,
-                  size: 120,
-                  color: appTheme.colorScheme.primary,
-                ),
-                const SizedBox(height: 16),
-                Text(
-                  'No orders found!',
-                  style: appTheme.textTheme.titleLarge,
-                ),
-              ],
-            )
-          : Column(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
-              children: [
-                // filter to show regular customer orders or all orders
-                FilterActions(
-                  searchBarController: viewModel.searchBarController,
-                  onSearchBarChanged: (value) {},
-                  dropdownItems: viewModel.customers ?? [],
-                  dropdownController: viewModel.dropdownController,
-                  onDropdownChanged: (value) =>
-                      viewModel.updateCustomerFilter(value, status: status!),
-                ),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.spaceAround,
+        children: [
+          // filter to show regular customer orders or all orders
+          FilterActions(
+            searchBarController: viewModel.searchBarController,
+            onSearchBarChanged: (value) {},
+            dropdownItems: viewModel.customers ?? [],
+            dropdownController: viewModel.dropdownController,
+            onDropdownChanged: (value) =>
+                viewModel.updateCustomerFilter(value, status: status!),
+          ),
 
-                const SizedBox(height: 16),
-                Expanded(
-                  child: ConstrainedBox(
+          const SizedBox(height: 16),
+          Expanded(
+            child: orders?.isEmpty ?? true
+                ? Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Icon(
+                        Icons.remove_shopping_cart_outlined,
+                        size: 120,
+                        color: appTheme.colorScheme.primary,
+                      ),
+                      const SizedBox(height: 16),
+                      Text(
+                        'No orders found!',
+                        style: appTheme.textTheme.titleLarge,
+                      ),
+                    ],
+                  )
+                : ConstrainedBox(
                     constraints: const BoxConstraints(maxWidth: 840),
                     child: GridView.builder(
                       gridDelegate:
@@ -63,9 +63,9 @@ class OrderGrid extends ViewModelWidget<CustomerViewModel> {
                       ),
                     ),
                   ),
-                ),
-              ],
-            ),
+          ),
+        ],
+      ),
     );
   }
 }
