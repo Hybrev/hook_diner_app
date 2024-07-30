@@ -22,10 +22,11 @@ class OrderGrid extends ViewModelWidget<CustomerViewModel> {
         children: [
           // filter to show regular customer orders or all orders
           FilterActions(
-            searchBarController: viewModel.searchBarController,
             onSearchBarChanged: (value) {},
             dropdownItems: viewModel.customers ?? [],
-            dropdownController: viewModel.dropdownController,
+            dropdownController: status == 'unpaid'
+                ? viewModel.unpaidDropdown
+                : viewModel.paidDropdown,
             onDropdownChanged: (value) =>
                 viewModel.updateCustomerFilter(value, status: status!),
           ),

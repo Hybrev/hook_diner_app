@@ -1,19 +1,18 @@
 import 'package:flutter/material.dart';
-import 'package:hook_diner/core/models/category.dart';
 import 'package:hook_diner/core/models/customer.dart';
 
 class FilterActions extends StatelessWidget {
   const FilterActions({
     super.key,
-    required this.searchBarController,
-    required this.onSearchBarChanged,
+    this.searchBarController,
+    this.onSearchBarChanged,
     required this.dropdownItems,
     required this.dropdownController,
     required this.onDropdownChanged,
   });
 
-  final Function(String value) onSearchBarChanged;
-  final TextEditingController searchBarController;
+  final Function(String value)? onSearchBarChanged;
+  final TextEditingController? searchBarController;
 
   final List dropdownItems;
   final TextEditingController dropdownController;
@@ -26,22 +25,23 @@ class FilterActions extends StatelessWidget {
       return Row(
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: [
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: SearchBar(
-              onChanged: (value) => onSearchBarChanged(value),
-              constraints: const BoxConstraints(maxWidth: 400),
-              padding: const WidgetStatePropertyAll(EdgeInsets.all(8)),
-              hintText: 'Search...',
-              trailing: const [
-                Tooltip(
-                  message: 'Search',
-                  child: Icon(Icons.search),
-                ),
-              ],
-              controller: searchBarController,
+          if (searchBarController != null)
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: SearchBar(
+                onChanged: (value) => onSearchBarChanged!(value),
+                constraints: const BoxConstraints(maxWidth: 400),
+                padding: const WidgetStatePropertyAll(EdgeInsets.all(8)),
+                hintText: 'Search...',
+                trailing: const [
+                  Tooltip(
+                    message: 'Search',
+                    child: Icon(Icons.search),
+                  ),
+                ],
+                controller: searchBarController,
+              ),
             ),
-          ),
           DropdownButton<String>(
             value: dropdownController.text,
             style: appTheme.textTheme.labelLarge,
@@ -70,23 +70,23 @@ class FilterActions extends StatelessWidget {
     }
     return Column(
       children: [
-        Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: SearchBar(
-            onChanged: (value) => onSearchBarChanged(value),
-            constraints: const BoxConstraints(maxWidth: 480),
-            padding: const WidgetStatePropertyAll(EdgeInsets.all(8)),
-            hintText: 'Search...',
-            trailing: const [
-              Tooltip(
-                message: 'Search',
-                child: Icon(Icons.search),
-              ),
-            ],
-            controller: searchBarController,
+        if (searchBarController != null)
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: SearchBar(
+              onChanged: (value) => onSearchBarChanged!(value),
+              constraints: const BoxConstraints(maxWidth: 480),
+              padding: const WidgetStatePropertyAll(EdgeInsets.all(8)),
+              hintText: 'Search...',
+              trailing: const [
+                Tooltip(
+                  message: 'Search',
+                  child: Icon(Icons.search),
+                ),
+              ],
+              controller: searchBarController,
+            ),
           ),
-        ),
-        const SizedBox(height: 16),
         Align(
           alignment: Alignment.topRight,
           child: DropdownButton<String>(

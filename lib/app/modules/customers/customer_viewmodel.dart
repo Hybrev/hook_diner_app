@@ -22,16 +22,23 @@ class CustomerViewModel extends SharedViewModel {
   List<Order>? get paidOrders => _paidOrders;
 
   TextEditingController searchBarController = TextEditingController();
-  TextEditingController dropdownController = TextEditingController();
+
+  TextEditingController _unpaidDropdown = TextEditingController();
+  TextEditingController get unpaidDropdown => _unpaidDropdown;
+
+  TextEditingController _paidDropdown = TextEditingController();
+  TextEditingController get paidDropdown => _paidDropdown;
 
   void initialize() async {
     print('viewModel initialized');
 
     _regularCustomers = await getCustomers();
     _regularCustomers?.insert(0, Customer(id: 'all', name: 'All'));
+    _regularCustomers?.insert(1, Customer(id: 'numbers', name: 'NUMBERS ONLY'));
 
     print('regular customers: $_regularCustomers');
-    dropdownController.text = _regularCustomers?.first.id ?? '';
+    _unpaidDropdown.text = _regularCustomers?.first.id ?? '';
+    _paidDropdown.text = _regularCustomers?.first.id ?? '';
     notifyListeners();
 
     streamOrders();
@@ -82,19 +89,21 @@ class CustomerViewModel extends SharedViewModel {
   }
 
   void updateCustomerFilter(String value, {required String status}) {
-    dropdownController.text = value;
+    switch (status) {
+      case 'unpaid':
+        _unpaidDropdown.text = value;
+        switch (value) {
+          case 'all':
+            _unpaidOrders = _allOrders
+                ?.where((order) => order.orderStatus == 'unpaid')
+                .toList();
+            break;
 
-    switch (value) {
-      case 'all':
-        _unpaidOrders = _allOrders
-            ?.where((order) => order.orderStatus == 'unpaid')
-            .toList();
-        _paidOrders =
-            _allOrders?.where((order) => order.orderStatus == 'paid').toList();
-        break;
-      default:
-        switch (status) {
-          case 'unpaid':
+          case 'numbers':
+            _unpaidOrders =
+                _allOrders?.where((order) => order.customerId == null).toList();
+            break;
+          default:
             _unpaidOrders = _allOrders
                 ?.where((order) =>
                     order.customerId?.id == value &&
@@ -102,8 +111,23 @@ class CustomerViewModel extends SharedViewModel {
                     order.orderStatus == 'unpaid')
                 .toList();
             break;
+        }
+        break;
 
-          case 'paid':
+      case 'paid':
+        _paidDropdown.text = value;
+        switch (value) {
+          case 'all':
+            _paidOrders = _allOrders
+                ?.where((order) => order.orderStatus == 'paid')
+                .toList();
+            break;
+
+          case 'numbers':
+            _paidOrders =
+                _allOrders?.where((order) => order.customerId == null).toList();
+            break;
+          default:
             _paidOrders = _allOrders
                 ?.where((order) =>
                     order.customerId?.id == value &&
@@ -111,10 +135,10 @@ class CustomerViewModel extends SharedViewModel {
                     order.orderStatus == 'paid')
                 .toList();
             break;
-
-          default:
-            break;
         }
+        break;
+
+      default:
     }
     notifyListeners();
   }
