@@ -92,12 +92,23 @@ class FilterActions extends StatelessWidget {
           child: DropdownButton<String>(
             value: dropdownController.text,
             focusColor: Theme.of(context).colorScheme.tertiary,
-            items: dropdownItems
-                .map((e) => DropdownMenuItem<String>(
-                      value: e.id,
-                      child: Text(e.title ?? ''),
-                    ))
-                .toList(),
+            items: dropdownItems is List<Customer?>
+                ? dropdownItems
+                    .map(
+                      (e) => DropdownMenuItem<String>(
+                        value: e.id,
+                        child: Text(e.name ?? ''),
+                      ),
+                    )
+                    .toList()
+                : dropdownItems
+                    .map(
+                      (e) => DropdownMenuItem<String>(
+                        value: e.id,
+                        child: Text(e.title ?? ''),
+                      ),
+                    )
+                    .toList(),
             onChanged: (value) => onDropdownChanged(value!),
           ),
         ),

@@ -95,14 +95,20 @@ class CustomerViewModel extends SharedViewModel {
       default:
         switch (status) {
           case 'unpaid':
-            _unpaidOrders = _unpaidOrders
-                ?.where((order) => order.customerId?.id == value)
+            _unpaidOrders = _allOrders
+                ?.where((order) =>
+                    order.customerId?.id == value &&
+                    order.orderNumber == null &&
+                    order.orderStatus == 'unpaid')
                 .toList();
             break;
 
           case 'paid':
-            _paidOrders = _paidOrders
-                ?.where((order) => order.customerId?.id == value)
+            _paidOrders = _allOrders
+                ?.where((order) =>
+                    order.customerId?.id == value &&
+                    order.orderNumber == null &&
+                    order.orderStatus == 'paid')
                 .toList();
             break;
 
