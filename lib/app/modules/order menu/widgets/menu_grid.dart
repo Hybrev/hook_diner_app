@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:hook_diner/app/modules/menu/order_menu_viewmodel.dart';
-import 'package:hook_diner/app/modules/menu/widgets/menu_card.dart';
+import 'package:hook_diner/app/modules/order%20menu/order_menu_viewmodel.dart';
+import 'package:hook_diner/app/modules/order%20menu/widgets/menu_card.dart';
 import 'package:stacked/stacked.dart';
 
 class MenuGrid extends ViewModelWidget<OrderMenuViewModel> {

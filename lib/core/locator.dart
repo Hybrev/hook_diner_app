@@ -1,8 +1,8 @@
 import 'package:get_it/get_it.dart';
-import 'package:hook_diner/app/modules/orders/customer_orders_viewmodel.dart';
+import 'package:hook_diner/app/modules/customer%20orders/customer_orders_viewmodel.dart';
 import 'package:hook_diner/app/modules/inventory/inventory_viewmodel.dart';
 import 'package:hook_diner/app/modules/login/login_viewmodel.dart';
-import 'package:hook_diner/app/modules/menu/order_menu_viewmodel.dart';
+import 'package:hook_diner/app/modules/order%20menu/order_menu_viewmodel.dart';
 import 'package:hook_diner/app/modules/sales/sales_viewmodel.dart';
 import 'package:hook_diner/app/modules/users/users_viewmodel.dart';
 import 'package:hook_diner/core/services/auth_service.dart';

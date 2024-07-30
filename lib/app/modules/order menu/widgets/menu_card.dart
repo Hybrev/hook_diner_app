@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:hook_diner/app/modules/menu/order_menu_viewmodel.dart';
+import 'package:hook_diner/app/modules/order%20menu/order_menu_viewmodel.dart';
 import 'package:change_case/change_case.dart';
 import 'package:stacked/stacked.dart';
 

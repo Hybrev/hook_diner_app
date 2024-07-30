@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:hook_diner/app/modules/menu/order_menu_viewmodel.dart';
-import 'package:hook_diner/app/modules/menu/widgets/checkout/checkout_modal.dart';
-import 'package:hook_diner/app/modules/menu/widgets/checkout/checkout_tile.dart';
+import 'package:hook_diner/app/modules/order%20menu/order_menu_viewmodel.dart';
+import 'package:hook_diner/app/modules/order%20menu/widgets/checkout/checkout_modal.dart';
+import 'package:hook_diner/app/modules/order%20menu/widgets/checkout/checkout_tile.dart';
 
 class CheckoutItemList extends CheckOutModal {
   const CheckoutItemList(this.viewModel,

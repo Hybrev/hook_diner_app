@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:hook_diner/app/modules/menu/order_menu_viewmodel.dart';
-import 'package:hook_diner/app/modules/menu/widgets/checkout/checkout_item_list.dart';
+import 'package:hook_diner/app/modules/order%20menu/order_menu_viewmodel.dart';
+import 'package:hook_diner/app/modules/order%20menu/widgets/checkout/checkout_item_list.dart';
 import 'package:hook_diner/app/shared/widgets/base_appbar.dart';
 import 'package:hook_diner/app/shared/widgets/base_button.dart';
 import 'package:hook_diner/core/locator.dart';

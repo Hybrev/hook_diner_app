@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:hook_diner/app/modules/orders/customer_orders_viewmodel.dart';
+import 'package:hook_diner/app/modules/customer%20orders/customer_orders_viewmodel.dart';
 import 'package:hook_diner/core/models/order.dart';
 import 'package:stacked/stacked.dart';
 

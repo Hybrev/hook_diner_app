@@ -1,8 +1,8 @@
 // views/home_view.dart
 import 'package:flutter/material.dart';
-import 'package:hook_diner/app/modules/orders/customer_orders_viewmodel.dart';
-import 'package:hook_diner/app/modules/orders/widgets/customer_appbar.dart';
-import 'package:hook_diner/app/modules/orders/widgets/order_grid.dart';
+import 'package:hook_diner/app/modules/customer%20orders/customer_orders_viewmodel.dart';
+import 'package:hook_diner/app/modules/customer%20orders/widgets/customer_appbar.dart';
+import 'package:hook_diner/app/modules/customer%20orders/widgets/order_grid.dart';
 import 'package:hook_diner/core/locator.dart';
 import 'package:stacked/stacked.dart';
 
