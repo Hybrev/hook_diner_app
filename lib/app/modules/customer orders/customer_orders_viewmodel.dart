@@ -2,6 +2,7 @@ import 'package:change_case/change_case.dart';
 import 'package:flutter/material.dart';
 import 'package:hook_diner/app/shared/viewmodel.dart';
 import 'package:hook_diner/core/models/customer.dart';
+import 'package:hook_diner/core/models/item.dart';
 import 'package:hook_diner/core/models/order.dart';
 
 class CustomerOrdersViewModel extends SharedViewModel {
@@ -173,5 +174,25 @@ class CustomerOrdersViewModel extends SharedViewModel {
 
   void setupOrderDetailsModal({required Order order}) async {
     print('Order: ${order.toJson()}');
+
+    final response = await getItems(order.id);
+    print('viewModel response: $response');
+  }
+
+  Future<List> getItems(String? id) async {
+    List customerItems = [];
+    try {
+      // customerItems = await database.getItemsInOrder(id);
+      await database.getItemsInOrder(id);
+
+      notifyListeners();
+    } on Exception catch (e) {
+      print('error: $e');
+      await dialog.showDialog(
+          title: 'ERROR', description: 'Failed to fetch items.');
+      setBusy(false);
+      goBack();
+    }
+    return customerItems;
   }
 }

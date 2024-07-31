@@ -142,19 +142,45 @@ class DatabaseService {
     }
   }
 
-  Future getOrderedItemsFromCustomer(String? id) async {
+  Future getItemsInOrder(String? id) async {
     try {
-      final response =
+// order items collection reference for given id
+      final orderItemsDoc =
           await _ordersCollection.doc(id).collection('items').get();
 
-      if (response.docs.isNotEmpty) {
-        final items = response.docs
-            .map((snapshot) => Item.fromJson(snapshot.data(), snapshot.id))
-            .where((element) => element.name != null)
-            .toList();
-        items.sort((a, b) => a.name!.compareTo(b.name!));
-        return items;
+      if (orderItemsDoc.docs.isNotEmpty) {
+        final orderItems = orderItemsDoc.docs.map((snapshot) async {
+          final DocumentReference itemIdRef = snapshot.data()['item_id'];
+
+          final DocumentSnapshot response =
+              await _itemsCollection.doc(itemIdRef.id).get();
+
+          print('response: ${response.data()}');
+        });
       }
+
+      // _ordersCollection.doc(id).collection('items').get().then(
+      //   (querySnapshot) {
+      //     print('querySnapshot: ${querySnapshot.docs}');
+
+      //     for (var items in querySnapshot.docs) {
+      //       print('items: ${items}');
+
+      //       // gets each item id for reference
+      //       DocumentReference itemRef = items.data()['item_id'];
+      //       print('item ref: ${itemRef.id}');
+
+      //       // gets item data
+      //       _itemsCollection.doc(itemRef.id).get().then(
+      //         (value) {
+      //           print('value: ${value.data()}');
+      //           orderItems.add(Item.fromJson(
+      //               value.data() as Map<String, dynamic>, value.id));
+      //         },
+      //       );
+      //     }
+      //   },
+      // );
     } catch (e) {
       print('error: $e');
       return e.toString();

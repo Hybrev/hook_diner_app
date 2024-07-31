@@ -25,50 +25,67 @@ class OrderDetailsModal extends StatelessWidget {
           centerTitle: true,
           automaticallyImplyLeading: true,
         ),
-        body: SingleChildScrollView(
-          child: SafeArea(
-            minimum: const EdgeInsets.all(16),
-            child: Center(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  if (MediaQuery.sizeOf(context).width > 320)
-                    const Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [],
-                    )
-                  else
-                    const Column(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      children: [],
-                    ),
-                  const SizedBox(height: 16),
-                  // ORDER LIST
-                  ListTile(
-                    title: Text(
-                      'ORDER LIST',
-                      style: appTheme.textTheme.titleLarge
-                          ?.copyWith(fontWeight: FontWeight.bold),
-                    ),
-                    trailing: Text(
-                      'PRICE',
-                      style: appTheme.textTheme.titleLarge
-                          ?.copyWith(fontWeight: FontWeight.bold),
-                    ),
-                  ),
-                  Row(
+        body: SafeArea(
+          minimum: const EdgeInsets.all(16),
+          child: Center(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                if (MediaQuery.sizeOf(context).width > 320)
+                  const Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text('TOTAL',
-                          style: appTheme.textTheme.titleLarge
-                              ?.copyWith(fontWeight: FontWeight.bold)),
-                      Text('₱ ${receivedOrder.totalPrice?.toStringAsFixed(2)}',
-                          style: appTheme.textTheme.titleLarge
-                              ?.copyWith(fontWeight: FontWeight.bold)),
-                    ],
+                    children: [],
+                  )
+                else
+                  const Column(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: [],
                   ),
-                ],
-              ),
+                const SizedBox(height: 16),
+                // ORDER LIST
+                ListTile(
+                  title: Text(
+                    'ORDER LIST',
+                    style: appTheme.textTheme.titleLarge
+                        ?.copyWith(fontWeight: FontWeight.bold),
+                  ),
+                  trailing: Text(
+                    'PRICE',
+                    style: appTheme.textTheme.titleLarge
+                        ?.copyWith(fontWeight: FontWeight.bold),
+                  ),
+                ),
+                Expanded(
+                  child: ListView.builder(
+                    itemCount: 12,
+                    itemBuilder: (context, index) => ListTile(
+                      leading: Text(
+                        "${index + 1}",
+                        style: Theme.of(context).textTheme.titleSmall?.copyWith(
+                              fontWeight: FontWeight.bold,
+                            ),
+                      ),
+                      title: Text(
+                        'Item Name',
+                        style: Theme.of(context).textTheme.titleMedium,
+                      ),
+                      trailing: Text('10.00',
+                          style: Theme.of(context).textTheme.titleMedium),
+                    ),
+                  ),
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text('TOTAL',
+                        style: appTheme.textTheme.titleLarge
+                            ?.copyWith(fontWeight: FontWeight.bold)),
+                    Text('₱ ${receivedOrder.totalPrice?.toStringAsFixed(2)}',
+                        style: appTheme.textTheme.titleLarge
+                            ?.copyWith(fontWeight: FontWeight.bold)),
+                  ],
+                ),
+              ],
             ),
           ),
         ),
