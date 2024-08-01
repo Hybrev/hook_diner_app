@@ -284,7 +284,6 @@ class OrderMenuViewModel extends SharedViewModel {
           break;
       }
     } catch (e) {
-      print('error: $e');
       await dialog.showDialog(
         title: 'ERROR',
         description: 'Failed to place order.',

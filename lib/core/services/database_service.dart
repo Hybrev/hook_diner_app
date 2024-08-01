@@ -1,6 +1,5 @@
 import 'dart:async';
 
-import 'package:change_case/change_case.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:hook_diner/core/models/category.dart';
 import 'package:hook_diner/core/models/customer.dart';
@@ -138,7 +137,6 @@ class DatabaseService {
         return items;
       }
     } catch (e) {
-      print('error: $e');
       return e.toString();
     }
   }
@@ -154,7 +152,6 @@ class DatabaseService {
       }
       return orderItems;
     } catch (e) {
-      print('error: $e');
       return [];
     }
   }
@@ -192,7 +189,6 @@ class DatabaseService {
         return items;
       }
     } catch (e) {
-      print('error: $e');
       return e.toString();
     }
   }
@@ -311,7 +307,6 @@ class DatabaseService {
             .toList();
       }
     } catch (e) {
-      print('error: $e');
       return e.toString();
     }
   }
@@ -356,7 +351,6 @@ class DatabaseService {
 /* ORDER */
   Future addOrder(order_model.Order order,
       {required List<Item> orderedItems, String? customerId}) async {
-    print('order received: ${order.toJson()}');
     try {
       // adds order info w/ auto-gen ID
       final docRef = _ordersCollection.doc();
@@ -396,7 +390,6 @@ class DatabaseService {
 
       return true;
     } catch (e) {
-      print('error: $e');
       return e.toString();
     }
   }
@@ -467,7 +460,6 @@ class DatabaseService {
         return customers;
       }
     } catch (e) {
-      print('error: $e');
       return e.toString();
     }
   }

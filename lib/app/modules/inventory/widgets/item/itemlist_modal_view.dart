@@ -3,7 +3,6 @@ import 'package:hook_diner/app/modules/inventory/widgets/item/add_edit/add_edit_
 import 'package:hook_diner/app/modules/inventory/widgets/item/add_edit/add_edit_item_viewmodel.dart';
 import 'package:hook_diner/app/shared/widgets/base_appbar.dart';
 import 'package:hook_diner/app/shared/widgets/data_tile.dart';
-import 'package:hook_diner/core/locator.dart';
 import 'package:hook_diner/core/models/category.dart';
 import 'package:hook_diner/core/models/item.dart';
 import 'package:stacked/stacked.dart';

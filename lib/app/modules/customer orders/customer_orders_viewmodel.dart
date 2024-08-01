@@ -9,9 +9,6 @@ class CustomerOrdersViewModel extends SharedViewModel {
   final String _title = 'Customer List';
   String get title => _title;
 
-  String _customerName = '';
-  String get customerName => _customerName;
-
   List<Customer>? _regularCustomers;
   List<Customer>? get customers => _regularCustomers;
 
@@ -188,8 +185,7 @@ class CustomerOrdersViewModel extends SharedViewModel {
       _orderItems = await database.getItemsInOrder(id) ?? [];
       notifyListeners();
       setBusy(false);
-    } on Exception catch (e) {
-      print('error: $e');
+    } on Exception catch (_) {
       await dialog.showDialog(
           title: 'ERROR', description: 'Failed to fetch items.');
       setBusy(false);
@@ -209,7 +205,6 @@ class CustomerOrdersViewModel extends SharedViewModel {
         );
       }
     } catch (e) {
-      print('error: $e');
       await dialog.showDialog(
         title: 'ERROR',
         description: 'Failed to mark as paid.',

@@ -42,13 +42,11 @@ class InventoryViewModel extends SharedViewModel {
         _items = [];
       }
       notifyListeners();
-    } on Exception catch (e) {
-      print('error: $e');
+    } on Exception catch (_) {
       await dialog.showDialog(
           title: 'ERROR', description: 'Failed to fetch items');
       setBusy(false);
       goBack();
-      ();
     }
     setBusy(false);
     return _items;

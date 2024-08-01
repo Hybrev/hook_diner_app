@@ -1,7 +1,6 @@
 // views/home_view.dart
 import 'package:flutter/material.dart';
 import 'package:flutter_speed_dial/flutter_speed_dial.dart';
-import 'package:hook_diner/app/modules/inventory/widgets/category/add_edit/add_edit_category_view.dart';
 import 'package:hook_diner/app/modules/order%20menu/order_menu_viewmodel.dart';
 import 'package:hook_diner/app/modules/order%20menu/widgets/regular%20customers/add_edit_customer_modal.dart';
 import 'package:hook_diner/app/modules/order%20menu/widgets/regular%20customers/customer_list.dart';

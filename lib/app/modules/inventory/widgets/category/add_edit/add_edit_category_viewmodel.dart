@@ -57,7 +57,6 @@ class AddEditCategoryViewModel extends InventoryViewModel {
         );
       }
     } catch (e) {
-      print('error: $e');
       await dialog.showDialog(
         title: 'ERROR',
         description: 'Failed to add category.',

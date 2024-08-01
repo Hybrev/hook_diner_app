@@ -81,7 +81,8 @@ class AddEditItemViewModel extends InventoryViewModel {
       }
       goBack();
     } catch (e) {
-      print('error: $e');
+      await dialog.showDialog(
+          title: 'ERROR', description: 'Failed to add item.');
     } finally {
       goBack();
       setBusy(false);
@@ -102,7 +103,6 @@ class AddEditItemViewModel extends InventoryViewModel {
     try {
       final response =
           await database.updateItem(item, categoryId: categoryController.text);
-      print('response: $response');
       notifyListeners();
       if (response) {
         await dialog.showDialog(
@@ -112,7 +112,6 @@ class AddEditItemViewModel extends InventoryViewModel {
       }
       goBack();
     } catch (e) {
-      print('error: $e');
       await dialog.showDialog(
         title: 'ERROR',
         description: 'Failed to update item',

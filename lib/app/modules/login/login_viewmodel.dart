@@ -19,8 +19,6 @@ class LoginViewModel extends SharedViewModel {
       setBusy(false);
       toMainMenu();
     } on FirebaseAuthException catch (e) {
-      print('firebase auth error: $e');
-
       String title = '', message = '';
       switch (e.code) {
         case 'network-request-failed':
