@@ -46,7 +46,7 @@ class OrderCard extends ViewModelWidget<CustomerOrdersViewModel> {
               Expanded(
                 flex: 3,
                 child: Column(
-                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
@@ -62,10 +62,11 @@ class OrderCard extends ViewModelWidget<CustomerOrdersViewModel> {
                       'Date Ordered:',
                       style: appTheme.textTheme.titleMedium,
                     ),
-                    Text(
-                      'Date Paid:',
-                      style: appTheme.textTheme.titleMedium,
-                    ),
+                    if (order.datePaid != null)
+                      Text(
+                        'Date Paid:',
+                        style: appTheme.textTheme.titleMedium,
+                      ),
                   ],
                 ),
               ),
@@ -78,9 +79,14 @@ class OrderCard extends ViewModelWidget<CustomerOrdersViewModel> {
                         ? FutureBuilder(
                             future: viewModel.getCustomerName(order),
                             builder: (context, snapshot) => Text(
-                                  snapshot.data ?? 'Loading...',
-                                  style: appTheme.textTheme.titleMedium
-                                      ?.copyWith(fontWeight: FontWeight.bold),
+                                  snapshot.data ?? 'LOADING',
+                                  style:
+                                      appTheme.textTheme.titleMedium?.copyWith(
+                                    fontWeight: FontWeight.bold,
+                                    color: snapshot.data != null
+                                        ? appTheme.colorScheme.onSurface
+                                        : appTheme.colorScheme.error,
+                                  ),
                                 ))
                         : Text(
                             '#${order.orderNumber?.toString()}',
@@ -98,11 +104,12 @@ class OrderCard extends ViewModelWidget<CustomerOrdersViewModel> {
                       style: appTheme.textTheme.titleMedium
                           ?.copyWith(fontWeight: FontWeight.bold),
                     ),
-                    Text(
-                      order.orderStatus.toString(),
-                      style: appTheme.textTheme.titleMedium
-                          ?.copyWith(fontWeight: FontWeight.bold),
-                    ),
+                    if (order.datePaid != null)
+                      Text(
+                        order.datePaid.toString(),
+                        style: appTheme.textTheme.titleMedium
+                            ?.copyWith(fontWeight: FontWeight.bold),
+                      ),
                   ],
                 ),
               ),

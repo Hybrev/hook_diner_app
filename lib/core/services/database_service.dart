@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:change_case/change_case.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:hook_diner/core/models/category.dart';
 import 'package:hook_diner/core/models/customer.dart';
@@ -142,47 +143,28 @@ class DatabaseService {
     }
   }
 
-  Future getItemsInOrder(String? id) async {
+  Future<List<Item>?> getItemsInOrder(String? id) async {
     try {
-// order items collection reference for given id
-      final orderItemsDoc =
+      final orderItems = <Item>[];
+      final response =
           await _ordersCollection.doc(id).collection('items').get();
-
-      if (orderItemsDoc.docs.isNotEmpty) {
-        final orderItems = orderItemsDoc.docs.map((snapshot) async {
-          final DocumentReference itemIdRef = snapshot.data()['item_id'];
-
-          final DocumentSnapshot response =
-              await _itemsCollection.doc(itemIdRef.id).get();
-
-          print('response: ${response.data()}');
-        });
+      for (var items in response.docs) {
+        final DocumentReference itemRef = items.data()['item_id'];
+        orderItems.add(await getItemFromReference(itemRef, orderItems));
       }
-
-      // _ordersCollection.doc(id).collection('items').get().then(
-      //   (querySnapshot) {
-      //     print('querySnapshot: ${querySnapshot.docs}');
-
-      //     for (var items in querySnapshot.docs) {
-      //       print('items: ${items}');
-
-      //       // gets each item id for reference
-      //       DocumentReference itemRef = items.data()['item_id'];
-      //       print('item ref: ${itemRef.id}');
-
-      //       // gets item data
-      //       _itemsCollection.doc(itemRef.id).get().then(
-      //         (value) {
-      //           print('value: ${value.data()}');
-      //           orderItems.add(Item.fromJson(
-      //               value.data() as Map<String, dynamic>, value.id));
-      //         },
-      //       );
-      //     }
-      //   },
-      // );
+      return orderItems;
     } catch (e) {
       print('error: $e');
+      return [];
+    }
+  }
+
+  Future getItemFromReference(
+      DocumentReference itemRef, List<Item> items) async {
+    try {
+      final response = await _itemsCollection.doc(itemRef.id).get();
+      return Item.fromJson(response.data() as Map<String, dynamic>, itemRef.id);
+    } catch (e) {
       return e.toString();
     }
   }
@@ -440,6 +422,19 @@ class DatabaseService {
     }
   }
 
+  Future updateOrderStatus(String id, String status) async {
+    try {
+      await _ordersCollection.doc(id).update({
+        'order_status': status,
+        'date_paid':
+            '${DateTime.now().month}/${DateTime.now().day}/${DateTime.now().year}'
+      });
+      return true;
+    } catch (e) {
+      return e.toString();
+    }
+  }
+
 /* CUSTOMER */
   Future addCustomer(Customer customer) async {
     try {
@@ -477,10 +472,11 @@ class DatabaseService {
     }
   }
 
-  Future<String?> getCustomerByOrder(DocumentReference customer) async {
+  Future<String> getCustomerByOrder(DocumentReference customer) async {
     final customerSnapshot = await _customersCollection.doc(customer.id).get();
 
-    return customerSnapshot.get('name');
+    final String? name = customerSnapshot.get('name');
+    return name ?? 'Unknown Customer';
   }
 
   // UPDATE

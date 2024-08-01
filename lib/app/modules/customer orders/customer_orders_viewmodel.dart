@@ -9,8 +9,8 @@ class CustomerOrdersViewModel extends SharedViewModel {
   final String _title = 'Customer List';
   String get title => _title;
 
-  String _searchText = '';
-  String get searchText => _searchText;
+  String _customerName = '';
+  String get customerName => _customerName;
 
   List<Customer>? _regularCustomers;
   List<Customer>? get customers => _regularCustomers;
@@ -22,6 +22,9 @@ class CustomerOrdersViewModel extends SharedViewModel {
 
   List<Order>? _paidOrders;
   List<Order>? get paidOrders => _paidOrders;
+
+  List<Item>? _orderItems;
+  List<Item>? get orderItems => _orderItems;
 
   TextEditingController searchBarController = TextEditingController();
 
@@ -108,7 +111,7 @@ class CustomerOrdersViewModel extends SharedViewModel {
 
   Future<String?> getCustomerName(Order order) async {
     final response = await database.getCustomerByOrder(order.customerId!);
-    return response?.toTitleCase();
+    return response.toTitleCase();
   }
 
   void updateCustomerFilter(String value, {required String status}) {
@@ -124,7 +127,8 @@ class CustomerOrdersViewModel extends SharedViewModel {
 
           case 'numbers':
             _unpaidOrders = _allOrders
-                ?.where((order) => order.orderNumber != null)
+                ?.where((order) =>
+                    order.orderNumber != null && order.orderStatus == 'unpaid')
                 .toList();
             _unpaidOrders
                 ?.sort((a, b) => a.orderNumber!.compareTo(b.orderNumber!));
@@ -150,8 +154,10 @@ class CustomerOrdersViewModel extends SharedViewModel {
             break;
 
           case 'numbers':
-            _paidOrders =
-                _allOrders?.where((order) => order.customerId == null).toList();
+            _paidOrders = _allOrders
+                ?.where((order) =>
+                    order.customerId == null && order.orderStatus == 'paid')
+                .toList();
             _paidOrders
                 ?.sort((a, b) => a.orderNumber!.compareTo(b.orderNumber!));
 
@@ -172,20 +178,16 @@ class CustomerOrdersViewModel extends SharedViewModel {
     notifyListeners();
   }
 
-  void setupOrderDetailsModal({required Order order}) async {
-    print('Order: ${order.toJson()}');
-
-    final response = await getItems(order.id);
-    print('viewModel response: $response');
+  void setupOrderDetailsModal({required Order order}) {
+    getItems(order.id);
   }
 
-  Future<List> getItems(String? id) async {
-    List customerItems = [];
+  void getItems(String? id) async {
     try {
-      // customerItems = await database.getItemsInOrder(id);
-      await database.getItemsInOrder(id);
-
+      setBusy(true);
+      _orderItems = await database.getItemsInOrder(id) ?? [];
       notifyListeners();
+      setBusy(false);
     } on Exception catch (e) {
       print('error: $e');
       await dialog.showDialog(
@@ -193,6 +195,31 @@ class CustomerOrdersViewModel extends SharedViewModel {
       setBusy(false);
       goBack();
     }
-    return customerItems;
+  }
+
+  void markOrderAsPaid({required Order order}) async {
+    setBusy(true);
+
+    try {
+      final response = await database.updateOrderStatus(order.id!, 'paid');
+      if (response) {
+        await dialog.showDialog(
+          title: 'SUCCESS',
+          description: 'Marked as paid successfully!',
+        );
+      }
+    } catch (e) {
+      print('error: $e');
+      await dialog.showDialog(
+        title: 'ERROR',
+        description: 'Failed to mark as paid.',
+      );
+    } finally {
+      setBusy(false);
+    }
+
+    notifyListeners();
+
+    goBack();
   }
 }
