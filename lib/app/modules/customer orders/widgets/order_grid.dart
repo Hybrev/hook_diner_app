@@ -22,6 +22,13 @@ class OrderGrid extends ViewModelWidget<CustomerOrdersViewModel> {
           // filter to show regular customer orders or all orders
           FilterActions(
             onSearchBarChanged: (value) {},
+            onDateChanged: (value) => showDatePicker(
+              context: context,
+              initialDate: DateTime.now(),
+              firstDate: DateTime.now(),
+              lastDate: DateTime.now().add(const Duration(days: 365)),
+            ),
+            datePickerController: viewModel.datePickerController,
             dropdownItems: viewModel.customers ?? [],
             dropdownController: status == 'unpaid'
                 ? viewModel.unpaidDropdown
@@ -63,6 +70,39 @@ class OrderGrid extends ViewModelWidget<CustomerOrdersViewModel> {
                       ),
                     ),
                   ),
+          ),
+          Visibility(
+            visible: viewModel.selectedDate != null && status == 'paid',
+            child: ConstrainedBox(
+              constraints: const BoxConstraints(
+                maxWidth: 840,
+              ),
+              child: Card(
+                shadowColor: appTheme.colorScheme.onSurface,
+                elevation: 2,
+                color: appTheme.colorScheme.primary,
+                child: Padding(
+                  padding: const EdgeInsets.all(16.0),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                        'TOTAL INCOME (${viewModel.selectedDate})',
+                        style: appTheme.textTheme.labelLarge?.copyWith(
+                          color: appTheme.colorScheme.onPrimary,
+                        ),
+                      ),
+                      Text(
+                        'PHP ${viewModel.totalEarnings.toStringAsFixed(2)}',
+                        style: appTheme.textTheme.labelLarge?.copyWith(
+                          color: appTheme.colorScheme.onPrimary,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ),
           ),
         ],
       ),

@@ -6,6 +6,8 @@ class FilterActions extends StatelessWidget {
     super.key,
     this.searchBarController,
     this.onSearchBarChanged,
+    this.datePickerController,
+    this.onDateChanged,
     required this.dropdownItems,
     required this.dropdownController,
     required this.onDropdownChanged,
@@ -13,6 +15,9 @@ class FilterActions extends StatelessWidget {
 
   final Function(String value)? onSearchBarChanged;
   final TextEditingController? searchBarController;
+
+  final Function(String value)? onDateChanged;
+  final TextEditingController? datePickerController;
 
   final List dropdownItems;
   final TextEditingController dropdownController;
@@ -40,6 +45,21 @@ class FilterActions extends StatelessWidget {
                   ),
                 ],
                 controller: searchBarController,
+              ),
+            ),
+          if (datePickerController != null)
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: TextField(
+                controller: datePickerController,
+                readOnly: true,
+                onTap: () => onDateChanged!(datePickerController!.text),
+                decoration: const InputDecoration(
+                  border: OutlineInputBorder(),
+                  labelText: 'Date',
+                  contentPadding:
+                      EdgeInsets.symmetric(vertical: 12, horizontal: 16),
+                ),
               ),
             ),
           DropdownButton<String>(
