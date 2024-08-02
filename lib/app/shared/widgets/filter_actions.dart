@@ -6,7 +6,7 @@ class FilterActions extends StatelessWidget {
     super.key,
     this.searchBarController,
     this.onSearchBarChanged,
-    this.datePickerController,
+    this.selectedDate,
     this.onDateChanged,
     required this.dropdownItems,
     required this.dropdownController,
@@ -16,8 +16,8 @@ class FilterActions extends StatelessWidget {
   final Function(String value)? onSearchBarChanged;
   final TextEditingController? searchBarController;
 
-  final Function(String value)? onDateChanged;
-  final TextEditingController? datePickerController;
+  final Function()? onDateChanged;
+  final String? selectedDate;
 
   final List dropdownItems;
   final TextEditingController dropdownController;
@@ -26,9 +26,10 @@ class FilterActions extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final appTheme = Theme.of(context);
+    // check device width if fit for landscape
     if (MediaQuery.sizeOf(context).width > 600) {
       return Row(
-        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        mainAxisAlignment: MainAxisAlignment.spaceAround,
         children: [
           if (searchBarController != null)
             Padding(
@@ -47,43 +48,44 @@ class FilterActions extends StatelessWidget {
                 controller: searchBarController,
               ),
             ),
-          if (datePickerController != null)
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: TextField(
-                controller: datePickerController,
-                readOnly: true,
-                onTap: () => onDateChanged!(datePickerController!.text),
-                decoration: const InputDecoration(
-                  border: OutlineInputBorder(),
-                  labelText: 'Date',
-                  contentPadding:
-                      EdgeInsets.symmetric(vertical: 12, horizontal: 16),
-                ),
+          if (onDateChanged != null)
+            ElevatedButton.icon(
+              onPressed: () => onDateChanged!(),
+              style: ElevatedButton.styleFrom(
+                shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(8)),
+              ),
+              icon: const Icon(Icons.calendar_month),
+              label: Text(
+                selectedDate!,
+                style: appTheme.textTheme.labelLarge,
               ),
             ),
-          DropdownButton<String>(
-            value: dropdownController.text,
-            style: appTheme.textTheme.labelLarge,
-            focusColor: Theme.of(context).colorScheme.tertiary,
-            items: dropdownItems is List<Customer?>
-                ? dropdownItems
-                    .map(
-                      (e) => DropdownMenuItem<String>(
-                        value: e.id,
-                        child: Text(e.name ?? ''),
-                      ),
-                    )
-                    .toList()
-                : dropdownItems
-                    .map(
-                      (e) => DropdownMenuItem<String>(
-                        value: e.id,
-                        child: Text(e.title ?? ''),
-                      ),
-                    )
-                    .toList(),
-            onChanged: (value) => onDropdownChanged(value!),
+          Align(
+            alignment: Alignment.centerRight,
+            child: DropdownButton<String>(
+              value: dropdownController.text,
+              style: appTheme.textTheme.labelLarge,
+              focusColor: Theme.of(context).colorScheme.tertiary,
+              items: dropdownItems is List<Customer?>
+                  ? dropdownItems
+                      .map(
+                        (e) => DropdownMenuItem<String>(
+                          value: e.id,
+                          child: Text(e.name ?? ''),
+                        ),
+                      )
+                      .toList()
+                  : dropdownItems
+                      .map(
+                        (e) => DropdownMenuItem<String>(
+                          value: e.id,
+                          child: Text(e.title ?? ''),
+                        ),
+                      )
+                      .toList(),
+              onChanged: (value) => onDropdownChanged(value!),
+            ),
           ),
         ],
       );
@@ -107,31 +109,73 @@ class FilterActions extends StatelessWidget {
               controller: searchBarController,
             ),
           ),
-        Align(
-          alignment: Alignment.topRight,
-          child: DropdownButton<String>(
-            value: dropdownController.text,
-            focusColor: Theme.of(context).colorScheme.tertiary,
-            items: dropdownItems is List<Customer?>
-                ? dropdownItems
-                    .map(
-                      (e) => DropdownMenuItem<String>(
-                        value: e.id,
-                        child: Text(e.name ?? ''),
-                      ),
-                    )
-                    .toList()
-                : dropdownItems
-                    .map(
-                      (e) => DropdownMenuItem<String>(
-                        value: e.id,
-                        child: Text(e.title ?? ''),
-                      ),
-                    )
-                    .toList(),
-            onChanged: (value) => onDropdownChanged(value!),
+        // if date filtering is enabled
+        if (onDateChanged != null)
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              ElevatedButton.icon(
+                onPressed: () => onDateChanged!(),
+                style: ElevatedButton.styleFrom(
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(8)),
+                ),
+                icon: const Icon(Icons.calendar_month),
+                label: Text(
+                  selectedDate!,
+                  style: appTheme.textTheme.labelLarge,
+                ),
+              ),
+              DropdownButton<String>(
+                value: dropdownController.text,
+                focusColor: Theme.of(context).colorScheme.tertiary,
+                items: dropdownItems is List<Customer?>
+                    ? dropdownItems
+                        .map(
+                          (e) => DropdownMenuItem<String>(
+                            value: e.id,
+                            child: Text(e.name ?? ''),
+                          ),
+                        )
+                        .toList()
+                    : dropdownItems
+                        .map(
+                          (e) => DropdownMenuItem<String>(
+                            value: e.id,
+                            child: Text(e.title ?? ''),
+                          ),
+                        )
+                        .toList(),
+                onChanged: (value) => onDropdownChanged(value!),
+              ),
+            ],
+          )
+        else
+          Align(
+            alignment: Alignment.centerRight,
+            child: DropdownButton<String>(
+              value: dropdownController.text,
+              focusColor: Theme.of(context).colorScheme.tertiary,
+              items: dropdownItems is List<Customer?>
+                  ? dropdownItems
+                      .map(
+                        (e) => DropdownMenuItem<String>(
+                          value: e.id,
+                          child: Text(e.name ?? ''),
+                        ),
+                      )
+                      .toList()
+                  : dropdownItems
+                      .map(
+                        (e) => DropdownMenuItem<String>(
+                          value: e.id,
+                          child: Text(e.title ?? ''),
+                        ),
+                      )
+                      .toList(),
+              onChanged: (value) => onDropdownChanged(value!),
+            ),
           ),
-        ),
       ],
     );
   }

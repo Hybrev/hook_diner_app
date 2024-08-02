@@ -29,8 +29,6 @@ class CustomerOrdersViewModel extends SharedViewModel {
   List<Item>? _orderItems;
   List<Item>? get orderItems => _orderItems;
 
-  TextEditingController datePickerController = TextEditingController();
-
   final TextEditingController _unpaidDropdown = TextEditingController();
   TextEditingController get unpaidDropdown => _unpaidDropdown;
 
@@ -38,10 +36,8 @@ class CustomerOrdersViewModel extends SharedViewModel {
   TextEditingController get paidDropdown => _paidDropdown;
 
   void initialize() async {
-    datePickerController.text = '';
+    _selectedDate = 'Select Date...';
 
-    _selectedDate =
-        '${DateTime.now().month}/${DateTime.now().day}/${DateTime.now().year}';
     notifyListeners();
 
     streamOrders();
@@ -108,7 +104,25 @@ class CustomerOrdersViewModel extends SharedViewModel {
     return total;
   }
 
-  void getOrdersByDate(String date) {}
+  void getOrdersFromDate(BuildContext context) async {
+    final response = await showDatePicker(
+      context: context,
+      initialDate: DateTime.now(),
+      firstDate: DateTime.now().subtract(const Duration(days: 365)),
+      lastDate: DateTime.now(),
+    );
+
+// gets date value & filters paid orders to date
+    if (response != null) {
+      _selectedDate = '${response.month}/${response.day}/${response.year}';
+      _paidOrders = _allOrders
+          ?.where((order) => order.datePaid == _selectedDate)
+          .toList();
+      _totalEarnings = getPaidOrderEarnings();
+
+      notifyListeners();
+    }
+  }
 
   void updateCustomerFilter(String value, {required String status}) {
     switch (status) {
@@ -142,10 +156,13 @@ class CustomerOrdersViewModel extends SharedViewModel {
 
       case 'paid':
         _paidDropdown.text = value;
+
         switch (value) {
           case 'all':
             _paidOrders = _allOrders
-                ?.where((order) => order.orderStatus == 'paid')
+                ?.where((order) =>
+                    order.orderStatus == 'paid' &&
+                    order.datePaid == _selectedDate)
                 .toList();
             break;
 

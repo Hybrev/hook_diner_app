@@ -21,14 +21,10 @@ class OrderGrid extends ViewModelWidget<CustomerOrdersViewModel> {
         children: [
           // filter to show regular customer orders or all orders
           FilterActions(
-            onSearchBarChanged: (value) {},
-            onDateChanged: (value) => showDatePicker(
-              context: context,
-              initialDate: DateTime.now(),
-              firstDate: DateTime.now(),
-              lastDate: DateTime.now().add(const Duration(days: 365)),
-            ),
-            datePickerController: viewModel.datePickerController,
+            onDateChanged: status == 'unpaid'
+                ? null
+                : () => viewModel.getOrdersFromDate(context),
+            selectedDate: viewModel.selectedDate,
             dropdownItems: viewModel.customers ?? [],
             dropdownController: status == 'unpaid'
                 ? viewModel.unpaidDropdown
@@ -78,9 +74,9 @@ class OrderGrid extends ViewModelWidget<CustomerOrdersViewModel> {
                 maxWidth: 840,
               ),
               child: Card(
-                shadowColor: appTheme.colorScheme.onSurface,
+                shadowColor: appTheme.colorScheme.primary.withOpacity(0.25),
                 elevation: 2,
-                color: appTheme.colorScheme.primary,
+                color: appTheme.colorScheme.onSurface,
                 child: Padding(
                   padding: const EdgeInsets.all(16.0),
                   child: Row(
