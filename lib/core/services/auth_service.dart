@@ -8,9 +8,6 @@ class AuthService {
 
   final _databaseService = locator<DatabaseService>();
 
-  late user_model.User _currentUser;
-  user_model.User get currentUser => _currentUser;
-
   Future createUser({
     required String username,
     required String password,
@@ -101,5 +98,15 @@ class AuthService {
       password: password,
     );
     return userCredential.user;
+  }
+
+  Future getCurrentUser() async {
+    final authUser = _auth.currentUser;
+    if (authUser != null) {
+      user_model.User currentUser =
+          await _databaseService.getUser(authUser.uid) as user_model.User;
+
+      return currentUser;
+    }
   }
 }
