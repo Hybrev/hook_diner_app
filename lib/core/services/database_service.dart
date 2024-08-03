@@ -417,6 +417,12 @@ class DatabaseService {
 
   Future updateOrderStatus(String id, String status) async {
     try {
+      if (status != 'paid') {
+        await _ordersCollection.doc(id).update({
+          'order_status': status,
+        });
+        return true;
+      }
       await _ordersCollection.doc(id).update({
         'order_status': status,
         'date_paid':

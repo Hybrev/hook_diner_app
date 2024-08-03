@@ -50,6 +50,10 @@ class OrderCard extends ViewModelWidget<CustomerOrdersViewModel> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
+                      'Kitchen Status:',
+                      style: appTheme.textTheme.titleMedium,
+                    ),
+                    Text(
                         order.orderNumber != null
                             ? 'Card Number:'
                             : 'Customer Name:',
@@ -75,6 +79,20 @@ class OrderCard extends ViewModelWidget<CustomerOrdersViewModel> {
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
+                    Text(
+                      order.orderStatus != 'cancelled'
+                          ? order.isReady ?? false
+                              ? 'DONE'
+                              : 'PENDING'
+                          : 'CANCELLED',
+                      style: appTheme.textTheme.titleMedium?.copyWith(
+                        color: order.orderStatus != 'cancelled'
+                            ? order.isReady ?? false
+                                ? const Color(0xFF32A436)
+                                : const Color(0xFFCDA019)
+                            : appTheme.colorScheme.error,
+                      ),
+                    ),
                     order.orderNumber == null
                         ? FutureBuilder(
                             future: viewModel.getCustomerName(order),

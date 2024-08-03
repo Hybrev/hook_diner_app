@@ -19,16 +19,10 @@ class OrderDetailsModal extends StatelessWidget {
       onViewModelReady: (viewModel) =>
           viewModel.setupOrderDetailsModal(order: receivedOrder),
       builder: (context, viewModel, child) => Scaffold(
-        appBar: BaseAppBar(
+        appBar: const BaseAppBar(
           title: 'ORDER DETAILS',
           centerTitle: true,
           automaticallyImplyLeading: true,
-          actions: [
-            IconButton(
-              icon: const Icon(Icons.delete_sweep_rounded),
-              onPressed: () {},
-            ),
-          ],
         ),
         body: SafeArea(
           minimum: const EdgeInsets.all(16),
@@ -132,37 +126,84 @@ class OrderDetailsModal extends StatelessWidget {
           ),
           Text('Powered by Hook Diner', style: appTheme.textTheme.bodySmall),
         ],
-        bottomNavigationBar: receivedOrder.orderStatus != 'paid'
-            ? Row(
-                children: [
-                  Expanded(
-                    flex: 1,
-                    child: BottomAppBar(
-                      elevation: 4,
-                      child: BaseButton(
-                        onPressed: () {},
-                        loading: viewModel.isBusy,
-                        buttonIcon: Icons.cancel_rounded,
-                        backgroundColor: appTheme.colorScheme.error,
-                      ),
-                    ),
-                  ),
-                  Expanded(
-                    flex: 2,
-                    child: BottomAppBar(
-                      elevation: 4,
-                      child: BaseButton(
-                        label: 'MARK AS PAID',
-                        onPressed: () =>
-                            viewModel.markOrderAsPaid(order: receivedOrder),
-                        loading: viewModel.isBusy,
-                        buttonIcon: null,
-                      ),
-                    ),
-                  ),
-                ],
-              )
-            : null,
+
+        // check if order is unpaid yet & marked as done by the kitchen or not,
+        bottomNavigationBar: viewModel.orderItems == null
+            ? null
+            : receivedOrder.orderStatus == 'unpaid'
+                ? Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      if (receivedOrder.isReady == false)
+                        Row(
+                          children: [
+                            if (viewModel.currentUser?.role != 'kitchen')
+                              Expanded(
+                                child: BottomAppBar(
+                                  elevation: 4,
+                                  child: BaseButton(
+                                    onPressed: () => viewModel.updateOrder(
+                                        receivedOrder,
+                                        status: 'cancelled'),
+                                    loading: viewModel.isBusy,
+                                    buttonIcon: Icons.cancel_rounded,
+                                    backgroundColor: appTheme.colorScheme.error,
+                                  ),
+                                ),
+                              ),
+                            if (viewModel.currentUser?.role == 'kitchen' ||
+                                viewModel.currentUser?.role == 'admin')
+                              Expanded(
+                                flex: 2,
+                                child: BottomAppBar(
+                                  elevation: 4,
+                                  child: BaseButton(
+                                    label: 'MARK AS "DONE"',
+                                    onPressed: () {},
+                                    loading: viewModel.isBusy,
+                                    buttonIcon: null,
+                                  ),
+                                ),
+                              ),
+                          ],
+                        ),
+                      if (receivedOrder.isReady == true &&
+                          viewModel.currentUser?.role != 'kitchen')
+                        Row(
+                          children: [
+                            Expanded(
+                              flex: 1,
+                              child: BottomAppBar(
+                                elevation: 4,
+                                child: BaseButton(
+                                  onPressed: () => viewModel.updateOrder(
+                                      receivedOrder,
+                                      status: 'cancelled'),
+                                  loading: viewModel.isBusy,
+                                  buttonIcon: Icons.cancel_rounded,
+                                  backgroundColor: appTheme.colorScheme.error,
+                                ),
+                              ),
+                            ),
+                            Expanded(
+                              flex: 2,
+                              child: BottomAppBar(
+                                elevation: 4,
+                                child: BaseButton(
+                                  label: 'MARK AS PAID',
+                                  onPressed: () => viewModel.updateOrder(
+                                      receivedOrder,
+                                      status: 'paid'),
+                                  loading: viewModel.isBusy,
+                                  buttonIcon: null,
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                    ],
+                  )
+                : null,
       ),
       viewModelBuilder: () => CustomerOrdersViewModel(),
     );

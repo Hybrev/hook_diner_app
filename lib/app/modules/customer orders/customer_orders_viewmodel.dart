@@ -42,10 +42,14 @@ class CustomerOrdersViewModel extends SharedViewModel {
   final TextEditingController _paidDropdown = TextEditingController();
   TextEditingController get paidDropdown => _paidDropdown;
 
+  final TextEditingController _cancelledDropdown = TextEditingController();
+  TextEditingController get cancelledDropdown => _cancelledDropdown;
+
   void initialize() async {
     _selectedDate = 'Select Date...';
     _currentUser = await auth.getCurrentUser();
     notifyListeners();
+    print('current user: ${_currentUser?.toJson()}');
 
     streamOrders();
     streamCustomers();
@@ -64,6 +68,11 @@ class CustomerOrdersViewModel extends SharedViewModel {
             .toList();
         _paidOrders =
             _allOrders?.where((order) => order.orderStatus == 'paid').toList();
+
+        _cancelledOrders = _allOrders
+            ?.where((order) => order.orderStatus == 'cancelled')
+            .toList();
+
         _totalEarnings = getPaidOrderEarnings();
         notifyListeners();
       }
@@ -195,11 +204,42 @@ class CustomerOrdersViewModel extends SharedViewModel {
         break;
 
       default:
+        _cancelledDropdown.text = value;
+        switch (value) {
+          case 'all':
+            _cancelledOrders = _allOrders
+                ?.where((order) => order.orderStatus == 'cancelled')
+                .toList();
+            break;
+
+          case 'numbers':
+            _cancelledOrders = _allOrders
+                ?.where((order) =>
+                    order.orderNumber != null &&
+                    order.orderStatus == 'cancelled')
+                .toList();
+            _cancelledOrders
+                ?.sort((a, b) => a.orderNumber!.compareTo(b.orderNumber!));
+            break;
+          default:
+            _cancelledOrders = _allOrders
+                ?.where((order) =>
+                    order.customerId?.id == value &&
+                    order.orderNumber == null &&
+                    order.orderStatus == 'cancelled')
+                .toList();
+            break;
+        }
+        break;
     }
     notifyListeners();
   }
 
-  void setupOrderDetailsModal({required Order order}) {
+  void setupOrderDetailsModal({required Order order}) async {
+    _currentUser = await auth.getCurrentUser();
+    notifyListeners();
+    print('current user: ${_currentUser?.toJson()}');
+
     getItems(order.id);
   }
 
@@ -217,15 +257,24 @@ class CustomerOrdersViewModel extends SharedViewModel {
     }
   }
 
-  void markOrderAsPaid({required Order order}) async {
+  void updateOrder(Order order, {required String status}) async {
     setBusy(true);
+    String description;
+    switch (status) {
+      case 'paid':
+        description = 'Marked as paid successfully!';
+        break;
+      default:
+        description = 'Successfully cancelled order!';
+    }
+    notifyListeners();
 
     try {
-      final response = await database.updateOrderStatus(order.id!, 'paid');
+      final response = await database.updateOrderStatus(order.id!, status);
       if (response) {
         await dialog.showDialog(
           title: 'SUCCESS',
-          description: 'Marked as paid successfully!',
+          description: description,
         );
       }
     } catch (e) {

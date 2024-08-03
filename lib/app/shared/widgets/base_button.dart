@@ -35,10 +35,17 @@ class BaseButton extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: [
                 if (buttonIcon != null)
-                  Icon(
-                    buttonIcon,
-                    color: appTheme.colorScheme.onPrimary,
+                  Padding(
+                    padding: buttonIcon != null
+                        ? EdgeInsets.zero
+                        : const EdgeInsets.only(right: 8.0),
+                    child: Icon(
+                      buttonIcon,
+                      color: appTheme.colorScheme.onPrimary,
+                    ),
                   ),
+                if (label != null && buttonIcon != null)
+                  const SizedBox(width: 8),
                 if (label != null)
                   Padding(
                     padding: label != null

@@ -8,6 +8,7 @@ class Order {
   String? orderStatus;
   String? orderDate;
   String? datePaid;
+  bool? isReady;
 
   Order({
     this.id,
@@ -17,6 +18,7 @@ class Order {
     this.orderStatus,
     this.orderDate,
     this.datePaid,
+    this.isReady,
   });
 
   factory Order.fromJson(Map<String, dynamic> json, String id) => Order(
@@ -27,6 +29,7 @@ class Order {
         orderStatus: json['order_status'] as String?,
         orderDate: json['order_date'] as String?,
         datePaid: json['date_paid'] as String?,
+        isReady: json['is_ready'] as bool?,
       );
 
   Map<String, dynamic> toJson() => {
@@ -37,5 +40,6 @@ class Order {
         'order_status': orderStatus,
         'order_date': orderDate,
         'date_paid': datePaid,
+        'is_ready': isReady,
       };
 }
