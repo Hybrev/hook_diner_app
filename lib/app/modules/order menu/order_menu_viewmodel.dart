@@ -251,6 +251,7 @@ class OrderMenuViewModel extends SharedViewModel {
       orderStatus: 'unpaid',
       orderDate:
           '${DateTime.now().month}/${DateTime.now().day}/${DateTime.now().year}',
+      isReady: false,
     );
 
     if (_isRegularCustomer == false) {

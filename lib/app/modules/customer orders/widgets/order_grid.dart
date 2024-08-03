@@ -31,14 +31,16 @@ class OrderGrid extends ViewModelWidget<CustomerOrdersViewModel> {
         children: [
           // filter to show regular customer orders or all orders
           FilterActions(
-            onDateChanged: status == 'unpaid'
-                ? null
-                : () => viewModel.getOrdersFromDate(context),
+            onDateChanged: status == 'paid'
+                ? () => viewModel.getOrdersFromDate(context)
+                : null,
             selectedDate: viewModel.selectedDate,
             dropdownItems: viewModel.customers ?? [],
-            dropdownController: status == 'unpaid'
-                ? viewModel.unpaidDropdown
-                : viewModel.paidDropdown,
+            dropdownController: status != 'cancelled'
+                ? status == 'unpaid'
+                    ? viewModel.unpaidDropdown
+                    : viewModel.paidDropdown
+                : viewModel.cancelledDropdown,
             onDropdownChanged: (value) =>
                 viewModel.updateCustomerFilter(value, status: status!),
           ),

@@ -49,7 +49,6 @@ class CustomerOrdersViewModel extends SharedViewModel {
     _selectedDate = 'Select Date...';
     _currentUser = await auth.getCurrentUser();
     notifyListeners();
-    print('current user: ${_currentUser?.toJson()}');
 
     streamOrders();
     streamCustomers();
@@ -99,6 +98,7 @@ class CustomerOrdersViewModel extends SharedViewModel {
 
         _unpaidDropdown.text = _regularCustomers?.first.id ?? '';
         _paidDropdown.text = _regularCustomers?.first.id ?? '';
+        _cancelledDropdown.text = _regularCustomers?.first.id ?? '';
 
         notifyListeners();
       }
