@@ -34,7 +34,7 @@ class HomeView extends StatelessWidget {
             );
           },
           child: model.currentUser == null
-              ? const CircularProgressIndicator()
+              ? const Center(child: CircularProgressIndicator())
               : getViewForIndex(
                   model.currentIndex, model.currentUser?.role ?? ''),
         ),
