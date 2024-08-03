@@ -146,7 +146,14 @@ class OrderDetailsModal extends StatelessWidget {
                                         receivedOrder,
                                         status: 'cancelled'),
                                     loading: viewModel.isBusy,
-                                    buttonIcon: Icons.cancel_rounded,
+                                    label:
+                                        viewModel.currentUser?.role != 'kitchen'
+                                            ? 'CANCEL ORDER'
+                                            : null,
+                                    buttonIcon:
+                                        viewModel.currentUser?.role != 'kitchen'
+                                            ? null
+                                            : Icons.cancel_rounded,
                                     backgroundColor: appTheme.colorScheme.error,
                                   ),
                                 ),
