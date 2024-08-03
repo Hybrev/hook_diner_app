@@ -80,7 +80,8 @@ class OrderGrid extends ViewModelWidget<CustomerOrdersViewModel> {
                   ),
           ),
           Visibility(
-            visible: viewModel.selectedDate != null && status == 'paid',
+            visible:
+                status == 'paid' && viewModel.currentUser?.role != 'kitchen',
             child: ConstrainedBox(
               constraints: const BoxConstraints(
                 maxWidth: 840,

@@ -130,52 +130,31 @@ class OrderDetailsModal extends StatelessWidget {
         // check if order is unpaid yet & marked as done by the kitchen or not,
         bottomNavigationBar: viewModel.orderItems == null
             ? null
-            : receivedOrder.orderStatus == 'unpaid'
+            : receivedOrder.orderStatus != 'cancelled'
                 ? Column(
                     mainAxisSize: MainAxisSize.min,
                     children: [
-                      if (receivedOrder.isReady == false)
+                      if ((viewModel.currentUser?.role == 'kitchen' ||
+                              viewModel.currentUser?.role == 'admin') &&
+                          receivedOrder.isReady == false)
                         Row(
                           children: [
-                            if (viewModel.currentUser?.role != 'kitchen')
-                              Expanded(
-                                child: BottomAppBar(
-                                  elevation: 4,
-                                  child: BaseButton(
-                                    onPressed: () => viewModel.updateOrder(
-                                        receivedOrder,
-                                        status: 'cancelled'),
-                                    loading: viewModel.isBusy,
-                                    label:
-                                        viewModel.currentUser?.role != 'kitchen'
-                                            ? 'CANCEL ORDER'
-                                            : null,
-                                    buttonIcon:
-                                        viewModel.currentUser?.role != 'kitchen'
-                                            ? null
-                                            : Icons.cancel_rounded,
-                                    backgroundColor: appTheme.colorScheme.error,
-                                  ),
+                            Expanded(
+                              child: BottomAppBar(
+                                elevation: 4,
+                                child: BaseButton(
+                                  label: 'MARK AS "DONE"',
+                                  onPressed: () => viewModel.markAsDone(
+                                      order: receivedOrder),
+                                  loading: viewModel.isBusy,
+                                  buttonIcon: null,
                                 ),
                               ),
-                            if (viewModel.currentUser?.role == 'kitchen' ||
-                                viewModel.currentUser?.role == 'admin')
-                              Expanded(
-                                flex: 2,
-                                child: BottomAppBar(
-                                  elevation: 4,
-                                  child: BaseButton(
-                                    label: 'MARK AS "DONE"',
-                                    onPressed: () {},
-                                    loading: viewModel.isBusy,
-                                    buttonIcon: null,
-                                  ),
-                                ),
-                              ),
+                            ),
                           ],
                         ),
-                      if (receivedOrder.isReady == true &&
-                          viewModel.currentUser?.role != 'kitchen')
+                      if (viewModel.currentUser?.role != 'kitchen' &&
+                          receivedOrder.orderStatus == 'unpaid')
                         Row(
                           children: [
                             Expanded(
@@ -197,7 +176,9 @@ class OrderDetailsModal extends StatelessWidget {
                               child: BottomAppBar(
                                 elevation: 4,
                                 child: BaseButton(
-                                  label: 'MARK AS PAID',
+                                  label: 'MARK AS "PAID"',
+                                  backgroundColor:
+                                      appTheme.colorScheme.onSurface,
                                   onPressed: () => viewModel.updateOrder(
                                       receivedOrder,
                                       status: 'paid'),

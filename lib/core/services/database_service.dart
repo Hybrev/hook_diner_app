@@ -394,7 +394,8 @@ class DatabaseService {
     }
   }
 
-  Future<void> updateItemQuantity(List<Item> orderedItems, int i) async {
+  Future<void> updateItemQuantity(List<Item> orderedItems, int i,
+      {String? action}) async {
     final docRef = _itemsCollection.doc(orderedItems[i].id);
     final snapshot = await docRef.get();
 
@@ -402,25 +403,53 @@ class DatabaseService {
       final currentQuantity = snapshot.get('quantity') as int;
       final initialQuantity = orderedItems[i].quantity!;
 
-      if (currentQuantity - 1 < 0) {
-        // Handle out-of-stock scenario: return 'out-of-stock' code
-        await docRef.update({
-          'quantity': initialQuantity,
-        });
-        throw Exception('out-of-stock');
+      switch (action) {
+        case 'restock':
+          await docRef.update({
+            'quantity': currentQuantity + 1,
+          });
+          break;
+        default:
+          if (currentQuantity - 1 < 0) {
+            // Handle out-of-stock scenario: return 'out-of-stock' code
+            await docRef.update({
+              'quantity': initialQuantity,
+            });
+            throw Exception('out-of-stock');
+          }
+          await docRef.update({
+            'quantity': currentQuantity - 1,
+          });
+
+          break;
       }
-      await docRef.update({
-        'quantity': currentQuantity - 1,
-      });
     }
   }
 
-  Future updateOrderStatus(String id, String status) async {
+  Future markOrderAsReady(String id) async {
     try {
-      if (status != 'paid') {
+      await _ordersCollection.doc(id).update({
+        'is_ready': true,
+      });
+      return true;
+    } catch (e) {
+      return e.toString();
+    }
+  }
+
+  Future updateOrderStatus(
+      String id, String status, List<Item>? orderedItems) async {
+    try {
+      if (status != 'paid' && orderedItems != null) {
         await _ordersCollection.doc(id).update({
           'order_status': status,
         });
+
+        for (var i = 0; i < orderedItems.length; i++) {
+          // adds quantity back to item stock
+          await updateItemQuantity(orderedItems, i, action: 'restock');
+        }
+
         return true;
       }
       await _ordersCollection.doc(id).update({

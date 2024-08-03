@@ -257,37 +257,76 @@ class CustomerOrdersViewModel extends SharedViewModel {
     }
   }
 
-  void updateOrder(Order order, {required String status}) async {
-    setBusy(true);
-    String description;
-    switch (status) {
-      case 'paid':
-        description = 'Marked as paid successfully!';
-        break;
-      default:
-        description = 'Successfully cancelled order!';
-    }
-    notifyListeners();
+  void markAsDone({required Order order}) async {
+    final dialogResponse = await dialog.showConfirmationDialog(
+      title: 'CONFIRM - MARK AS DONE',
+      description: 'Are you sure you want to mark order as done?',
+      confirmationTitle: 'Yes',
+      cancelTitle: 'No',
+    );
 
-    try {
-      final response = await database.updateOrderStatus(order.id!, status);
-      if (response) {
+    if (dialogResponse!.confirmed) {
+      setBusy(true);
+
+      try {
+        final response = await database.markOrderAsReady(order.id!);
+        if (response) {
+          await dialog.showDialog(
+            title: 'SUCCESS',
+            description: 'Marked as done successfully!',
+          );
+        }
+      } catch (e) {
         await dialog.showDialog(
-          title: 'SUCCESS',
-          description: description,
+          title: 'ERROR',
+          description: 'Failed to mark as done.',
         );
+      } finally {
+        setBusy(false);
+        goBack();
       }
-    } catch (e) {
-      await dialog.showDialog(
-        title: 'ERROR',
-        description: 'Failed to mark as paid.',
-      );
-    } finally {
-      setBusy(false);
     }
+  }
 
-    notifyListeners();
+  void updateOrder(Order order, {required String status}) async {
+    final dialogResponse = await dialog.showConfirmationDialog(
+      title: 'CONFIRM - ${status.toUpperCase()}',
+      description: 'Are you sure you want to mark order as "$status"?',
+      confirmationTitle: 'Yes',
+      cancelTitle: 'No',
+    );
 
-    goBack();
+    if (dialogResponse!.confirmed) {
+      setBusy(true);
+      String description;
+      switch (status) {
+        case 'paid':
+          description = 'Marked as paid successfully!';
+          break;
+        default:
+          description = 'Successfully cancelled order!';
+      }
+      notifyListeners();
+
+      try {
+        final response =
+            await database.updateOrderStatus(order.id!, status, _orderItems);
+        if (status != 'paid') {}
+        if (response) {
+          await dialog.showDialog(
+            title: 'SUCCESS',
+            description: description,
+          );
+        }
+      } catch (e) {
+        await dialog.showDialog(
+          title: 'ERROR',
+          description: 'Failed to mark as "$status".',
+        );
+      } finally {
+        setBusy(false);
+        goBack();
+      }
+    }
   }
 }
