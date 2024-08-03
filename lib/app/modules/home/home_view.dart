@@ -33,59 +33,113 @@ class HomeView extends StatelessWidget {
               child: child,
             );
           },
-          child: getViewForIndex(model.currentIndex),
+          child: model.currentUser == null
+              ? const CircularProgressIndicator()
+              : getViewForIndex(
+                  model.currentIndex, model.currentUser?.role ?? ''),
         ),
-        bottomNavigationBar: BottomNavigationBar(
-          type: BottomNavigationBarType.shifting,
-          selectedItemColor: appTheme.colorScheme.onSurface,
-          unselectedItemColor: Colors.grey,
-          selectedIconTheme: const IconThemeData(size: 28),
-          showUnselectedLabels: true,
-          currentIndex: model.currentIndex,
-          onTap: model.setIndex,
-          items: [
-            const BottomNavigationBarItem(
-              label: 'Order Menu',
-              icon: Icon(Icons.receipt_long_rounded),
-              activeIcon: Icon(Icons.receipt_long),
-            ),
-            const BottomNavigationBarItem(
-              label: 'Customers',
-              icon: Icon(Icons.people_alt_outlined),
-              activeIcon: Icon(Icons.people_alt_rounded),
-            ),
-            if (model.currentUser?.role != "cashier")
-              const BottomNavigationBarItem(
-                label: 'Inventory',
-                icon: Icon(Icons.inventory_2_outlined),
-                activeIcon: Icon(Icons.inventory_2_rounded),
+        bottomNavigationBar: model.currentUser?.role == "kitchen"
+            ? null
+            : BottomNavigationBar(
+                items: menuItemsByRole[model.currentUser?.role] ??
+                    [
+                      const BottomNavigationBarItem(
+                        label: 'Loading...',
+                        icon: CircularProgressIndicator(),
+                      ),
+                      const BottomNavigationBarItem(
+                        label: 'Loading...',
+                        icon: CircularProgressIndicator(),
+                      ),
+                    ],
+                type: BottomNavigationBarType.shifting,
+                selectedItemColor: appTheme.colorScheme.onSurface,
+                unselectedItemColor: Colors.grey,
+                selectedIconTheme: const IconThemeData(size: 28),
+                showUnselectedLabels: true,
+                currentIndex: model.currentIndex,
+                onTap: model.setIndex,
               ),
-            if (model.currentUser?.role != "cashier")
-              const BottomNavigationBarItem(
-                label: 'Sales',
-                icon: Icon(Icons.receipt_long_rounded),
-                activeIcon: Icon(Icons.receipt_long),
-              ),
-            if (model.currentUser?.role == "admin")
-              const BottomNavigationBarItem(
-                label: 'Users',
-                icon: Icon(Icons.supervised_user_circle_outlined),
-                activeIcon: Icon(Icons.supervised_user_circle_rounded),
-              ),
-          ],
-        ),
       ),
       viewModelBuilder: () => HomeViewModel(),
     );
   }
 }
 
-Widget getViewForIndex(int index) {
+Map<String, List<BottomNavigationBarItem>> menuItemsByRole = {
+  'cashier': [
+    const BottomNavigationBarItem(
+      label: 'Order Menu',
+      icon: Icon(Icons.receipt_long_rounded),
+      activeIcon: Icon(Icons.receipt_long),
+    ),
+    const BottomNavigationBarItem(
+      label: 'Customers',
+      icon: Icon(Icons.people_alt_outlined),
+      activeIcon: Icon(Icons.people_alt_rounded),
+    ),
+  ],
+  'purchaser': [
+    const BottomNavigationBarItem(
+      label: 'Inventory',
+      icon: Icon(Icons.inventory_2_outlined),
+      activeIcon: Icon(Icons.inventory_2_rounded),
+    ),
+    const BottomNavigationBarItem(
+      label: 'Sales',
+      icon: Icon(Icons.receipt_long_rounded),
+      activeIcon: Icon(Icons.receipt_long),
+    ),
+  ],
+  'admin': [
+    const BottomNavigationBarItem(
+      label: 'Order Menu',
+      icon: Icon(Icons.receipt_long_rounded),
+      activeIcon: Icon(Icons.receipt_long),
+    ),
+    const BottomNavigationBarItem(
+      label: 'Customers',
+      icon: Icon(Icons.people_alt_outlined),
+      activeIcon: Icon(Icons.people_alt_rounded),
+    ),
+    const BottomNavigationBarItem(
+      label: 'Inventory',
+      icon: Icon(Icons.inventory_2_outlined),
+      activeIcon: Icon(Icons.inventory_2_rounded),
+    ),
+    const BottomNavigationBarItem(
+      label: 'Sales',
+      icon: Icon(Icons.receipt_long_rounded),
+      activeIcon: Icon(Icons.receipt_long),
+    ),
+    const BottomNavigationBarItem(
+      label: 'Users',
+      icon: Icon(Icons.supervised_user_circle_outlined),
+      activeIcon: Icon(Icons.supervised_user_circle_rounded),
+    ),
+  ],
+};
+
+Widget getViewForIndex(int index, String role) {
   switch (index) {
     case 0:
-      return const OrderMenuView();
+      switch (role) {
+        case 'kitchen':
+          return const CustomerView();
+        case 'purchaser':
+          return const InventoryView();
+        default:
+          return const OrderMenuView();
+      }
     case 1:
-      return const CustomerView();
+      switch (role) {
+        case 'kitchen':
+          return const CustomerView();
+        case 'purchaser':
+          return const SalesView();
+        default:
+          return const CustomerView();
+      }
     case 2:
       return const InventoryView();
     case 3:

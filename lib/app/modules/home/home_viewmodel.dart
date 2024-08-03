@@ -17,8 +17,9 @@ class HomeViewModel extends IndexTrackingViewModel {
   }
 
   void initialize() async {
+    setBusy(true);
     _currentUser = await _auth.getCurrentUser();
     notifyListeners();
-    print('viewmodel user details: ${_currentUser!.toJson()}');
+    setBusy(false);
   }
 }
