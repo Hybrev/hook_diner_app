@@ -15,7 +15,7 @@ class CustomerView extends StatelessWidget {
       onViewModelReady: (viewModel) => viewModel.initialize(),
       disposeViewModel: false,
       builder: (context, model, child) => const DefaultTabController(
-        length: 2,
+        length: 3,
         child: Scaffold(
           appBar: CustomerAppBar(),
           body: Center(
@@ -24,7 +24,8 @@ class CustomerView extends StatelessWidget {
               child: TabBarView(
                 children: [
                   OrderGrid(status: 'unpaid'),
-                  OrderGrid(status: 'paid')
+                  OrderGrid(status: 'paid'),
+                  OrderGrid(status: 'cancelled')
                 ],
               ),
             ),

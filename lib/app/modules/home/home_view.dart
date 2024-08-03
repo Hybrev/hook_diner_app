@@ -52,7 +52,7 @@ class HomeView extends StatelessWidget {
             const BottomNavigationBarItem(
               label: 'Customers',
               icon: Icon(Icons.people_alt_outlined),
-              activeIcon: const Icon(Icons.people_alt_rounded),
+              activeIcon: Icon(Icons.people_alt_rounded),
             ),
             if (model.currentUser?.role != "cashier")
               const BottomNavigationBarItem(

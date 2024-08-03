@@ -4,10 +4,14 @@ import 'package:hook_diner/app/shared/viewmodel.dart';
 import 'package:hook_diner/core/models/customer.dart';
 import 'package:hook_diner/core/models/item.dart';
 import 'package:hook_diner/core/models/order.dart';
+import 'package:hook_diner/core/models/user.dart';
 
 class CustomerOrdersViewModel extends SharedViewModel {
   final String _title = 'Customer List';
   String get title => _title;
+
+  User? _currentUser;
+  User? get currentUser => _currentUser;
 
   String? _selectedDate;
   String? get selectedDate => _selectedDate;
@@ -26,6 +30,9 @@ class CustomerOrdersViewModel extends SharedViewModel {
   List<Order>? _paidOrders;
   List<Order>? get paidOrders => _paidOrders;
 
+  List<Order>? _cancelledOrders;
+  List<Order>? get cancelledOrders => _cancelledOrders;
+
   List<Item>? _orderItems;
   List<Item>? get orderItems => _orderItems;
 
@@ -37,7 +44,7 @@ class CustomerOrdersViewModel extends SharedViewModel {
 
   void initialize() async {
     _selectedDate = 'Select Date...';
-
+    _currentUser = await auth.getCurrentUser();
     notifyListeners();
 
     streamOrders();

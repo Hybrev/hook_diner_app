@@ -3,23 +3,25 @@ import 'package:flutter/material.dart';
 class BaseButton extends StatelessWidget {
   const BaseButton({
     super.key,
-    required this.label,
+    this.label,
     required this.onPressed,
     this.loading = false,
     this.buttonIcon = Icons.add_rounded,
+    this.backgroundColor,
   });
 
   final Function() onPressed;
   final bool loading;
-  final String label;
+  final String? label;
   final IconData? buttonIcon;
+  final Color? backgroundColor;
 
   @override
   Widget build(BuildContext context) {
     final appTheme = Theme.of(context);
     return ElevatedButton(
       style: ElevatedButton.styleFrom(
-        backgroundColor: appTheme.colorScheme.primary,
+        backgroundColor: backgroundColor ?? appTheme.colorScheme.primary,
         foregroundColor: appTheme.colorScheme.onPrimary,
         padding: const EdgeInsets.symmetric(
           horizontal: 24,
@@ -37,14 +39,19 @@ class BaseButton extends StatelessWidget {
                     buttonIcon,
                     color: appTheme.colorScheme.onPrimary,
                   ),
-                const SizedBox(width: 8),
-                Text(
-                  label,
-                  style: appTheme.textTheme.labelLarge?.copyWith(
-                    color: appTheme.colorScheme.onPrimary,
-                    fontWeight: FontWeight.bold,
-                  ),
-                )
+                if (label != null)
+                  Padding(
+                    padding: label != null
+                        ? EdgeInsets.zero
+                        : const EdgeInsets.only(left: 8.0),
+                    child: Text(
+                      label!,
+                      style: appTheme.textTheme.labelLarge?.copyWith(
+                        color: appTheme.colorScheme.onPrimary,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  )
               ],
             )
           : CircularProgressIndicator(

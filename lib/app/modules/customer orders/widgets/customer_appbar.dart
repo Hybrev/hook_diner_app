@@ -20,6 +20,9 @@ class CustomerAppBar extends StatelessWidget implements PreferredSizeWidget {
           Tab(
             text: 'PAID',
           ),
+          Tab(
+            text: 'CANCELLED',
+          ),
         ],
       ),
     );

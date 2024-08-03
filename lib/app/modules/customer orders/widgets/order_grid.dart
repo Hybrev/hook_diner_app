@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:hook_diner/app/modules/customer%20orders/customer_orders_viewmodel.dart';
 import 'package:hook_diner/app/modules/customer%20orders/widgets/order_card.dart';
 import 'package:hook_diner/app/shared/widgets/filter_actions.dart';
+import 'package:hook_diner/core/models/order.dart';
 import 'package:stacked/stacked.dart';
 
 class OrderGrid extends ViewModelWidget<CustomerOrdersViewModel> {
@@ -11,8 +12,17 @@ class OrderGrid extends ViewModelWidget<CustomerOrdersViewModel> {
 
   @override
   Widget build(BuildContext context, CustomerOrdersViewModel viewModel) {
-    final orders =
-        status == 'unpaid' ? viewModel.unpaidOrders : viewModel.paidOrders;
+    final List<Order>? orders;
+    switch (status) {
+      case 'unpaid':
+        orders = viewModel.unpaidOrders;
+        break;
+      case 'paid':
+        orders = viewModel.paidOrders;
+        break;
+      default:
+        orders = viewModel.cancelledOrders;
+    }
 
     final appTheme = Theme.of(context);
     return Center(

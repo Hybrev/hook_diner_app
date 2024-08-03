@@ -19,10 +19,16 @@ class OrderDetailsModal extends StatelessWidget {
       onViewModelReady: (viewModel) =>
           viewModel.setupOrderDetailsModal(order: receivedOrder),
       builder: (context, viewModel, child) => Scaffold(
-        appBar: const BaseAppBar(
+        appBar: BaseAppBar(
           title: 'ORDER DETAILS',
           centerTitle: true,
           automaticallyImplyLeading: true,
+          actions: [
+            IconButton(
+              icon: const Icon(Icons.delete_sweep_rounded),
+              onPressed: () {},
+            ),
+          ],
         ),
         body: SafeArea(
           minimum: const EdgeInsets.all(16),
@@ -127,15 +133,34 @@ class OrderDetailsModal extends StatelessWidget {
           Text('Powered by Hook Diner', style: appTheme.textTheme.bodySmall),
         ],
         bottomNavigationBar: receivedOrder.orderStatus != 'paid'
-            ? BottomAppBar(
-                elevation: 4,
-                child: BaseButton(
-                  label: 'MARK AS PAID',
-                  onPressed: () =>
-                      viewModel.markOrderAsPaid(order: receivedOrder),
-                  loading: viewModel.isBusy,
-                  buttonIcon: null,
-                ),
+            ? Row(
+                children: [
+                  Expanded(
+                    flex: 1,
+                    child: BottomAppBar(
+                      elevation: 4,
+                      child: BaseButton(
+                        onPressed: () {},
+                        loading: viewModel.isBusy,
+                        buttonIcon: Icons.cancel_rounded,
+                        backgroundColor: appTheme.colorScheme.error,
+                      ),
+                    ),
+                  ),
+                  Expanded(
+                    flex: 2,
+                    child: BottomAppBar(
+                      elevation: 4,
+                      child: BaseButton(
+                        label: 'MARK AS PAID',
+                        onPressed: () =>
+                            viewModel.markOrderAsPaid(order: receivedOrder),
+                        loading: viewModel.isBusy,
+                        buttonIcon: null,
+                      ),
+                    ),
+                  ),
+                ],
               )
             : null,
       ),

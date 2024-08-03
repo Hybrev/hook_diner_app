@@ -48,6 +48,10 @@ class UserRow extends StatelessWidget {
                         child: Text('Cashier'),
                       ),
                       DropdownMenuItem<String>(
+                        value: 'kitchen',
+                        child: Text('Kitchen'),
+                      ),
+                      DropdownMenuItem<String>(
                         value: 'purchaser',
                         child: Text('Purchaser'),
                       ),
