@@ -260,7 +260,8 @@ class CustomerOrdersViewModel extends SharedViewModel {
   void markAsDone({required Order order}) async {
     final dialogResponse = await dialog.showConfirmationDialog(
       title: 'CONFIRM - MARK AS DONE',
-      description: 'Are you sure you want to mark order as done?',
+      description:
+          'Are you sure you want to mark order as done? \n\nNOTE: This action cannot be undone.',
       confirmationTitle: 'Yes',
       cancelTitle: 'No',
     );
@@ -291,7 +292,8 @@ class CustomerOrdersViewModel extends SharedViewModel {
   void updateOrder(Order order, {required String status}) async {
     final dialogResponse = await dialog.showConfirmationDialog(
       title: 'CONFIRM - ${status.toUpperCase()}',
-      description: 'Are you sure you want to mark order as "$status"?',
+      description:
+          'Are you sure you want to mark order as "$status"? \n\nNOTE: This action cannot be undone.',
       confirmationTitle: 'Yes',
       cancelTitle: 'No',
     );

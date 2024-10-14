@@ -64,32 +64,35 @@ class ItemListModalView extends StatelessWidget {
                           ),
                           Divider(
                               height: 8, color: appTheme.colorScheme.secondary),
-                          ListView.separated(
-                            itemCount: viewModel.items?.length ?? 10,
-                            shrinkWrap: true,
-                            separatorBuilder: (context, index) => Divider(
-                                height: 8,
-                                color: appTheme.colorScheme.secondary),
-                            itemBuilder: (context, index) => DataTile(
-                              index,
-                              data: viewModel.items ?? [],
-                              title: viewModel.items![index].name!,
-                              subtitle:
-                                  '₱ ${viewModel.items![index].price?.toStringAsFixed(2)}'
-                                  '\n${viewModel.items![index].quantity.toString()} pcs',
-                              trailingText: viewModel
-                                      .items![index].expirationDate
-                                      ?.toString() ??
-                                  '',
-                              onEditTap: () => viewModel.showCustomModal(
-                                context,
-                                isAddEdit: true,
-                                dialogContent: AddEditItemView(
-                                  editingItem: viewModel.items![index],
+                          Expanded(
+                            child: ListView.separated(
+                              scrollDirection: Axis.vertical,
+                              itemCount: viewModel.items?.length ?? 10,
+                              shrinkWrap: true,
+                              separatorBuilder: (context, index) => Divider(
+                                  height: 8,
+                                  color: appTheme.colorScheme.secondary),
+                              itemBuilder: (context, index) => DataTile(
+                                index,
+                                data: viewModel.items ?? [],
+                                title: viewModel.items![index].name!,
+                                subtitle:
+                                    '₱ ${viewModel.items![index].price?.toStringAsFixed(2)}'
+                                    '\n${viewModel.items![index].quantity.toString()} pcs',
+                                trailingText: viewModel
+                                        .items![index].expirationDate
+                                        ?.toString() ??
+                                    '',
+                                onEditTap: () => viewModel.showCustomModal(
+                                  context,
+                                  isAddEdit: true,
+                                  dialogContent: AddEditItemView(
+                                    editingItem: viewModel.items![index],
+                                  ),
                                 ),
+                                onDeleteTap: () => viewModel
+                                    .deleteItem(viewModel.items![index]),
                               ),
-                              onDeleteTap: () =>
-                                  viewModel.deleteItem(viewModel.items![index]),
                             ),
                           ),
                         ],
